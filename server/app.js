@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-//var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -20,15 +20,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-//app.use('/users', usersRouter);
-
-/*const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
-const dbUrl = 'mongodb+srv://daniel:4728eodjs@lcodercluster-ylbsj.mongodb.net/test?retryWrites=true&w=majority'
-mongoose.connect(dbUrl, { useMongoClient: true })
-    .then(() => console.log('Successfully connected to mongodb'))
-    .catch(e => console.error(e));*/
-
+app.use('/users', usersRouter);
 
 var mongoose = require('mongoose');
 var db = mongoose.connection;
@@ -37,12 +29,10 @@ db.once('open', function(){
   // CONNECTED TO MONGODB SERVER
   console.log("Connected to mongod server");
 });
+
+/*mongo db conncet*/
 const dbUrl = 'mongodb+srv://daniel:4728eodjs@lcodercluster-ylbsj.mongodb.net/lcordDB?retryWrites=true&w=majority'
 mongoose.connect(dbUrl, { useMongoClient: true });
-
-// DEFINE MODEL
-var User = require('./models/user');
-var router = require('./routes/users')(app, User);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
