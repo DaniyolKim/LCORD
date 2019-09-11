@@ -2,32 +2,55 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 
+let jwt = require('jsonwebtoken')
+let secretObj = require('../config/jwt')
+
 // GET ALL USERS
 router.get('/', function(req, res) {
-  User.find(function(err, users){
-    if(err) return res.status(500).send({error: 'database failure'});
-    res.json(users);
-  })
+    User.find()
+        .then(users => {
+            res.json(users);
+        })
+        .catch(error => {
+            return res.status(500).send({error: 'database failure'});
+        })
 });
 
 // GET SINGLE USER
-router.get('/:_id', function(req, res){
-  User.findOne({_id: req.params._id}, function(err, user){
-    if(err) return res.status(500).json({error: err});
-    if(!user) return res.status(404).json({error: 'user not found'});
-    res.json(user);
-  })
+router.get('/:userId', function(req, res){
+    let token = req.cookies.userToken
+
+    let decoded = jwt.verify(token, secretObj.secret)
+    if (decoded) {
+        User.findOne({userId: req.params.userId})
+            .then(user => {
+                if(!user) {
+                    return res.status(404).json({error: 'user not found'})
+                }
+                delete user._doc.pwd //비번은 제거하고 전달
+                res.json(user);
+            })
+            .catch(error => {
+                return res.status(500).json({error: err});
+            })
+    } else {
+        res.status(401).end();
+    }
 });
 
 // CREATE USER
 router.post('/', function(req, res){
-  var user = new User();
-  user.userId = req.body.userId;
-  user.userName = req.body.userName;
-  user.bNetId = req.body.bNetId;
-  user.tribe = req.body.tribe;
-  user.created_date = Date.now()
-  user.optionalInfo = (req.body.optionalInfo != undefined) ? req.body.optionalInfo : { apm: 0, grade: '', comment: '' }
+    let body = req.body
+    var user = new User({
+        userId: body.userId,
+        pwd: '1234',
+        userName: body.userName,
+        bNetId: body.bNetId,
+        tribe: body.tribe,
+        created_date: Date.now(),
+    })
+
+  user.optionalInfo = (body.optionalInfo != undefined) ? body.optionalInfo : { apm: 0, grade: '', comment: '' }
 
   user.save(function(err){
     if(err){
@@ -51,7 +74,7 @@ router.put('/:_id', function(req, res){
   })
 });
 
-// DELETE BOOK
+// DELETE USER
 router.delete('/:_id', function(req, res){
   User.remove({ _id: req.params._id }, function(err, output){
     if(err) return res.status(500).json({ error: "database failure" });

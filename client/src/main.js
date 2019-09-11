@@ -4,6 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+import lcordAPI from './server_API/functions'
+Vue.prototype.$lcordAPI = lcordAPI.apis
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

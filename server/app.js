@@ -1,13 +1,11 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
+let cors = require('cors');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-var app = express();
+let app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -18,12 +16,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(cors())
 
+let indexRouter = require('./routes/index');
 app.use('/', indexRouter);
+
+let usersRouter = require('./routes/users');
 app.use('/users', usersRouter);
 
-var mongoose = require('mongoose');
-var db = mongoose.connection;
+let authRouter = require('./routes/auth');
+app.use('/auth', authRouter);
+
+let mongoose = require('mongoose');
+let db = mongoose.connection;
 db.on('error', console.error);
 db.once('open', function(){
   // CONNECTED TO MONGODB SERVER
