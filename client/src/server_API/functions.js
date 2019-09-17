@@ -10,31 +10,49 @@ const apis = {
     return await axios.get(comm.urls.getToken)
       .then(resp =>{
         console.log(resp.data)
+        return resp
       })
       .catch(error => {
         console.log(error.response)
+        return error
       })
   },*/
   async getUserToken (loginInfo) {
     return await axios.post(comm.urls.getToken, loginInfo)
       .then(resp =>{
-        //console.log(resp.data)
         axios.defaults.withCredentials = true
+        Vue.cookie.set('userId', loginInfo.userId, 1)
         Vue.cookie.set('userToken', resp.data.token, 1)
 
-        //go to main page
+        return resp.data
       })
       .catch(error => {
-        console.log(error.response)
+        return error
       })
   },
-  async getUserInfo (userId) {
-    return await axios.get(comm.urls.getUser + userId, {headers: { Cookie: Vue.cookie.get('userToken') }})
+
+  async createAccount (accountInfo) {
+    return await axios.post(comm.urls.getUser, accountInfo)
       .then(resp =>{
-        console.log(resp.data)
+        return resp
       })
       .catch(error => {
-        console.log(error.response)
+        return error
+      })
+  },
+
+  async getUserInfo (userId) {
+    return await axios.get(comm.urls.getUser + userId,
+      { headers: {
+          Cookie: Vue.cookie.get('userToken'),
+          withCredentials: true,
+        }
+      })
+      .then(resp =>{
+        return resp.data
+      })
+      .catch(error => {
+        return error
       })
   },
 }

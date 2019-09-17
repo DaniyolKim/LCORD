@@ -5,20 +5,21 @@ let User = require('../models/user')
 let jwt = require('jsonwebtoken')
 let secretObj = require('../config/jwt')
 
-
 router.post('/', function(req, res) {
     let body = req.body
     let token = jwt.sign({ userId: body.userId }, secretObj.secret, { expiresIn: '1d' })
 
     User.findOne({ userId: body.userId })
         .then(user => {
-            if (user.pwd === body.pwd) {
+            if (user.comparePwd(body.pwd)) {
                 res.cookie('user', token)
                 res.json({token: token})
+            } else {
+                return res.status(400).json({error: 'wrong password'});
             }
         })
         .catch(error => {
-            res.status(401).end();
+            return res.status(500).json({error: error});
         })
 });
 

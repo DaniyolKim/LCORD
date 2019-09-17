@@ -1,3 +1,9 @@
+import Vue from 'vue'
+import VueCookie from 'vue-cookie'
+Vue.use(VueCookie)
+
+import router from '../router/index'
+
 const API_URL = process.env.LCORD_API_Url
 
 const urls = {
@@ -6,6 +12,13 @@ const urls = {
 }
 
 const comFunction = {
+  isAuth () {
+    if (Vue.cookie.get('userToken') == null) {
+      router.push({name: 'Login'})
+    } else {
+      return true
+    }
+  }
   /*async getToken () {
     return await axios.post(urls.postToken, {},
       { params: signageLoginParams,

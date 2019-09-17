@@ -4,8 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 
+import lcordCommon from './server_API/index'
 import lcordAPI from './server_API/functions'
+Vue.prototype.$commAPI = lcordCommon.comFunction
 Vue.prototype.$lcordAPI = lcordAPI.apis
+
+import VueCookie from 'vue-cookie'
+Vue.use(VueCookie)
 
 Vue.config.productionTip = false
 

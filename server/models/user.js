@@ -1,7 +1,10 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+let mongoose = require('mongoose')
+let Schema = mongoose.Schema
 
-var userSchema = new Schema({
+let crypto = require('crypto')
+let encObj = require('../config/enc')
+
+let userSchema = new Schema({
     userId: String,
     pwd: String,
     userName: String,
@@ -10,5 +13,21 @@ var userSchema = new Schema({
     created_date: { type: Date, default: Date.now  },
     optionalInfo: { apm: Number, grade: String, comment: String }
 });
+
+userSchema.methods.encryptPwd = function (pwd) {
+    this.pwd = encPwdFunc(pwd)
+}
+
+userSchema.methods.comparePwd = function (pwd) {
+    if (this.pwd === encPwdFunc(pwd)) {
+        return true
+    } else {
+        return false
+    }
+}
+
+let encPwdFunc = function(pwd) {
+    return crypto.createHash(encObj.encType).update(pwd + encObj.mySalt).digest(encObj.algorithm)
+}
 
 module.exports = mongoose.model('user', userSchema);
