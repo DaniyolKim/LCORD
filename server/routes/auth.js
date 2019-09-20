@@ -12,7 +12,7 @@ router.post('/', function(req, res) {
     User.findOne({ userId: body.userId })
         .then(user => {
             if (user.comparePwd(body.pwd)) {
-                res.cookie('user', token)
+                //res.cookie('user', token)
                 res.json({token: token})
             } else {
                 return res.status(400).json({error: 'wrong password'});

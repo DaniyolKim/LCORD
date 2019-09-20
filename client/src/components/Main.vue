@@ -1,27 +1,26 @@
 <template>
   <div>
-    <label>안녕하세요.<router-link :to="{ name: 'MyInfo'}">{{userId}}</router-link>님</label>
+    <div>
+      main page(요약 화면)
+    </div>
+    <div>- 개인 순위 1~10</div>
+    <div>- 진행 중인 리그 순위 1~3</div>
   </div>
 </template>
 
 <script>
+
 export default {
   name: 'Login',
   data () {
     return {
-      userId: this.$cookie.get('userId')
+
     }
   },
   methods: {
-    hasCookie () {
-      if (this.$cookie.get('userToken') == null) {
-        //go to login page
-        this.$router.push({name: 'Login'})
-      }
-    }
   },
   mounted() {
-    this.hasCookie()
+    //this.$commAPI.isAuth()
   }
 }
 </script>

@@ -5,8 +5,8 @@ let crypto = require('crypto')
 let encObj = require('../config/enc')
 
 let userSchema = new Schema({
-    userId: String,
-    pwd: String,
+    userId: {type: String, required: true, unique: true},
+    pwd: {type: String, required: true},
     userName: String,
     bNetId: String,
     tribe: String,

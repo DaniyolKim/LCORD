@@ -9,8 +9,9 @@ import lcordAPI from './server_API/functions'
 Vue.prototype.$commAPI = lcordCommon.comFunction
 Vue.prototype.$lcordAPI = lcordAPI.apis
 
-import VueCookie from 'vue-cookie'
-Vue.use(VueCookie)
+import VueSidebarMenu from 'vue-sidebar-menu'
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
+Vue.use(VueSidebarMenu)
 
 Vue.config.productionTip = false
 

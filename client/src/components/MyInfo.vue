@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     getUserInfo () {
-      this.$lcordAPI.getUserInfo(this.$cookie.get('userId'))
+      this.$lcordAPI.getUserInfo(localStorage.userId)
         .then(resp => {
           this.userInfo = resp
           this.optionalInfo = resp.optionalInfo
@@ -29,6 +29,7 @@ export default {
     }
   },
   beforeMount() {
+    this.$commAPI.isAuth()
     this.getUserInfo()
   }
 }

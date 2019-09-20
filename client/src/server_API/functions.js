@@ -1,9 +1,6 @@
 import axios from "axios";
 import comm from './index'
-
-import Vue from 'vue'
-import VueCookie from 'vue-cookie'
-Vue.use(VueCookie)
+const urls = comm.urls
 
 const apis = {
   /*async sample () {
@@ -18,11 +15,11 @@ const apis = {
       })
   },*/
   async getUserToken (loginInfo) {
-    return await axios.post(comm.urls.getToken, loginInfo)
+    return await axios.post(urls.getToken, loginInfo)
       .then(resp =>{
-        axios.defaults.withCredentials = true
-        Vue.cookie.set('userId', loginInfo.userId, 1)
-        Vue.cookie.set('userToken', resp.data.token, 1)
+        localStorage.userToken = resp.data.token
+        localStorage.userId = loginInfo.userId
+        axios.defaults.headers.common['Authorization'] = localStorage.userToken
 
         return resp.data
       })
@@ -32,7 +29,7 @@ const apis = {
   },
 
   async createAccount (accountInfo) {
-    return await axios.post(comm.urls.getUser, accountInfo)
+    return await axios.post(urls.getUser, accountInfo)
       .then(resp =>{
         return resp
       })
@@ -42,12 +39,7 @@ const apis = {
   },
 
   async getUserInfo (userId) {
-    return await axios.get(comm.urls.getUser + userId,
-      { headers: {
-          Cookie: Vue.cookie.get('userToken'),
-          withCredentials: true,
-        }
-      })
+    return await axios.get(urls.getUser + userId)
       .then(resp =>{
         return resp.data
       })

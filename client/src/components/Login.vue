@@ -27,7 +27,6 @@ export default {
   },
   methods: {
     async onSubmit () {
-      this.$cookie.delete('userToken')
       this.$lcordAPI.getUserToken(this.loginParams)
         .then(resp => {
           if (resp.isAxiosError) {

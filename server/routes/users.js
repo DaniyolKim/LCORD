@@ -18,10 +18,9 @@ router.get('/', function(req, res) {
 
 // GET SINGLE USER
 router.get('/:userId', function(req, res){
-    let token = req.cookies.userToken
-
-    /*let decoded = jwt.verify(token, secretObj.secret)
-    if (decoded) {*/
+    let tokenInfo = req.headers.authorization
+    let decoded = jwt.verify(tokenInfo, secretObj.secret)
+    if (decoded) {
         User.findOne({userId: req.params.userId})
             .then(user => {
                 if(!user) {
@@ -33,9 +32,9 @@ router.get('/:userId', function(req, res){
             .catch(error => {
                 return res.status(500).json({error: err});
             })
-    /*} else {
-        res.status(401).end();
-    }*/
+    } else {
+        return res.status(400).json({error: 'wrong password'});
+    }
 });
 
 // CREATE USER
