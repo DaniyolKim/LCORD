@@ -18,7 +18,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 let corsOptions = {
   origin: '*',
-  withCredentials: true
 }
 app.use(cors(corsOptions))
 
