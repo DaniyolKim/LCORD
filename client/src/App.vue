@@ -18,7 +18,6 @@ import HeaderArea from './components/HeaderArea'
 export default {
   name: 'App',
   components: {HeaderArea},
-  component: { HeaderArea },
   data() {
     return {
       menu: [
@@ -69,7 +68,7 @@ export default {
               icon: 'fas fa-sitemap'
             },
             {
-              href: '/CreateLeagueEvent',
+              href: '/createLeagueEvent',
               title: '이벤트 전',
               icon: 'fas fa-bowling-ball'
             }
@@ -79,7 +78,7 @@ export default {
       menuWidth: '200px',
       menuWidthCollabse: '50px',
     }
-  }
+  },
 }
 </script>
 
@@ -92,4 +91,10 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+  .contents-area {
+    padding-left: 50px;
+  }
+  .body {
+    padding: 10px;
+  }
 </style>

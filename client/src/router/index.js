@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import lcordCommon from '../server_API/index'
+const commAPI = lcordCommon.comFunction
+
 import Main from '../components/Main'
 import Login from '../components/Login'
 import CreateAccount from "../components/CreateAccount"
@@ -48,22 +51,43 @@ export default new Router({
     {
       path: '/createRecord',
       name: 'CreateRecord',
-      component: CreateRecord
+      component: CreateRecord,
+      beforeEnter: function (to, from, next) {
+        checkAuth(to, from, next)
+      }
     },
     {
       path: '/createLeaguePerson',
       name: 'CreateLeaguePerson',
-      component: CreateLeaguePerson
+      component: CreateLeaguePerson,
+      beforeEnter: function (to, from, next) {
+        checkAuth(to, from, next)
+      }
     },
     {
       path: '/createLeagueTeam',
       name: 'CreateLeagueTeam',
-      component: CreateLeagueTeam
+      component: CreateLeagueTeam,
+      beforeEnter: function (to, from, next) {
+        checkAuth(to, from, next)
+      }
     },
     {
       path: '/createLeagueEvent',
       name: 'CreateLeagueEvent',
-      component: CreateLeagueEvent
+      component: CreateLeagueEvent,
+      beforeEnter: function (to, from, next) {
+        checkAuth(to, from, next)
+      }
     },
   ]
 })
+
+function checkAuth (to, from, next) {
+  if(commAPI.isAuth()) {
+    next()
+  } else {
+    alert('로그인이 필요한 서비스입니다.')
+    next({name: 'Login', params: {toName: to.name}})
+  }
+}

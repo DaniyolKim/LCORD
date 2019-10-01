@@ -1,5 +1,6 @@
-import axios from "axios";
+import axios from "axios"
 import comm from './index'
+import store from '../store'
 const urls = comm.urls
 
 const apis = {
@@ -17,9 +18,11 @@ const apis = {
   async getUserToken (loginInfo) {
     return await axios.post(urls.getToken, loginInfo)
       .then(resp =>{
-        localStorage.userToken = resp.data.token
-        localStorage.userId = loginInfo.userId
-        axios.defaults.headers.common['Authorization'] = localStorage.userToken
+        store.dispatch('updateUserId', loginInfo.userId)
+        store.dispatch('updateUserToken', resp.data.token)
+        //localStorage.userToken = resp.data.token
+        //localStorage.userId = loginInfo.userId
+        axios.defaults.headers.common['Authorization'] = store.getters.getUserToken
 
         return resp.data
       })
@@ -39,6 +42,7 @@ const apis = {
   },
 
   async getUserInfo (userId) {
+    //axios.defaults.headers.common['Authorization'] = store.getters.getUserToken
     return await axios.get(urls.getUser + userId)
       .then(resp =>{
         return resp.data

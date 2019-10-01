@@ -10,6 +10,7 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
 export default {
   name: 'MyInfo',
 
@@ -21,16 +22,23 @@ export default {
   },
   methods: {
     getUserInfo () {
-      this.$lcordAPI.getUserInfo(localStorage.userId)
+      this.$lcordAPI.getUserInfo(this.userId)
         .then(resp => {
           this.userInfo = resp
           this.optionalInfo = resp.optionalInfo
         })
     }
   },
-  beforeMount() {
-    this.$commAPI.isAuth()
+  mounted() {
+    if (this.$commAPI.isAuth() == false) {
+      this.$router.push({name: 'Login'})
+    }
     this.getUserInfo()
+  },
+  computed: {
+    ...mapGetters({
+      userId: 'getUserId',
+    })
   }
 }
 </script>

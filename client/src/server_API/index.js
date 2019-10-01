@@ -1,5 +1,4 @@
-import router from '../router/index'
-
+import store from '../store'
 const API_URL = process.env.LCORD_API_Url
 
 const urls = {
@@ -9,8 +8,8 @@ const urls = {
 
 const comFunction = {
   isAuth () {
-    if (localStorage.userToken == undefined) {
-      router.push({name: 'Login'})
+    if (store.getters.getUserToken == '') {
+      return false
     } else {
       return true
     }

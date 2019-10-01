@@ -14,6 +14,7 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex'
 export default {
   name: 'Login',
   data () {
@@ -22,7 +23,8 @@ export default {
         userId: '',
         pwd: '',
       },
-      error: ''
+      error: '',
+      nextPageName: ''
     }
   },
   methods: {
@@ -32,7 +34,8 @@ export default {
           if (resp.isAxiosError) {
             this.error = '로그인 오류 : 계정 또는 비밀 번호를 확인해주세요.'
           } else {
-            this.$router.push({ name: 'Main' })
+            if (this.nextPageName == undefined) this.nextPageName = 'Main'
+            this.$router.replace({name: this.nextPageName})
           }
         })
         .catch(error => {
@@ -41,11 +44,16 @@ export default {
     },
     createAccount () {
       this.$router.push({ name: 'CreateAccount' })
-    }
+    },
+    ...mapActions({
+      clearUserInfo: 'clearUserInfo'
+    })
   },
   mounted() {
-
-  }
+    this.nextPageName = this.$route.params.toName
+    console.log(this.nextPageName)
+    this.clearUserInfo()
+  },
 }
 </script>
 

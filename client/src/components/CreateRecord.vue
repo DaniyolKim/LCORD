@@ -1,5 +1,5 @@
 <template>
-    <div>전전 입력 페이지</div>
+    <div>전적 입력 페이지</div>
 </template>
 
 <script>
