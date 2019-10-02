@@ -36,8 +36,8 @@
           <tbody>
           <tr v-for="match in round.matchList">
             <td>{{match.matchTime}}</td>
-            <td>{{match.home}}</td>
-            <td>{{match.away}}</td>
+            <td :class="convertWinner(match.winner, match.home)">{{match.home}}</td>
+            <td :class="convertWinner(match.winner, match.away)">{{match.away}}</td>
             <td>{{match.winner}}</td>
             <td>{{match.score}}</td>
             <td>{{match.mvp}}</td>
@@ -98,9 +98,9 @@
         roundList: [
           {name: 'Round 1', matchList: [
               { matchTime: '2019-09-09 21 PM', home: '1팀', away: '2팀', link: '항드래곤', winner: '1팀', mvp: 'A', score: '4:3'},
-              { matchTime: '2019-09-09 21 PM', home: '3팀', away: '4팀', link: '갓홍', winner: '3팀', mvp: 'B', score: '4:3' },
+              { matchTime: '2019-09-09 21 PM', home: '3팀', away: '4팀', link: '갓홍', winner: '4팀', mvp: 'B', score: '4:3' },
               { matchTime: '2019-09-09 21 PM', home: '5팀', away: '6팀', link: '소소', winner: '5팀', mvp: 'C', score: '4:3' },
-              { matchTime: '2019-09-09 21 PM', home: '7팀', away: '8팀', link: '캐노', winner: '7팀', mvp: 'D', score: '4:3' },
+              { matchTime: '2019-09-09 21 PM', home: '7팀', away: '8팀', link: '캐노', winner: '8팀', mvp: 'D', score: '4:3' },
             ]},
           ],
         teamList: [
@@ -185,6 +185,13 @@
         } else {
           return ''
         }
+      },
+      convertWinner(winner, team) {
+        if (winner == team) {
+          return 'winner'
+        } else {
+          return ''
+        }
       }
     }
   }
@@ -231,5 +238,11 @@
   }
   .leader2 {
     border: solid blue 1px;
+  }
+  .winner {
+    color: white;
+    font-weight: bold;
+    background: #00B7FF;
+    margin: 0px;
   }
 </style>
