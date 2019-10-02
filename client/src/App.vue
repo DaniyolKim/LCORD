@@ -31,14 +31,32 @@ export default {
           hiddenOnCollapse: true
         },
         {
-          href: '/rankPerson',
+          href: '/rank/rankPerson',
           title: '개인 순위',
           icon: 'fas fa-user'
         },
         {
-          href: '/rankLeague',
+          href: '/rank/rankLeague',
           title: '리그 순위',
           icon: 'fas fa-sitemap'
+        },
+        {
+          component: separator
+        },
+        {
+          header: true,
+          title: '리그',
+          hiddenOnCollapse: true
+        },
+        {
+          href: '/league/ing',
+          title: '진행 중',
+          icon: 'fas fa-hourglass-half'
+        },
+        {
+          href: '/league/fin',
+          title: '종료',
+          icon: 'fas fa-hourglass-end'
         },
         {
           component: separator
@@ -49,7 +67,7 @@ export default {
           hiddenOnCollapse: true
         },
         {
-          href: '/createRecord',
+          href: '/manage/createRecord',
           title: '전적 입력',
           icon: 'fa fa-download'
         },
@@ -58,17 +76,17 @@ export default {
           icon: 'fab fa-battle-net',
           child: [
             {
-              href: '/createLeaguePerson',
+              href: '/manage/createLeaguePerson',
               title: '개인 리그',
               icon: 'fas fa-user'
             },
             {
-              href: '/createLeagueTeam',
+              href: '/manage/createLeagueTeam',
               title: '팀 리그',
               icon: 'fas fa-sitemap'
             },
             {
-              href: '/createLeagueEvent',
+              href: '/manage/createLeagueEvent',
               title: '이벤트 전',
               icon: 'fas fa-bowling-ball'
             }

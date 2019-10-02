@@ -20,8 +20,6 @@ const apis = {
       .then(resp =>{
         store.dispatch('updateUserId', loginInfo.userId)
         store.dispatch('updateUserToken', resp.data.token)
-        //localStorage.userToken = resp.data.token
-        //localStorage.userId = loginInfo.userId
         axios.defaults.headers.common['Authorization'] = store.getters.getUserToken
 
         return resp.data
