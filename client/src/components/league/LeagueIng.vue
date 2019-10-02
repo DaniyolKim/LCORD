@@ -23,6 +23,29 @@
     <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
     <div>
       <div>진행 현황</div>
+      <div v-for="round in roundList">
+        <table>
+          <thead>
+          <tr>
+            <th colspan="7">{{round.name}}</th>
+          </tr>
+          <tr>
+            <th>날짜</th><th>Home team</th><th>Away team</th><th>Winner</th><th>Score</th><th>MVP</th><th>방송국</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="match in round.matchList">
+            <td>{{match.matchTime}}</td>
+            <td>{{match.home}}</td>
+            <td>{{match.away}}</td>
+            <td>{{match.winner}}</td>
+            <td>{{match.score}}</td>
+            <td>{{match.mvp}}</td>
+            <td>{{match.link}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
@@ -73,11 +96,11 @@
         leagueName: '',
         leagueInfo: { name: '멸망전 시즌2', desc: '설명 설명', tier: 'none', status: 'ing'},
         roundList: [
-          {name: 'Round 1', match: [
-              { matchTime: '2019-09-09 21 PM', home: '1팀', away: '2팀', link: '항드래곤', winner: '1팀', mvp: 'A', },
-              { matchTime: '2019-09-09 21 PM', home: '3팀', away: '4팀', link: '갓홍', winner: '3팀', mvp: 'B', },
-              { matchTime: '2019-09-09 21 PM', home: '5팀', away: '6팀', link: '소소', winner: '5팀', mvp: 'C', },
-              { matchTime: '2019-09-09 21 PM', home: '7팀', away: '8팀', link: '캐노', winner: '7팀', mvp: 'D', },
+          {name: 'Round 1', matchList: [
+              { matchTime: '2019-09-09 21 PM', home: '1팀', away: '2팀', link: '항드래곤', winner: '1팀', mvp: 'A', score: '4:3'},
+              { matchTime: '2019-09-09 21 PM', home: '3팀', away: '4팀', link: '갓홍', winner: '3팀', mvp: 'B', score: '4:3' },
+              { matchTime: '2019-09-09 21 PM', home: '5팀', away: '6팀', link: '소소', winner: '5팀', mvp: 'C', score: '4:3' },
+              { matchTime: '2019-09-09 21 PM', home: '7팀', away: '8팀', link: '캐노', winner: '7팀', mvp: 'D', score: '4:3' },
             ]},
           ],
         teamList: [
