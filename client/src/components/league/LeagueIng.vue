@@ -9,15 +9,52 @@
 
     <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
     <div>
-      <label>리그 Info</label>
+      <label>{{leagueInfo.name}}</label>
       <div>
-        {{leagueInfo}}
+        <div><label>설명 :</label>{{leagueInfo.desc}}</div>
+        <div><label>대상 티어 :</label>{{leagueInfo.tier}}</div>
       </div>
     </div>
 
     <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
     <div>
-      <div>현재 순위</div>
+      <div>순위</div>
+      <div>
+        <table>
+          <thead>
+          <tr>
+            <th>순위</th><th>점수</th><th>팀명</th><td></td>
+            <th>승리</th><th>패배</th>
+            <th>세트 승</th><th>세트 패</th><th>득실</th>
+            <th>에결 횟수</th><th>경기 횟수</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(team, index) in teamList">
+            <td>{{index + 1}}</td>
+            <td>{{team.score.cntWin * 3}}</td>
+            <td>{{team.name}}</td>
+            <td></td>
+            <td>{{team.score.cntWin}}</td><td>{{team.score.cntLose}}</td>
+            <td>{{team.score.cntWinSet}}</td><td>{{team.score.cntLoseSet}}</td><td>{{team.score.cntWinSet - team.score.cntLoseSet}}</td>
+            <td>{{team.score.cntAceMatch}}</td><td>{{team.score.cntWin + team.score.cntLose}}</td>
+          </tr>
+          </tbody>
+        </table>
+
+        <table>
+          <thead>
+          <tr>
+
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="team in teamList">
+
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
@@ -94,7 +131,7 @@
       return {
         leagueList: ['멸망전 시즌2', '휴애리그', '아메바리그 시즌3'],
         leagueName: '',
-        leagueInfo: { name: '멸망전 시즌2', desc: '설명 설명', tier: 'none', status: 'ing'},
+        leagueInfo: { name: '멸망전 시즌2', desc: '모두가 참가 가능한 우리만의 팀 리그!!', tier: 'none', status: 'ing'},
         roundList: [
           {name: 'Round 1', matchList: [
               { matchTime: '2019-09-09 21 PM', home: '1팀', away: '2팀', link: '항드래곤', winner: '1팀', mvp: 'A', score: '4:3'},
@@ -102,9 +139,16 @@
               { matchTime: '2019-09-09 21 PM', home: '5팀', away: '6팀', link: '소소', winner: '5팀', mvp: 'C', score: '4:3' },
               { matchTime: '2019-09-09 21 PM', home: '7팀', away: '8팀', link: '캐노', winner: '8팀', mvp: 'D', score: '4:3' },
             ]},
+          {name: 'Round 2', matchList: [
+              { matchTime: '2019-09-09 21 PM', home: '1팀', away: '2팀', link: '항드래곤', winner: '2팀', mvp: 'A', score: '4:3'},
+              { matchTime: '2019-09-09 21 PM', home: '3팀', away: '4팀', link: '갓홍', winner: '3팀', mvp: 'B', score: '4:3' },
+              { matchTime: '2019-09-09 21 PM', home: '5팀', away: '6팀', link: '소소', winner: '6팀', mvp: 'C', score: '4:3' },
+              { matchTime: '2019-09-09 21 PM', home: '7팀', away: '8팀', link: '캐노', winner: '7팀', mvp: 'D', score: '4:3' },
+            ]},
           ],
         teamList: [
           { name: '1팀', leader1: 'A', leader2: 'B',
+            score: { cntWin: 10, cntLose: 0, cntWinSet: 60, cntLoseSet: 0,  cntAceMatch: 0 },
             members: [
               { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
               { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
@@ -112,6 +156,7 @@
               { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'Terran'}, {id: 'test7', name: 'H', tribe: 'Zerg'}]},
           ]},
           { name: '2팀', leader1: 'B', leader2: 'A',
+            score: { cntWin: 9, cntLose: 1, cntWinSet: 50, cntLoseSet: 10,  cntAceMatch: 0 },
             members: [
               { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
               { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
@@ -119,6 +164,7 @@
               { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'Terran'}, {id: 'test7', name: 'H', tribe: 'Zerg'}]},
             ]},
           { name: '3팀', leader1: 'C', leader2: 'D',
+            score: { cntWin: 8, cntLose: 2, cntWinSet: 40, cntLoseSet: 10,  cntAceMatch: 5 },
             members: [
               { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
               { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
@@ -126,6 +172,7 @@
               { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'Terran'}, {id: 'test7', name: 'H', tribe: 'Zerg'}]},
             ]},
           { name: '4팀', leader1: 'E', leader2: 'F',
+            score: { cntWin: 7, cntLose: 3, cntWinSet: 10, cntLoseSet: 10,  cntAceMatch: 5 },
             members: [
               { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
               { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
@@ -133,6 +180,7 @@
               { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'Terran'}, {id: 'test7', name: 'H', tribe: 'Zerg'}]},
             ]},
           { name: '5팀', leader1: 'G', leader2: 'H',
+            score: { cntWin: 6, cntLose: 4, cntWinSet: 10, cntLoseSet: 10,  cntAceMatch: 5 },
             members: [
               { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
               { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
@@ -140,6 +188,7 @@
               { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'Terran'}, {id: 'test7', name: 'H', tribe: 'Zerg'}]},
             ]},
           { name: '6팀', leader1: 'A', leader2: 'B',
+            score: { cntWin: 5, cntLose: 5, cntWinSet: 10, cntLoseSet: 10,  cntAceMatch: 5 },
             members: [
               { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
               { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
@@ -147,6 +196,7 @@
               { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'Terran'}, {id: 'test7', name: 'H', tribe: 'Zerg'}]},
             ]},
           { name: '7팀', leader1: 'C', leader2: 'D',
+            score: { cntWin: 4, cntLose: 6, cntWinSet: 10, cntLoseSet: 10,  cntAceMatch: 5 },
             members: [
               { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
               { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
@@ -154,6 +204,7 @@
               { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'Terran'}, {id: 'test7', name: 'H', tribe: 'Zerg'}]},
             ]},
           { name: '8팀', leader1: 'E', leader2: 'F',
+            score: { cntWin: 3, cntLose: 7, cntWinSet: 10, cntLoseSet: 10,  cntAceMatch: 5 },
             members: [
               { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
               { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
@@ -244,5 +295,10 @@
     font-weight: bold;
     background: #00B7FF;
     margin: 0px;
+  }
+  .rankArea {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 </style>
