@@ -16,6 +16,9 @@ import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 Vue.use(VueSidebarMenu)
 
+import VModal from 'vue-js-modal'
+Vue.use(VModal, { dynamic: true })
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

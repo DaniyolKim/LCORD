@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="root">
     <div>
       <label>진행 중인 리그</label>
       <select v-model="leagueName">
@@ -63,15 +63,17 @@
       <div v-for="round in roundList">
         <table>
           <thead>
+          <!--<tr>
+            <th colspan="8">{{round.name}}</th>
+          </tr>-->
           <tr>
-            <th colspan="7">{{round.name}}</th>
-          </tr>
-          <tr>
-            <th>날짜</th><th>Home team</th><th>Away team</th><th>Winner</th><th>Score</th><th>MVP</th><th>방송국</th>
+            <th></th><th>날짜</th><th>Home team</th><th>Away team</th><th>Winner</th><th>Score</th><th>MVP</th><th>방송국</th>
+            <th>상세</th><th>업데이트</th>
           </tr>
           </thead>
           <tbody>
-          <tr v-for="match in round.matchList">
+          <tr v-for="(match, index) in round.matchList">
+            <td v-show="index === 0" rowspan="5" style="transform: rotate(-90deg)">{{round.name}}</td>
             <td>{{match.matchTime}}</td>
             <td :class="convertWinner(match.winner, match.home)">{{match.home}}</td>
             <td :class="convertWinner(match.winner, match.away)">{{match.away}}</td>
@@ -79,6 +81,8 @@
             <td>{{match.score}}</td>
             <td>{{match.mvp}}</td>
             <td>{{match.link}}</td>
+            <td><button @click="$modal.show('size-modal')">DETAILS</button></td>
+            <td><button @click="showModalEdit()">EDIT</button></td>
           </tr>
           </tbody>
         </table>
@@ -100,7 +104,7 @@
         )
       </label>
 
-      <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-around">
+      <div class="container-team-list">
         <div v-for="team in teamList">
           <table>
             <thead>
@@ -121,12 +125,17 @@
         </div>
       </div>
     </div>
+    <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
+    <demo-size-modal/>
+    <modals-container/>
   </div>
 </template>
 
 <script>
+  import DemoSizeModal from './modalDetail'
   export default {
     name: "LeagueIng",
+    components: { DemoSizeModal, },
     data () {
       return {
         leagueList: ['멸망전 시즌2', '휴애리그', '아메바리그 시즌3'],
@@ -243,12 +252,24 @@
         } else {
           return ''
         }
+      },
+
+      showModalDetail () {
+        this.$modal.show('size-modal')
+      },
+      showModalEdit () {
+        //this.$modal.show('size-modal')
       }
     }
   }
 </script>
 
 <style scoped>
+  .root > div {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
   table {
     width: 98%;
     margin: 1%;
@@ -300,5 +321,10 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+  }
+
+  .container-team-list {
+    display: flex; flex-direction: row; align-items: center; justify-content: space-around;
+    flex-wrap: wrap; margin-bottom: 50px;
   }
 </style>
