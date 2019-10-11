@@ -81,8 +81,8 @@
             <td>{{match.score}}</td>
             <td>{{match.mvp}}</td>
             <td>{{match.link}}</td>
-            <td><button @click="$modal.show('size-modal')">DETAILS</button></td>
-            <td><button @click="showModalEdit()">EDIT</button></td>
+            <td><button @click="showModalDetail(round.name, match, false)">DETAILS</button></td>
+            <td><button @click="showModalDetail(round.name, match, true)">EDIT</button></td>
           </tr>
           </tbody>
         </table>
@@ -126,7 +126,7 @@
       </div>
     </div>
     <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
-    <demo-size-modal/>
+
     <modals-container/>
   </div>
 </template>
@@ -254,11 +254,28 @@
         }
       },
 
-      showModalDetail () {
-        this.$modal.show('size-modal')
+      showModalDetail (name, match, isEdit) {
+        this.$modal.show(DemoSizeModal,
+          { title: name + ' ' + match.home + ' vs ' + match.away,
+            match: match,
+            membersAway: this.getMembers(match.away),
+            membersHome: this.getMembers(match.home),
+            isEdit: isEdit,
+          }
+          )
       },
-      showModalEdit () {
-        //this.$modal.show('size-modal')
+
+      getMembers (teamName) {
+        let index = this.teamList.findIndex( x => x.name === teamName)
+        let members = this.teamList[index].members
+        let userList = []
+        for (let i = 0; i < members.length; i++) {
+          let users = members[i].users
+          for (let j = 0; j < users.length; j++) {
+            userList.push(users[j])
+          }
+        }
+        return userList
       }
     }
   }
