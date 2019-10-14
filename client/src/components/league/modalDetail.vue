@@ -20,11 +20,16 @@
           <select v-model="m.name"><option v-for="user in membersHome">{{user.name}}</option></select></label></td>
         <td><label v-for="m in record.away">
           <select v-model="m.name"><option v-for="user in membersHome">{{user.name}}</option></select></label></td>
-        <td>{{record.winner}}</td>
+        <td>
+          <select v-model="record.winner"><option v-for="team in teamList">{{team.name}}</option></select>
+        </td>
       </tr>
       </tbody>
     </table>
-    <button v-if="isEdit">저장</button>
+    <div  v-if="isEdit">
+      <button @click="closeModal">취소</button>
+      <button>저장</button>
+    </div>
   </div>
 </template>
 <script>
@@ -35,7 +40,7 @@
       return {
         orderList: [1, 2, 3, 4, 5, 6, 7],
         mapList: ['투혼', '서킷브레이커', '블록체인SE', '글라디에이터', '파워 본드', '오버워치', '트레스패스', '헌터', '빠른무한'],
-        /*match: { home: '1팀', away: '2팀' },*/
+        teamList: [ {name: '1팀'}, {name: '2팀'},],
         recordList: [
           { time: '2019-10-10 PM 10', order: '1', map: '투혼', winner: '', home: [{name:'A'}], away: [{name:'B'}], winner: '1팀' },
           { time: '2019-10-10 PM 10', order: '2', map: '서킷브레이커', winner: '', home: [{name:'B'}], away: [{name:'C'}], winner: '1팀' },
@@ -48,7 +53,9 @@
       }
     },
     methods: {
-
+      closeModal () {
+        this.$emit('close')
+      }
     }
   }
 </script>

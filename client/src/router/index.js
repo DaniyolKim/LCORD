@@ -96,10 +96,11 @@ export default new Router({
 })
 
 function checkAuth (to, from, next) {
-  if(commAPI.isAuth()) {
+  next()
+  /*if(commAPI.isAuth()) {
     next()
   } else {
     alert('로그인이 필요한 서비스입니다.')
     next({name: 'Login', params: {toName: to.name}})
-  }
+  }*/
 }

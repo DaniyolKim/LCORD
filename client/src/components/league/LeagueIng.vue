@@ -261,6 +261,9 @@
             membersAway: this.getMembers(match.away),
             membersHome: this.getMembers(match.home),
             isEdit: isEdit,
+          },
+          {
+            clickToClose: !isEdit,
           }
           )
       },

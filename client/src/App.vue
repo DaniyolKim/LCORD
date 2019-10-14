@@ -9,7 +9,7 @@
 </template>
 <script>
 const logo = {
-  template: '<a href="/"><img src="/static/logo.png" width="200px"/></a>'
+  template: '<a href="/"><img src="/static/logo_1.png" width="200px"/></a>'
 }
 const separator = {
   template: '<hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">'
