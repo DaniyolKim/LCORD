@@ -72,21 +72,26 @@ export default {
           icon: 'fa fa-download'
         },
         {
+          href: '/manage/createLeague',
           title: '리그 생성',
-          icon: 'fab fa-battle-net',
+          icon: 'fab fa-battle-net'
+        },
+        {
+          title: '리그 관리',
+          icon: 'fas fa-tools',
           child: [
             {
-              href: '/manage/createLeaguePerson',
+              href: '/manage/leaguePerson',
               title: '개인 리그',
               icon: 'fas fa-user'
             },
             {
-              href: '/manage/createLeagueTeam',
+              href: '/manage/leagueTeam',
               title: '팀 리그',
               icon: 'fas fa-sitemap'
             },
             {
-              href: '/manage/createLeagueEvent',
+              href: '/manage/leagueEvent',
               title: '이벤트 전',
               icon: 'fas fa-bowling-ball'
             }

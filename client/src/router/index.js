@@ -11,10 +11,9 @@ import RankPerson from "../components/rank/RankPerson"
 import RankLeague from "../components/rank/RankLeague"
 import LeagueIng from '../components/league/LeagueIng'
 import LeagueFinish from '../components/league/LeagueFinish'
-import CreateRecord from "../components/CreateRecord"
-import CreateLeaguePerson from "../components/manage/CreateLeaguePerson"
-import CreateLeagueTeam from "../components/manage/CreateLeagueTeam"
-import CreateLeagueEvent from "../components/manage/CreateLeagueEvent"
+import CreateRecord from "../components/manage/CreateRecord"
+import CreateLeague from "../components/manage/CreateLeague"
+
 Vue.use(Router)
 
 export default new Router({
@@ -69,6 +68,14 @@ export default new Router({
       }
     },
     {
+      path: '/manage/createLeague',
+      name: 'CreateLeague',
+      component: CreateLeague,
+      beforeEnter: function (to, from, next) {
+        checkAuth(to, from, next)
+      }
+    },
+    /*{
       path: '/manage/createLeaguePerson',
       name: 'CreateLeaguePerson',
       component: CreateLeaguePerson,
@@ -91,7 +98,7 @@ export default new Router({
       beforeEnter: function (to, from, next) {
         checkAuth(to, from, next)
       }
-    },
+    },*/
   ]
 })
 
