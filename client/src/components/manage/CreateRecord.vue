@@ -103,10 +103,11 @@
 <script>
   import Datepicker from 'vuejs-datepicker'
   import {en, ko} from 'vuejs-datepicker/dist/locale'
-  import VueMultiselect from "vue-multiselect/src/Multiselect";
+  /*import VueMultiselect from "vue-multiselect/src/Multiselect";*/
   export default {
     name: "CreateRecord",
-    components: {VueMultiselect, Datepicker},
+    components: {Datepicker},
+    /*components: {VueMultiselect, Datepicker},*/
     data () {
       return {
         languages: [en, ko],
