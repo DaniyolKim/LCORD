@@ -1,18 +1,20 @@
 <template>
   <div class="root">
     <div>
-      <label>진행 중인 리그</label>
-      <select v-model="leagueName">
-        <option v-for="league in leagueList" value="league">{{league}}</option>
+      <label v-show="isProgressing == 'true'">진행 중인 리그</label>
+      <label v-show="isProgressing == 'false'">종료 된 리그</label>
+      <select v-model="selectedLeague">
+        <option v-for="league in leagueList" :value="league">{{league.name}}</option>
       </select>
     </div>
 
     <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
     <div>
-      <label>{{leagueInfo.name}}</label>
+      <label>{{selectedLeague.name}}</label>
       <div>
-        <div><label>설명 :</label>{{leagueInfo.desc}}</div>
-        <div><label>대상 티어 :</label>{{leagueInfo.tier}}</div>
+        <div><label>설명 :</label>{{selectedLeague.description}}</div>
+        <div><label>대상 티어 :</label>{{$defs.tierList[selectedLeague.tierMin]}} ~ {{$defs.tierList[selectedLeague.tierMax]}}</div>
+        <div><label>리그 타입 :</label>{{$defs.leagueTypeList[selectedLeague.type]}}</div>
       </div>
     </div>
 
@@ -134,13 +136,14 @@
 <script>
   import DemoSizeModal from './modalDetail'
   export default {
-    name: "LeagueIng",
+    name: "LeagueInfo",
+    props: ['isProgressing'],
     components: { DemoSizeModal, },
     data () {
       return {
-        leagueList: ['멸망전 시즌2', '휴애리그', '아메바리그 시즌3'],
-        leagueName: '',
-        leagueInfo: { name: '멸망전 시즌2', desc: '모두가 참가 가능한 우리만의 팀 리그!!', tier: 'none', status: 'ing'},
+        leagueList: [],
+        selectedLeague: {},
+
         roundList: [
           {name: 'Round 1', matchList: [
               { matchTime: '2019-09-09 21 PM', home: '1팀', away: '2팀', link: '항드래곤', winner: '1팀', mvp: 'A', score: '4:3'},
@@ -279,6 +282,21 @@
           }
         }
         return userList
+      },
+
+      getLeagueList () {
+        this.$lcordAPI.league.getListByProgress(this.isProgressing)
+          .then((resp) => {
+            this.leagueList = resp
+          })
+      }
+    },
+    beforeMount() {
+      this.getLeagueList()
+    },
+    watch: {
+      isProgressing: function () {
+        this.getLeagueList()
       }
     }
   }

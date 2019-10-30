@@ -1,25 +1,14 @@
 let express = require('express');
 let router = express.Router();
-let User = require('../models/user');
+let Team = require('../models/team');
 
-let jwt = require('jsonwebtoken')
-let secretObj = require('../config/jwt')
-
-// CREATE USER
+// CREATE Team
 router.post('/', function(req, res){
     let body = req.body
-    let user = new User({
-        userId: body.userId,
-        userName: body.userName,
-        bNetId: body.bNetId,
-        tribe: body.tribe,
-        created_date: Date.now(),
+    let team  = new Team({
     })
 
-    user.encryptPwd(body.pwd)
-    user.optionalInfo = (body.optionalInfo != undefined) ? body.optionalInfo : { apm: 0, grade: '', comment: '' }
-
-    user.save(function(err){
+    team.save(function(err){
         if(err) {
             console.error(err);
             return res.status(500).send({error: 'database failure'});

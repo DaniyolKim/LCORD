@@ -59,7 +59,7 @@ export default {
   methods: {
     async onSubmit () {
       this.accountParams.optionalInfo = this.optionalInfo
-      this.$lcordAPI.createAccount(this.accountParams)
+      this.$lcordAPI.user.create(this.accountParams)
         .then(() => {
           this.$router.push({name: 'Login'})
         })

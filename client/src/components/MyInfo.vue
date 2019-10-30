@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     getUserInfo () {
-      this.$lcordAPI.getUserInfo(this.userId)
+      this.$lcordAPI.user.getInfo(this.userId)
         .then(resp => {
           this.userInfo = resp
           this.optionalInfo = resp.optionalInfo

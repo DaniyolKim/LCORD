@@ -30,6 +30,15 @@ app.use('/users', usersRouter);
 let authRouter = require('./routes/auth');
 app.use('/auth', authRouter);
 
+let leaguesRouter = require('./routes/leagues');
+app.use('/leagues', leaguesRouter);
+
+let mapsRouter = require('./routes/maps');
+app.use('/maps', mapsRouter);
+
+let recordRouter = require('./routes/records');
+app.use('/record', recordRouter);
+
 let mongoose = require('mongoose');
 let db = mongoose.connection;
 db.on('error', console.error);

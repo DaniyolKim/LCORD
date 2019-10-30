@@ -1,7 +1,7 @@
 <template>
   <div>
     <form @submit.prevent="onSubmit">
-      <div>리그 생성</div>
+      <div>리그 편집</div>
       <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
 
       <div>

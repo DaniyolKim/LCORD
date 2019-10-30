@@ -10,6 +10,7 @@ import store from './store'
 import lcordCommon from './server_API/index'
 import lcordAPI from './server_API/functions'
 Vue.prototype.$commAPI = lcordCommon.comFunction
+Vue.prototype.$defs = lcordCommon.defs
 Vue.prototype.$lcordAPI = lcordAPI.apis
 
 import VueSidebarMenu from 'vue-sidebar-menu'
@@ -18,6 +19,9 @@ Vue.use(VueSidebarMenu)
 
 import VModal from 'vue-js-modal'
 Vue.use(VModal, { dynamic: true })
+
+import Multiselect from 'vue-multiselect'
+Vue.use(Multiselect)
 
 Vue.config.productionTip = false
 

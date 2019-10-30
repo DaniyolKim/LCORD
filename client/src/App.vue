@@ -49,12 +49,12 @@ export default {
           hiddenOnCollapse: true
         },
         {
-          href: '/league/ing',
+          href: '/league/true',
           title: '진행 중',
           icon: 'fas fa-hourglass-half'
         },
         {
-          href: '/league/fin',
+          href: '/league/false',
           title: '종료',
           icon: 'fas fa-hourglass-end'
         },
@@ -72,29 +72,19 @@ export default {
           icon: 'fa fa-download'
         },
         {
-          href: '/manage/createLeague',
-          title: '리그 생성',
-          icon: 'fab fa-battle-net'
-        },
-        {
           title: '리그 관리',
           icon: 'fas fa-tools',
           child: [
             {
-              href: '/manage/leaguePerson',
-              title: '개인 리그',
-              icon: 'fas fa-user'
+              href: '/manage/createLeague',
+              title: '리그 생성',
+              icon: 'fab fa-battle-net'
             },
             {
-              href: '/manage/leagueTeam',
-              title: '팀 리그',
-              icon: 'fas fa-sitemap'
+              href: '/manage/updateLeague',
+              title: '리그 편집',
+              icon: 'fas fa-edit'
             },
-            {
-              href: '/manage/leagueEvent',
-              title: '이벤트 전',
-              icon: 'fas fa-bowling-ball'
-            }
           ]
         },
       ],

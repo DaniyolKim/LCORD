@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     async onSubmit () {
-      this.$lcordAPI.getUserToken(this.loginParams)
+      this.$lcordAPI.user.getToken(this.loginParams)
         .then(resp => {
           if (resp.isAxiosError) {
             this.error = '로그인 오류 : 계정 또는 비밀 번호를 확인해주세요.'
