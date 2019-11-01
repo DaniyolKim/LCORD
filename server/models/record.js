@@ -9,6 +9,7 @@ let recordSchema = new Schema({
     winners: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
     losers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
     videoLink: String,
+    writer: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
 });
 
 recordSchema.methods.getUserIds = function(userList) {

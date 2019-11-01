@@ -1,9 +1,13 @@
 const state = {
+  userDBIndex: '',
   userId: '',
   userToken: '',
 }
 
 const getters = {
+  getUserDBIndex: state => {
+    return state.userDBIndex
+  },
   getUserId: state => {
     return state.userId
   },
@@ -13,6 +17,9 @@ const getters = {
 }
 
 const mutations = {
+  updateUserDBIndex(state, value) {
+    state.userDBIndex = value
+  },
   updateUserId(state, value) {
     state.userId = value
   },
@@ -26,6 +33,9 @@ const mutations = {
 }
 
 const actions = {
+  updateUserDBIndex ({commit}, value) {
+    commit('updateUserDBIndex', value)
+  },
   updateUserId ({commit}, value) {
     commit('updateUserId', value)
   },

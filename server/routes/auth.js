@@ -13,7 +13,7 @@ router.post('/', function(req, res) {
         .then(user => {
             if (user.comparePwd(body.pwd)) {
                 //res.cookie('user', token)
-                res.json({token: token})
+                res.json({_id: user._id, token: token, userId: user.userId, userName: user.userName, tribe: user.tribe})
             } else {
                 return res.status(400).json({error: 'wrong password'});
             }

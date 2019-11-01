@@ -2,12 +2,12 @@ let mongoose = require('mongoose')
 let Schema = mongoose.Schema
 
 let roundSchema = new Schema({
-    name: {type: String, required: true, unique: true, index: true},
+    name: {type: String, required: true, unique: true},
     matches: []
 })
 
 let leagueSchema = new Schema({
-    name: {type: String, required: true, unique: true, index: true},
+    name: {type: String, required: true, unique: true},
     description: String,
     tierMin: Number,
     tierMax: Number,
@@ -17,5 +17,11 @@ let leagueSchema = new Schema({
     onProgressing: {type: Boolean, default: true },
     rounds: roundSchema,
 })
+
+leagueSchema.methods.createRound = function () {
+    for (let i = 0; i < this.teamCount; i++) {
+
+    }
+}
 
 module.exports = mongoose.model('league', leagueSchema);

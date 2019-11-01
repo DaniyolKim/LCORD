@@ -13,10 +13,8 @@ router.post('/', function(req, res){
         winners: body.winners,
         losers: body.losers,
         videoLink: body.videoLink,
+        writer: body.writer,
     })
-    //record.date = (body.date != undefined || body.date != '') ? Date.now : body.date
-    /*record.winners = record.getUserIds(body.winners)
-    record.losers = record.getUserIds(body.losers)*/
 
     record.save(function(err){
         if(err) {

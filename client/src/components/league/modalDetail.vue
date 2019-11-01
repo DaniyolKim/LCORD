@@ -64,23 +64,4 @@
     padding: 10px;
     overflow: auto;
   }
-
-  table {
-    width: 98%;
-    margin: 1%;
-    border-collapse: collapse;
-  }
-
-  th {
-    background: #f8f8f9;
-  }
-
-  th, td {
-    border: solid #e5e5e5 1px;
-  }
-
-  td > div {
-    min-width: 120px;
-    margin: 3px;
-  }
 </style>

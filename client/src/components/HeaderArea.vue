@@ -33,6 +33,12 @@
     justify-content: center;
     padding: 10px;
     color: white;
-    background: grey;
+    background: #303033;
+  }
+  a {
+    color: white;
+  }
+  a:hover {
+    color: grey;
   }
 </style>

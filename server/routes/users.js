@@ -32,7 +32,7 @@ router.post('/', function(req, res){
 
 // GET ALL USERS
 router.get('/', function(req, res) {
-    User.find()
+    User.find().select('userName userId bNetId tribe').sort('userName')
         .then(users => {
             res.json(users);
         })
@@ -41,17 +41,32 @@ router.get('/', function(req, res) {
         })
 });
 
+//check duplicated user id
+router.post('/checkId', function(req, res){
+    User.findOne({userId: req.body.userId})
+        .then(user => {
+            if(!user) {
+                return res.json({result: 'Available userId'});
+            } else {
+                return res.status(404).json({error: 'Already exist userId'})
+            }
+        })
+        .catch(error => {
+            return res.status(500).json({error: err});
+        })
+});
+
 // GET SINGLE USER
 router.get('/:userId', function(req, res){
     let tokenInfo = req.headers.authorization
     let decoded = jwt.verify(tokenInfo, secretObj.secret)
     if (decoded) {
-        User.findOne({userId: req.params.userId})
+        User.findOne({userId: req.params.userId}).select('-pwd')
             .then(user => {
                 if(!user) {
                     return res.status(404).json({error: 'user not found'})
                 }
-                delete user._doc.pwd //비번은 제거하고 전달
+                //delete user._doc.pwd //비번은 제거하고 전달
                 res.json(user);
             })
             .catch(error => {

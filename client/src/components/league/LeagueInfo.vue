@@ -1,133 +1,135 @@
 <template>
   <div class="root">
-    <div>
+    <div style="display: flex; flex-direction: row;align-items: center;justify-content: center">
       <label v-show="isProgressing == 'true'">진행 중인 리그</label>
       <label v-show="isProgressing == 'false'">종료 된 리그</label>
-      <select v-model="selectedLeague">
-        <option v-for="league in leagueList" :value="league">{{league.name}}</option>
-      </select>
+      <div style="width: 20%; margin-left: 20px">
+        <vue-multiselect v-model="selectedLeague" placeholder="리그 선택" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="leagueList" :multiple="false" :taggable="true"></vue-multiselect>
+      </div>
     </div>
 
     <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
-    <div>
-      <label>{{selectedLeague.name}}</label>
+    <div v-if="selectedLeague != null">
       <div>
-        <div><label>설명 :</label>{{selectedLeague.description}}</div>
-        <div><label>대상 티어 :</label>{{$defs.tierList[selectedLeague.tierMin]}} ~ {{$defs.tierList[selectedLeague.tierMax]}}</div>
-        <div><label>리그 타입 :</label>{{$defs.leagueTypeList[selectedLeague.type]}}</div>
+        <label>{{selectedLeague.name}}</label>
+        <div>
+          <div><label>설명 :</label>{{selectedLeague.description}}</div>
+          <div><label>대상 티어 :</label>{{$defs.tierList[selectedLeague.tierMin].name}} ~ {{$defs.tierList[selectedLeague.tierMax].name}}</div>
+          <div><label>리그 타입 :</label>{{$defs.leagueTypeList[selectedLeague.type].name}}</div>
+        </div>
       </div>
-    </div>
 
-    <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
-    <div>
-      <div>순위</div>
+      <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
       <div>
-        <table>
-          <thead>
-          <tr>
-            <th>순위</th><th>점수</th><th>팀명</th><td></td>
-            <th>승리</th><th>패배</th>
-            <th>세트 승</th><th>세트 패</th><th>득실</th>
-            <th>에결 횟수</th><th>경기 횟수</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(team, index) in teamList">
-            <td>{{index + 1}}</td>
-            <td>{{team.score.cntWin * 3}}</td>
-            <td>{{team.name}}</td>
-            <td></td>
-            <td>{{team.score.cntWin}}</td><td>{{team.score.cntLose}}</td>
-            <td>{{team.score.cntWinSet}}</td><td>{{team.score.cntLoseSet}}</td><td>{{team.score.cntWinSet - team.score.cntLoseSet}}</td>
-            <td>{{team.score.cntAceMatch}}</td><td>{{team.score.cntWin + team.score.cntLose}}</td>
-          </tr>
-          </tbody>
-        </table>
-
-        <table>
-          <thead>
-          <tr>
-
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="team in teamList">
-
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
-    <div>
-      <div>진행 현황</div>
-      <div v-for="round in roundList">
-        <table>
-          <thead>
-          <!--<tr>
-            <th colspan="8">{{round.name}}</th>
-          </tr>-->
-          <tr>
-            <th></th><th>날짜</th><th>Home team</th><th>Away team</th><th>Winner</th><th>Score</th><th>MVP</th><th>방송국</th>
-            <th>상세</th><th>업데이트</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="(match, index) in round.matchList">
-            <td v-show="index === 0" rowspan="5" style="transform: rotate(-90deg)">{{round.name}}</td>
-            <td>{{match.matchTime}}</td>
-            <td :class="convertWinner(match.winner, match.home)">{{match.home}}</td>
-            <td :class="convertWinner(match.winner, match.away)">{{match.away}}</td>
-            <td>{{match.winner}}</td>
-            <td>{{match.score}}</td>
-            <td>{{match.mvp}}</td>
-            <td>{{match.link}}</td>
-            <td><button @click="showModalDetail(round.name, match, false)">DETAILS</button></td>
-            <td><button @click="showModalDetail(round.name, match, true)">EDIT</button></td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
-    <div>
-      <label>Team List</label>
-      <label>
-        (<label>구분 : </label>
-        <label class="leader1">팀장</label>
-        <label class="leader2">주장</label>
-        <label> | </label>
-        <label class="Terran">테란</label>
-        <label class="Zerg">저그</label>
-        <label class="Protoss">플토</label>
-        <label class="Random">랜덤</label>
-        )
-      </label>
-
-      <div class="container-team-list">
-        <div v-for="team in teamList">
+        <div>순위</div>
+        <div>
           <table>
             <thead>
-            <th colspan="2">{{team.name}}</th>
+            <tr>
+              <th>순위</th><th>점수</th><th>팀명</th><td></td>
+              <th>승리</th><th>패배</th>
+              <th>세트 승</th><th>세트 패</th><th>득실</th>
+              <th>에결 횟수</th><th>경기 횟수</th>
+            </tr>
             </thead>
             <tbody>
-            <tr v-for="member in team.members">
-              <td>{{convertTearName(member.tear)}}</td>
-              <td>
-                <div v-for="user in member.users" :class="convertLeaderType(team, user.name)">
-                  <label :class="user.tribe">{{user.name}}</label>
-                  (<label>{{user.id}}</label>)
-                </div>
-              </td>
+            <tr v-for="(team, index) in teamList">
+              <td>{{index + 1}}</td>
+              <td>{{team.score.cntWin * 3}}</td>
+              <td>{{team.name}}</td>
+              <td></td>
+              <td>{{team.score.cntWin}}</td><td>{{team.score.cntLose}}</td>
+              <td>{{team.score.cntWinSet}}</td><td>{{team.score.cntLoseSet}}</td><td>{{team.score.cntWinSet - team.score.cntLoseSet}}</td>
+              <td>{{team.score.cntAceMatch}}</td><td>{{team.score.cntWin + team.score.cntLose}}</td>
+            </tr>
+            </tbody>
+          </table>
+
+          <table>
+            <thead>
+            <tr>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="team in teamList">
+
             </tr>
             </tbody>
           </table>
         </div>
       </div>
+
+      <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
+      <div>
+        <div>진행 현황</div>
+        <div v-for="round in roundList">
+          <table>
+            <thead>
+            <!--<tr>
+              <th colspan="8">{{round.name}}</th>
+            </tr>-->
+            <tr>
+              <th></th><th>날짜</th><th>Home team</th><th>Away team</th><th>Winner</th><th>Score</th><th>MVP</th><th>방송국</th>
+              <th>상세</th><th>업데이트</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(match, index) in round.matchList">
+              <td v-show="index === 0" rowspan="5" style="transform: rotate(-90deg)">{{round.name}}</td>
+              <td>{{match.matchTime}}</td>
+              <td :class="convertWinner(match.winner, match.home)">{{match.home}}</td>
+              <td :class="convertWinner(match.winner, match.away)">{{match.away}}</td>
+              <td>{{match.winner}}</td>
+              <td>{{match.score}}</td>
+              <td>{{match.mvp}}</td>
+              <td>{{match.link}}</td>
+              <td><button @click="showModalDetail(round.name, match, false)">DETAILS</button></td>
+              <td><button @click="showModalDetail(round.name, match, true)">EDIT</button></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
+      <div>
+        <label>Team List</label>
+        <label>
+          (<label>구분 : </label>
+          <label class="leader1">팀장</label>
+          <label class="leader2">주장</label>
+          <label> | </label>
+          <label class="terran">테란</label>
+          <label class="zerg">저그</label>
+          <label class="protoss">플토</label>
+          <label class="random">랜덤</label>
+          )
+        </label>
+
+        <div class="container-team-list">
+          <div v-for="team in teamList">
+            <table>
+              <thead>
+              <th colspan="2">{{team.name}}</th>
+              </thead>
+              <tbody>
+              <tr v-for="member in team.members">
+                <td>{{convertTearName(member.tear)}}</td>
+                <td>
+                  <div v-for="user in member.users" :class="convertLeaderType(team, user.name)">
+                    <label :class="user.tribe">{{user.name}}</label>
+                    (<label>{{user.id}}</label>)
+                  </div>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
     </div>
-    <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
 
     <modals-container/>
   </div>
@@ -142,7 +144,7 @@
     data () {
       return {
         leagueList: [],
-        selectedLeague: {},
+        selectedLeague: null,
 
         roundList: [
           {name: 'Round 1', matchList: [
@@ -162,66 +164,66 @@
           { name: '1팀', leader1: 'A', leader2: 'B',
             score: { cntWin: 10, cntLose: 0, cntWinSet: 60, cntLoseSet: 0,  cntAceMatch: 0 },
             members: [
-              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
-              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
-              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'Terran'}, {id: 'test6', name: 'G', tribe: 'Zerg'}]},
-              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'Terran'}, {id: 'test7', name: 'H', tribe: 'Zerg'}]},
+              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'terran'}, {id: 'test1', name: 'B', tribe: 'zerg'}]},
+              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'protoss'}, {id: 'test5', name: 'F', tribe: 'zerg'}]},
+              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'terran'}, {id: 'test6', name: 'G', tribe: 'zerg'}]},
+              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'terran'}, {id: 'test7', name: 'H', tribe: 'zerg'}]},
           ]},
           { name: '2팀', leader1: 'B', leader2: 'A',
             score: { cntWin: 9, cntLose: 1, cntWinSet: 50, cntLoseSet: 10,  cntAceMatch: 0 },
             members: [
-              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
-              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
-              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'Terran'}, {id: 'test6', name: 'G', tribe: 'Zerg'}]},
-              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'Terran'}, {id: 'test7', name: 'H', tribe: 'Zerg'}]},
+              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'terran'}, {id: 'test1', name: 'B', tribe: 'zerg'}]},
+              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'protoss'}, {id: 'test5', name: 'F', tribe: 'zerg'}]},
+              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'terran'}, {id: 'test6', name: 'G', tribe: 'zerg'}]},
+              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'terran'}, {id: 'test7', name: 'H', tribe: 'zerg'}]},
             ]},
           { name: '3팀', leader1: 'C', leader2: 'D',
             score: { cntWin: 8, cntLose: 2, cntWinSet: 40, cntLoseSet: 10,  cntAceMatch: 5 },
             members: [
-              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
-              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
-              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'Terran'}, {id: 'test6', name: 'G', tribe: 'Zerg'}]},
-              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'Terran'}, {id: 'test7', name: 'H', tribe: 'Zerg'}]},
+              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'terran'}, {id: 'test1', name: 'B', tribe: 'zerg'}]},
+              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'protoss'}, {id: 'test5', name: 'F', tribe: 'zerg'}]},
+              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'terran'}, {id: 'test6', name: 'G', tribe: 'zerg'}]},
+              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'terran'}, {id: 'test7', name: 'H', tribe: 'zerg'}]},
             ]},
           { name: '4팀', leader1: 'E', leader2: 'F',
             score: { cntWin: 7, cntLose: 3, cntWinSet: 10, cntLoseSet: 10,  cntAceMatch: 5 },
             members: [
-              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
-              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
-              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'Terran'}, {id: 'test6', name: 'G', tribe: 'Zerg'}]},
-              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'Terran'}, {id: 'test7', name: 'H', tribe: 'Zerg'}]},
+              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'terran'}, {id: 'test1', name: 'B', tribe: 'zerg'}]},
+              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'protoss'}, {id: 'test5', name: 'F', tribe: 'zerg'}]},
+              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'terran'}, {id: 'test6', name: 'G', tribe: 'zerg'}]},
+              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'terran'}, {id: 'test7', name: 'H', tribe: 'zerg'}]},
             ]},
           { name: '5팀', leader1: 'G', leader2: 'H',
             score: { cntWin: 6, cntLose: 4, cntWinSet: 10, cntLoseSet: 10,  cntAceMatch: 5 },
             members: [
-              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
-              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
-              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'Terran'}, {id: 'test6', name: 'G', tribe: 'Zerg'}]},
-              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'Terran'}, {id: 'test7', name: 'H', tribe: 'Zerg'}]},
+              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'terran'}, {id: 'test1', name: 'B', tribe: 'zerg'}]},
+              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'protoss'}, {id: 'test5', name: 'F', tribe: 'zerg'}]},
+              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'terran'}, {id: 'test6', name: 'G', tribe: 'zerg'}]},
+              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'terran'}, {id: 'test7', name: 'H', tribe: 'zerg'}]},
             ]},
           { name: '6팀', leader1: 'A', leader2: 'B',
             score: { cntWin: 5, cntLose: 5, cntWinSet: 10, cntLoseSet: 10,  cntAceMatch: 5 },
             members: [
-              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
-              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
-              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'Terran'}, {id: 'test6', name: 'G', tribe: 'Zerg'}]},
-              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'Terran'}, {id: 'test7', name: 'H', tribe: 'Zerg'}]},
+              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'terran'}, {id: 'test1', name: 'B', tribe: 'zerg'}]},
+              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'protoss'}, {id: 'test5', name: 'F', tribe: 'zerg'}]},
+              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'terran'}, {id: 'test6', name: 'G', tribe: 'zerg'}]},
+              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'terran'}, {id: 'test7', name: 'H', tribe: 'zerg'}]},
             ]},
           { name: '7팀', leader1: 'C', leader2: 'D',
             score: { cntWin: 4, cntLose: 6, cntWinSet: 10, cntLoseSet: 10,  cntAceMatch: 5 },
             members: [
-              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
-              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
-              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'Terran'}, {id: 'test6', name: 'G', tribe: 'Zerg'}]},
-              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'Terran'}, {id: 'test7', name: 'H', tribe: 'Zerg'}]},
+              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'terran'}, {id: 'test1', name: 'B', tribe: 'zerg'}]},
+              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'protoss'}, {id: 'test5', name: 'F', tribe: 'zerg'}]},
+              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'terran'}, {id: 'test6', name: 'G', tribe: 'zerg'}]},
+              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'terran'}, {id: 'test7', name: 'H', tribe: 'zerg'}]},
             ]},
           { name: '8팀', leader1: 'E', leader2: 'F',
             score: { cntWin: 3, cntLose: 7, cntWinSet: 10, cntLoseSet: 10,  cntAceMatch: 5 },
             members: [
-              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'Terran'}, {id: 'test1', name: 'B', tribe: 'Zerg'}]},
-              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'Protoss'}, {id: 'test5', name: 'F', tribe: 'Zerg'}]},
-              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'Terran'}, {id: 'test6', name: 'G', tribe: 'Zerg'}]},
-              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'Terran'}, {id: 'test7', name: 'H', tribe: 'Zerg'}]},
+              { tear: '1', users: [{id: 'test', name: 'A', tribe: 'terran'}, {id: 'test1', name: 'B', tribe: 'zerg'}]},
+              { tear: '2', users: [{id: 'test2', name: 'C', tribe: 'protoss'}, {id: 'test5', name: 'F', tribe: 'zerg'}]},
+              { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'terran'}, {id: 'test6', name: 'G', tribe: 'zerg'}]},
+              { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'terran'}, {id: 'test7', name: 'H', tribe: 'zerg'}]},
             ]},
         ]
       }
@@ -285,6 +287,7 @@
       },
 
       getLeagueList () {
+        this.selectedLeague = null
         this.$lcordAPI.league.getListByProgress(this.isProgressing)
           .then((resp) => {
             this.leagueList = resp
@@ -308,41 +311,6 @@
     margin-bottom: 20px;
   }
 
-  table {
-    width: 98%;
-    margin: 1%;
-    border-collapse: collapse;
-  }
-
-  th {
-    background: #f8f8f9;
-  }
-
-  th, td {
-    border: solid #e5e5e5 1px;
-  }
-
-  td > div {
-    min-width: 120px;
-    margin: 3px;
-  }
-
-  .Terran {
-    color: white;
-    background: #4285f4;
-  }
-  .Zerg {
-    color: white;
-    background: purple;
-  }
-  .Protoss {
-    color: white;
-    background: green;
-  }
-  .Random {
-    color: white;
-    background: black;
-  }
   .leader1 {
     border: solid red 1px;
   }

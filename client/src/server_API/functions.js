@@ -20,8 +20,10 @@ const apis = {
     async getToken (loginInfo) {
       return await axios.post(urls.getToken, loginInfo)
         .then(resp =>{
-          store.dispatch('updateUserId', loginInfo.userId)
-          store.dispatch('updateUserToken', resp.data.token)
+          let data = resp.data
+          store.dispatch('updateUserDBIndex', data._id)
+          store.dispatch('updateUserId', data.userId)
+          store.dispatch('updateUserToken', data.token)
           axios.defaults.headers.common['Authorization'] = store.getters.getUserToken
 
           return resp.data
@@ -31,8 +33,21 @@ const apis = {
         })
     },
 
+    async checkId (userId) {
+      return await axios.post(urls.getUser + 'checkId', userId)
+        .then(resp =>{
+          return resp
+        })
+        .catch(error => {
+          return error
+        })
+    },
+
     async create (accountInfo) {
-      return await axios.post(urls.getUser, accountInfo)
+      let reqBody = accountInfo
+      reqBody.tribe = accountInfo.tribe.val
+      reqBody.optionalInfo.grade = (accountInfo.optionalInfo.grade == '') ? '' : accountInfo.optionalInfo.grade.val
+      return await axios.post(urls.getUser, reqBody)
         .then(resp =>{
           return resp
         })
