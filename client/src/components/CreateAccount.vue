@@ -29,9 +29,17 @@
         <div>
           <input type="text" v-model="accountParams.bNetId" required placeholder="배틀넷 아이디">
         </div>
-
         <div>
+          <input type="text" v-model="accountParams.afreecaId" required placeholder="아프리카 TV 아이디">
+        </div>
+        <div>
+          <input type="text" v-model="accountParams.nickName" required placeholder="별명">
+        </div>
+        <div style="margin-bottom: 5px">
           <vue-multiselect v-model="accountParams.tribe" placeholder="종족 선택" :options="$defs.tribes" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거"></vue-multiselect>
+        </div>
+        <div style="margin-bottom: 5px">
+          <vue-multiselect v-model="accountParams.tier" placeholder="티어 선택" :options="$defs.tierList" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거"></vue-multiselect>
         </div>
       </div>
     </div>
@@ -63,6 +71,9 @@ export default {
         pwd_confirm: '',
         userName: '',
         bNetId: '',
+        nickName: '',
+        afreecaId: '',
+        tier: '',
         tribe: '',
         optionalInfo: {}
       },
@@ -73,8 +84,12 @@ export default {
     async createAccount () {
       this.accountParams.optionalInfo = this.optionalInfo
       this.$lcordAPI.user.create(this.accountParams)
-        .then(() => {
-          this.$router.push({name: 'Login'})
+        .then((resp) => {
+          if (resp.isAxiosError) {
+            alert('입력 오류')
+          } else {
+            this.$router.push({name: 'Login'})
+          }
         })
     },
     async checkDupUserId () {

@@ -46,6 +46,7 @@ const apis = {
     async create (accountInfo) {
       let reqBody = accountInfo
       reqBody.tribe = accountInfo.tribe.val
+      reqBody.tier = accountInfo.tier.val
       reqBody.optionalInfo.grade = (accountInfo.optionalInfo.grade == '') ? '' : accountInfo.optionalInfo.grade.val
       return await axios.post(urls.getUser, reqBody)
         .then(resp =>{
@@ -77,9 +78,9 @@ const apis = {
     },
   },
 
-  league: {
-    async create (leagueData) {
-      return await axios.post(comm.urls.league, leagueData)
+  battle: {
+    async create (battleData) {
+      return await axios.post(comm.urls.battle, battleData)
         .then(resp =>{
         console.log(resp.data)
         return resp
@@ -90,8 +91,8 @@ const apis = {
       })
     },
 
-    async getInfo (leagueName) {
-      return await axios.get(comm.urls.league + leagueName)
+    async getInfo (battleName) {
+      return await axios.get(comm.urls.battle + battleName)
         .then(resp =>{
           return resp.data
         })
@@ -102,7 +103,7 @@ const apis = {
     },
 
     async getListByProgress (isGoing) {
-      return await axios.get(comm.urls.league + '/onProgressing/' + isGoing)
+      return await axios.get(comm.urls.battle + '/onProgressing/' + isGoing)
         .then(resp =>{
           return resp.data
         })
@@ -113,7 +114,7 @@ const apis = {
     },
 
     async getListByType (type) {
-      return await axios.get(comm.urls.league + '/type/' + type)
+      return await axios.get(comm.urls.battle + '/type/' + type)
         .then(resp =>{
           return resp.data
         })
@@ -158,6 +159,7 @@ const apis = {
 
   record: {
     async create (recordData) {
+      recordData.battleId = recordData.battleId._id
       recordData.winners = getUserIds(recordData.winners)
       recordData.losers = getUserIds(recordData.losers)
 

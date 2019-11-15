@@ -12,6 +12,9 @@ router.post('/', function(req, res){
         userId: body.userId,
         userName: body.userName,
         bNetId: body.bNetId,
+        nickName: body.nickName,
+        afreecaId: body.afreecaId,
+        tier: body.tier,
         tribe: body.tribe,
         created_date: Date.now(),
     })
@@ -32,7 +35,7 @@ router.post('/', function(req, res){
 
 // GET ALL USERS
 router.get('/', function(req, res) {
-    User.find().select('userName userId bNetId tribe').sort('userName')
+    User.find().select('-pwd').sort('userName')
         .then(users => {
             res.json(users);
         })

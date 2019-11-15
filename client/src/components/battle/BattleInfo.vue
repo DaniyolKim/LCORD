@@ -1,25 +1,22 @@
 <template>
   <div class="root">
     <div style="display: flex; flex-direction: row;align-items: center;justify-content: center">
-      <label v-show="isProgressing == 'true'">진행 중인 리그</label>
-      <label v-show="isProgressing == 'false'">종료 된 리그</label>
+      <h2 v-show="isProgressing == 'true'">진행 중인 배틀</h2>
+      <h2 v-show="isProgressing == 'false'">종료 된 배틀</h2>
       <div style="width: 20%; margin-left: 20px">
-        <vue-multiselect v-model="selectedLeague" placeholder="리그 선택" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="leagueList" :multiple="false" :taggable="true"></vue-multiselect>
+        <vue-multiselect v-model="selectedBattle" placeholder="배틀 선택" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="battleList" :multiple="false" :taggable="true"></vue-multiselect>
       </div>
     </div>
 
-    <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
-    <div v-if="selectedLeague != null">
+    <hr>
+    <div v-if="selectedBattle != null">
       <div>
-        <label>{{selectedLeague.name}}</label>
-        <div>
-          <div><label>설명 :</label>{{selectedLeague.description}}</div>
-          <div><label>대상 티어 :</label>{{$defs.tierList[selectedLeague.tierMin].name}} ~ {{$defs.tierList[selectedLeague.tierMax].name}}</div>
-          <div><label>리그 타입 :</label>{{$defs.leagueTypeList[selectedLeague.type].name}}</div>
-        </div>
+          <div><label>설명 :</label>{{selectedBattle.description}}</div>
+          <div><label>대상 티어 :</label>{{$defs.tierList[selectedBattle.tierMin].name}} ~ {{$defs.tierList[selectedBattle.tierMax].name}}</div>
+          <div><label>진행 방식 :</label>{{$defs.battleTypeList[selectedBattle.type].name}}</div>
       </div>
 
-      <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
+      <hr>
       <div>
         <div>순위</div>
         <div>
@@ -60,7 +57,7 @@
         </div>
       </div>
 
-      <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
+      <hr>
       <div>
         <div>진행 현황</div>
         <div v-for="round in roundList">
@@ -92,7 +89,7 @@
         </div>
       </div>
 
-      <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
+      <hr>
       <div>
         <label>Team List</label>
         <label>
@@ -128,7 +125,7 @@
           </div>
         </div>
       </div>
-      <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
+      <hr>
     </div>
 
     <modals-container/>
@@ -138,13 +135,13 @@
 <script>
   import DemoSizeModal from './modalDetail'
   export default {
-    name: "LeagueInfo",
+    name: "BattleInfo",
     props: ['isProgressing'],
     components: { DemoSizeModal, },
     data () {
       return {
-        leagueList: [],
-        selectedLeague: null,
+        battleList: [],
+        selectedBattle: null,
 
         roundList: [
           {name: 'Round 1', matchList: [
@@ -286,20 +283,20 @@
         return userList
       },
 
-      getLeagueList () {
-        this.selectedLeague = null
-        this.$lcordAPI.league.getListByProgress(this.isProgressing)
+      getBattleList () {
+        this.selectedBattle = null
+        this.$lcordAPI.battle.getListByProgress(this.isProgressing)
           .then((resp) => {
-            this.leagueList = resp
+            this.battleList = resp
           })
       }
     },
     beforeMount() {
-      this.getLeagueList()
+      this.getBattleList()
     },
     watch: {
       isProgressing: function () {
-        this.getLeagueList()
+        this.getBattleList()
       }
     }
   }

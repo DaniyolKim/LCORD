@@ -3,6 +3,7 @@
     <div>ID : {{userInfo.userId}}</div>
     <div>이름 : {{userInfo.userName}}</div>
     <div>배넷 ID : {{userInfo.bNetId}}</div>
+    <div>별명 : {{userInfo.nickName}}</div>
     <div>주종 : {{userInfo.tribe}}</div>
     <div>가입일 : {{userInfo.created_date}}</div>
     <div>추가 정보 : {{optionalInfo}}</div>

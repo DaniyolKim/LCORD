@@ -9,7 +9,10 @@ let userSchema = new Schema({
     pwd: {type: String, required: true},
     userName: String,
     bNetId: String,
+    nickName: String,
     tribe: String,
+    afreecaId: String,
+    tier: Number,
     created_date: { type: Date, default: Date.now  },
     optionalInfo: { apm: Number, grade: String, comment: String }
 });

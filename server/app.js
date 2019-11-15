@@ -30,8 +30,8 @@ app.use('/users', usersRouter);
 let authRouter = require('./routes/auth');
 app.use('/auth', authRouter);
 
-let leaguesRouter = require('./routes/leagues');
-app.use('/leagues', leaguesRouter);
+let battlesRouter = require('./routes/battles');
+app.use('/battles', battlesRouter);
 
 let mapsRouter = require('./routes/maps');
 app.use('/maps', mapsRouter);

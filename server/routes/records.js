@@ -7,9 +7,9 @@ router.post('/', function(req, res){
     let body = req.body
     let record  = new Record({
         date: body.date,
-        leagueId: body.leagueId,
+        battleId: body.battleId,
         map: body.map,
-        battleType: body.battleType,
+        gameType: body.gameType,
         winners: body.winners,
         losers: body.losers,
         videoLink: body.videoLink,
@@ -28,8 +28,7 @@ router.post('/', function(req, res){
 
 // GET ALL Records
 router.get('/', function(req, res) {
-    Record.find()
-        .populate('leagueId' , '_id name')
+    Record.find().populate('battleId' , '_id name')
         .populate('winners', '_id userName userId tribe bNetId')
         .populate('losers', '_id userName userId tribe bNetId')
         .populate('map').sort('-date').limit(20)

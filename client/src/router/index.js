@@ -5,14 +5,13 @@ const commAPI = lcordCommon.comFunction
 
 import Main from '../components/Main'
 import Login from '../components/Login'
-import CreateAccount from "../components/CreateAccount"
-import MyInfo from "../components/MyInfo"
-import RankPerson from "../components/rank/RankPerson"
-import RankLeague from "../components/rank/RankLeague"
-import LeagueInfo from '../components/league/LeagueInfo'
-import CreateRecord from "../components/manage/CreateRecord"
-import CreateLeague from "../components/manage/CreateLeague"
-import UpdateLeague from "../components/manage/UpdateLeague"
+import CreateAccount from '../components/CreateAccount'
+import MyInfo from '../components/MyInfo'
+import RankInfo from '../components/rank/RankInfo'
+import BattleInfo from '../components/battle/BattleInfo'
+import CreateRecord from '../components/manage/CreateRecord'
+import CreateBattle from '../components/manage/CreateBattle'
+import UpdateBattle from '../components/manage/UpdateBattle'
 
 Vue.use(require('vue-moment'))
 Vue.use(Router)
@@ -41,19 +40,15 @@ export default new Router({
       component: MyInfo
     },
     {
-      path: '/rank/rankPerson',
-      name: 'RankPerson',
-      component: RankPerson
+      path: '/rank/:type',
+      name: 'RankTeam',
+      component: RankInfo,
+      props: true,
     },
     {
-      path: '/rank/rankLeague',
-      name: 'RankLeague',
-      component: RankLeague
-    },
-    {
-      path: '/league/:isProgressing',
-      name: 'LeagueInfo',
-      component: LeagueInfo,
+      path: '/Battle/:isProgressing',
+      name: 'BattleInfo',
+      component: BattleInfo,
       props: true,
     },
     {
@@ -65,41 +60,41 @@ export default new Router({
       }
     },
     {
-      path: '/manage/createLeague',
-      name: 'CreateLeague',
-      component: CreateLeague,
+      path: '/manage/createBattle',
+      name: 'CreateBattle',
+      component: CreateBattle,
       beforeEnter: function (to, from, next) {
         checkAuth(to, from, next)
       }
     },
     {
-      path: '/manage/updateLeague',
-      name: 'UpdateLeague',
-      component: UpdateLeague,
+      path: '/manage/updateBattle',
+      name: 'UpdateBattle',
+      component: UpdateBattle,
       beforeEnter: function (to, from, next) {
         checkAuth(to, from, next)
       }
     },
     /*{
-      path: '/manage/createLeaguePerson',
-      name: 'CreateLeaguePerson',
-      component: CreateLeaguePerson,
+      path: '/manage/createBattlePerson',
+      name: 'CreateBattlePerson',
+      component: CreateBattlePerson,
       beforeEnter: function (to, from, next) {
         checkAuth(to, from, next)
       }
     },
     {
-      path: '/manage/createLeagueTeam',
-      name: 'CreateLeagueTeam',
-      component: CreateLeagueTeam,
+      path: '/manage/createBattleTeam',
+      name: 'CreateBattleTeam',
+      component: CreateBattleTeam,
       beforeEnter: function (to, from, next) {
         checkAuth(to, from, next)
       }
     },
     {
-      path: '/manage/createLeagueEvent',
-      name: 'CreateLeagueEvent',
-      component: CreateLeagueEvent,
+      path: '/manage/createBattleEvent',
+      name: 'CreateBattleEvent',
+      component: CreateBattleEvent,
       beforeEnter: function (to, from, next) {
         checkAuth(to, from, next)
       }
@@ -109,10 +104,10 @@ export default new Router({
 
 function checkAuth (to, from, next) {
   next()
-  /*if(commAPI.isAuth()) {
+  if(commAPI.isAuth()) {
     next()
   } else {
     alert('로그인이 필요한 서비스입니다.')
     next({name: 'Login', params: {toName: to.name}})
-  }*/
+  }
 }

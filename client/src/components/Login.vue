@@ -39,7 +39,7 @@ export default {
           if (resp.isAxiosError) {
             this.error = '계정 또는 비밀 번호를 확인해주세요.'
           } else {
-            if (this.nextPageName == '') this.nextPageName = 'Main'
+            if (this.nextPageName == '' || this.nextPageName == undefined) this.nextPageName = 'Main'
             this.$router.replace({name: this.nextPageName})
           }
         })
@@ -55,6 +55,7 @@ export default {
     })
   },
   mounted() {
+    this.nextPageName = this.$route.params.toName
     this.clearUserInfo()
   },
 }

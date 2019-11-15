@@ -12,7 +12,7 @@ const logo = {
   template: '<a href="/"><img src="/static/logo_1.png" width="200px"/></a>'
 }
 const separator = {
-  template: '<hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">'
+  template: '<hr>'
 }
 import HeaderArea from './components/HeaderArea'
 export default {
@@ -31,30 +31,35 @@ export default {
           hiddenOnCollapse: true
         },
         {
-          href: '/rank/rankPerson',
-          title: '개인 순위',
+          href: '/rank/0',
+          title: '개인 배틀',
           icon: 'fas fa-user'
         },
         {
-          href: '/rank/rankLeague',
-          title: '리그 순위',
+          href: '/rank/1',
+          title: '팀 배틀',
           icon: 'fas fa-sitemap'
+        },
+        {
+          href: '/rank/2',
+          title: '이벤트 배틀',
+          icon: 'fas fa-bowling-ball'
         },
         {
           component: separator
         },
         {
           header: true,
-          title: '리그',
+          title: '배틀',
           hiddenOnCollapse: true
         },
         {
-          href: '/league/true',
+          href: '/battle/true',
           title: '진행 중',
           icon: 'fas fa-hourglass-half'
         },
         {
-          href: '/league/false',
+          href: '/battle/false',
           title: '종료',
           icon: 'fas fa-hourglass-end'
         },
@@ -72,17 +77,17 @@ export default {
           icon: 'fa fa-download'
         },
         {
-          title: '리그 관리',
+          title: '배틀 관리',
           icon: 'fas fa-tools',
           child: [
             {
-              href: '/manage/createLeague',
-              title: '리그 생성',
+              href: '/manage/createBattle',
+              title: '배틀 생성',
               icon: 'fab fa-battle-net'
             },
             {
-              href: '/manage/updateLeague',
-              title: '리그 편집',
+              href: '/manage/updateBattle',
+              title: '배틀 편집',
               icon: 'fas fa-edit'
             },
           ]
@@ -111,6 +116,8 @@ export default {
     height: 91vh;
     overflow-y: auto;
   }
+
+  hr { border-color: rgba(0, 0, 0, 0.1); margin: 10px; }
 
   button {
     width: 100%;

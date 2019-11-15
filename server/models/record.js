@@ -3,9 +3,10 @@ let Schema = mongoose.Schema
 
 let recordSchema = new Schema({
     date: { type: Date },
-    leagueId: { type: mongoose.Schema.Types.ObjectId, ref: 'league' },
+    battleId: { type: mongoose.Schema.Types.ObjectId, ref: 'battle' },
+    roundNum: Number, //풀 라운드 방식일 경우
     map: { type: mongoose.Schema.Types.ObjectId, ref: 'map' },
-    battleType: Number,
+    gameType: Number,
     winners: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
     losers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
     videoLink: String,

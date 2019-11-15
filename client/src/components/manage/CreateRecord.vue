@@ -7,7 +7,9 @@
       <thead>
       <tr>
         <th>경기 날짜</th>
-        <th>리그 선택</th><th>맵 선택</th><th>Battle Type</th>
+        <th>리그 선택</th>
+        <th v-if="roundList.length != 0">라운드 선택</th>
+        <th>맵 선택</th><th>Battle Type</th>
         <th><label>승자</label></th>
         <th><label>패자</label></th>
         <th>방송 URL(필수아님)</th>
@@ -19,8 +21,13 @@
         <td><datepicker v-model="recordData.date" :language="languages[1]" :format="dateFormat"></datepicker></td>
         <td>
           <div class="user-container">
-            <vue-multiselect v-model="recordData.leagueList" placeholder="리그 검색" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="leagueList" :multiple="false"></vue-multiselect>
+            <vue-multiselect v-model="recordData.battleId" placeholder="리그 검색" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="battleList" :multiple="false"></vue-multiselect>
           </div>
+        </td>
+        <td v-if="roundList.length != 0">
+          <select v-model="recordData.roundNum">
+            <option v-for="num in roundList" :value="num">{{num}}</option>
+          </select>
         </td>
         <td>
           <div class="user-container">
@@ -30,7 +37,7 @@
         <td>
           <div>
             <select v-model="recordData.battleType">
-              <option v-for="type in $defs.battleTypeList" :value="type.type">{{type.name}}</option>
+              <option v-for="type in $defs.gameTypeList" :value="type.type">{{type.name}}</option>
             </select>
           </div>
         </td>
@@ -60,18 +67,18 @@
       </tbody>
     </table>
 
-    <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
+    <hr>
 
     <h3>맵 추가</h3>
     <h4>경기 하신 맵이 없다면 추가해주세요.</h4>
     <div>
-      <input type="text" v-model="mapName" placeholder="맵이름만 입력"><button @click="addMap">add map</button>
+      <input type="text" v-model="mapName" placeholder="맵이름만 입력"><button class="btn-record-page" @click="addMap">add map</button>
     </div>
 
-    <hr style="border-color: rgba(0, 0, 0, 0.1); margin: 10px;">
+    <hr>
 
     <div>
-      <h3>최근 입력 된 전적 <button @click="getAllRecords">refresh</button></h3>
+      <h3>최근 입력 된 전적(최근 추가 된 20개)<button class="btn-record-page" @click="getAllRecords">refresh</button></h3>
       <h4>(Refresh로 확인 하고 중복 확인한 뒤 입력 할 것!)</h4>
       <label>
         (<label>구분 : </label>
@@ -94,7 +101,7 @@
         <tbody>
         <tr v-for="record in recordList">
           <td>{{record.date | moment(mDateFormat)}}</td>
-          <td>{{record.leagueId.name}}</td>
+          <td>{{record.battleId.name}}</td>
           <td>{{record.map.name}}</td>
           <td>{{setBattleType(record.battleType)}}</td>
           <td><label v-for="user in record.winners" class="user-label" :class="user.tribe">{{user.userName}}</label></td>
@@ -121,11 +128,11 @@
         dateFormat: 'yyyy-MM-dd',
         mDateFormat: 'YYYY-MM-DD',
         mapName: '',
-        leagueList: [],
+        battleList: [],
         userList: [],
         mapList: [],
         recordList: [],
-        recordData: { leagueId: '', battleType: 0, winners: [], losers: [], date: new Date(), map: '', videoLink: '', writer: '' },
+        recordData: { battleId: '', battleType: 0, roundNum: 0, winners: [], losers: [], date: new Date(), map: '', videoLink: '', writer: '' },
         //battleType: '',
       }
     },
@@ -142,10 +149,10 @@
             this.userList = resp
           })
       },
-      getLeagueList () {
-        this.$lcordAPI.league.getListByProgress(true) //진행중인 리그에만 입력 가능
+      getBattleList () {
+        this.$lcordAPI.battle.getListByProgress(true) //진행중인 리그에만 입력 가능
           .then((resp) => {
-            this.leagueList = resp
+            this.battleList = resp
           })
       },
       getAllRecords () {
@@ -169,7 +176,7 @@
       },
 
       userSearchLabel ({userName, bNetId, tribe}) {
-        return `${userName}(${bNetId})`
+        return `${userName}(${bNetId.split(' ')[0]})`
       },
 
       addWinners () {
@@ -184,38 +191,52 @@
       },
 
       addRecord() {
-        if (this.recordData.leagueId == '' || this.recordData.winners.length == 0 || this.recordData.losers.length == 0 || this.recordData.map == '') {
+        if (this.recordData.battleId == '' || this.recordData.winners.length == 0 || this.recordData.losers.length == 0 || this.recordData.map == '') {
           alert('필수 항목 확인 바랍니다.')
         } else {
-          this.recordData.writer = this.userDBIndex
-          this.$lcordAPI.record.create(this.recordData)
-            .then((resp) => {
-              if (resp.isAxiosError) {
-                alert('필수 항목 확인 바랍니다.')
-              } else {
-                this.recordData.map = ''
-                this.recordData.battleType = 0
-                this.recordData.winners = []
-                this.recordData.losers = []
-                this.getAllRecords()
-              }
-            })
+          if (this.userDBIndex == '') {
+            alert('로그인이 필요합니다.')
+            this.$router.push({name: 'Login'})
+          } else {
+            this.recordData.writer = this.userDBIndex
+            this.$lcordAPI.record.create(this.recordData)
+              .then((resp) => {
+                if (resp.isAxiosError) {
+                  alert('필수 항목 확인 바랍니다.')
+                } else {
+                  this.recordData.map = ''
+                  this.recordData.battleType = 0
+                  this.recordData.winners = []
+                  this.recordData.losers = []
+                  this.getAllRecords()
+                }
+              })
+          }
         }
       },
 
       setBattleType (index) {
-        return this.$defs.battleTypeList[index].name
+        return this.$defs.gameTypeList[index].name
       },
     },
     mounted() {
       this.getMapList()
       this.getAllUserList()
-      this.getLeagueList()
+      this.getBattleList()
       this.getAllRecords()
 
       this.recordData.battleType = 0
     },
     computed: {
+      roundList: function () {
+        let retArray = []
+        if (this.recordData.battleId.isRound) {
+          for (let i = 0; i < this.recordData.battleId.roundCount; i++) {
+            retArray.push(i + 1)
+          }
+        }
+        return retArray
+      },
       ...mapGetters({
         userDBIndex: 'getUserDBIndex',
       })
@@ -233,18 +254,5 @@
     margin: 5px;
   }
 
-  .vdp-datepicker {
-    position: relative;
-    text-align: center;
-    width: 100%;
-  }
-
-  .container-btn {
-    margin: 0px;
-    width: 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  }
+  .btn-record-page { max-width: 150px; padding: 6px }
 </style>

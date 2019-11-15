@@ -4,8 +4,8 @@ let Schema = mongoose.Schema
 let teamSchema = new Schema({
     leagueId: { type: mongoose.Schema.Types.ObjectId, ref: 'league' },
     name: String,
-    leader1: String,
-    leader2: String,
+    captain: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
+    manager: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
     members: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
     openTalkLink: String,
 });
