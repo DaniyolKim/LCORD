@@ -1,8 +1,8 @@
 <template>
   <div class="root">
     <div style="display: flex; flex-direction: row;align-items: center;justify-content: center">
-      <h2 v-show="isProgressing == 'true'">진행 중인 배틀</h2>
-      <h2 v-show="isProgressing == 'false'">종료 된 배틀</h2>
+      <h2 v-if="isProgressing == 'true'">진행 중인 배틀</h2>
+      <h2 v-else>종료 된 배틀</h2>
       <div style="width: 20%; margin-left: 20px">
         <vue-multiselect v-model="selectedBattle" placeholder="배틀 선택" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="battleList" :multiple="false" :taggable="true"></vue-multiselect>
       </div>
@@ -17,6 +17,76 @@
       </div>
 
       <hr>
+      <!--개인 전-->
+      <div v-if="selectedBattle.type == 0">
+        <table>
+          <thead>
+          <tr>
+            <th>순위</th><th>이름</th><th>종족</th><th>승</th><th>패</th>
+            <th>승률(%)</th><th>상세보기</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="(user, index) in sortedRanking">
+            <td>{{index + 1}}</td>
+            <td>{{user.userName}}</td>
+            <td>{{user.tribe}}</td>
+            <td>{{user.winCount}}</td>
+            <td>{{user.loseCount}}</td>
+            <td>{{user.winRate}}</td>
+            <td><button>상세</button></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!--팀 전-->
+      <div v-else-if="selectedBattle.type == 1">
+        팀 전
+      </div>
+
+      <!--이벤트 전-->
+      <div v-else>
+        이벤트 전
+      </div>
+
+      <div>
+        <div>
+          <label>
+            (<label>구분 : </label>
+            <label class="terran">테란</label>
+            <label class="zerg">저그</label>
+            <label class="protoss">플토</label>
+            <label class="random">랜덤</label>
+            )
+          </label>
+          <button class="btn" @click="getRecordListByBattleId(selectedBattle._id)">refresh</button>
+        </div>
+
+        <table>
+          <thead>
+          <tr>
+            <th>경기 날짜</th>
+            <th>맵</th><th>Battle Type</th>
+            <th><label>승자</label></th>
+            <th><label>패자</label></th>
+            <th>방송 URL</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="record in recordList">
+            <td>{{record.date | moment(mDateFormat)}}</td>
+            <td>{{record.map.name}}</td>
+            <td>{{$defs.gameTypeList[record.battleType].name}}</td>
+            <td><label v-for="user in record.winners" class="user-label" :class="user.tribe">{{user.userName}}</label></td>
+            <td><label v-for="user in record.losers" class="user-label" :class="user.tribe">{{user.userName}}</label></td>
+            <td>{{record.videoLink}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!--<hr>
       <div>
         <div>순위</div>
         <div>
@@ -63,9 +133,9 @@
         <div v-for="round in roundList">
           <table>
             <thead>
-            <!--<tr>
+            &lt;!&ndash;<tr>
               <th colspan="8">{{round.name}}</th>
-            </tr>-->
+            </tr>&ndash;&gt;
             <tr>
               <th></th><th>날짜</th><th>Home team</th><th>Away team</th><th>Winner</th><th>Score</th><th>MVP</th><th>방송국</th>
               <th>상세</th><th>업데이트</th>
@@ -125,7 +195,7 @@
           </div>
         </div>
       </div>
-      <hr>
+      <hr>-->
     </div>
 
     <modals-container/>
@@ -140,8 +210,11 @@
     components: { DemoSizeModal, },
     data () {
       return {
+        mDateFormat: 'YYYY-MM-DD',
         battleList: [],
         selectedBattle: null,
+        recordList: [],
+        userList: [],
 
         roundList: [
           {name: 'Round 1', matchList: [
@@ -222,11 +295,17 @@
               { tear: '3', users: [{id: 'test3', name: 'D', tribe: 'terran'}, {id: 'test6', name: 'G', tribe: 'zerg'}]},
               { tear: '4', users: [{id: 'test4', name: 'E', tribe: 'terran'}, {id: 'test7', name: 'H', tribe: 'zerg'}]},
             ]},
-        ]
+        ],
       }
     },
     methods: {
-      convertTearName(level) {
+      async getAllUserList () {
+        await this.$lcordAPI.user.getAllUsers()
+          .then((resp) => {
+            this.userList = resp
+          })
+      },
+      /*convertTearName(level) {
         if (level == '1') {
           return 'GOD'
         } else if (level == '2') {
@@ -254,7 +333,7 @@
         } else {
           return ''
         }
-      },
+      },*/
 
       showModalDetail (name, match, isEdit) {
         this.$modal.show(DemoSizeModal,
@@ -289,16 +368,66 @@
           .then((resp) => {
             this.battleList = resp
           })
+      },
+
+      getRecordListByBattleId (battleId) {
+        this.$lcordAPI.record.getAllRecordsByBattleId(battleId)
+          .then(resp => {
+            this.recordList = resp
+
+            this.getAllUserList()
+              .then(() => {
+                for (let i = 0; i < this.userList.length; i++) {
+                  let user = this.userList[i]
+                  user.loseCount = 0
+                  user.winCount = 0
+                  user.winRate = 0
+                  for (let j = 0; j < this.recordList.length; j++) {
+                    let losers = this.recordList[j].losers
+                    let winners = this.recordList[j].winners
+
+                    let loseIndex = losers.findIndex(x => x._id == user._id)
+                    if (loseIndex != -1) user.loseCount += 1
+
+                    let winIndex = winners.findIndex(x => x._id == user._id)
+                    if (winIndex != -1) user.winCount += 1
+
+                    user.winRate = Math.round((user.winCount * 100) / (user.winCount + user.loseCount) * 100) / 100
+                  }
+                }
+              })
+          })
       }
     },
     beforeMount() {
       this.getBattleList()
+      this.getAllUserList()
+    },
+    computed: {
+      sortedRanking: function () {
+        let retList = this.userList
+
+        for (let i = retList.length-1; i > -1; i--) {
+          if (isNaN(retList[i].winRate)) retList.splice(i, 1)
+        }
+
+        retList.sort(function (a, b) {
+          return a.winRate > b.winRate ? -1 : a.winRate < b.winRate ? 1 : 0
+        })
+
+        return retList.slice(0, 10)
+      }
     },
     watch: {
       isProgressing: function () {
         this.getBattleList()
+      },
+      selectedBattle: function (newVal) {
+        if (newVal != null) {
+          this.getRecordListByBattleId(newVal._id)
+        }
       }
-    }
+    },
   }
 </script>
 
@@ -330,4 +459,7 @@
     display: flex; flex-direction: row; align-items: center; justify-content: space-around;
     flex-wrap: wrap; margin-bottom: 50px;
   }
+  .container-team-list > div { width: 12%}
+
+  .btn { max-width: 150px; padding: 6px }
 </style>

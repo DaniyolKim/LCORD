@@ -1,13 +1,13 @@
 <template>
   <div>
-    <h3>전적 입력</h3>
+    <h3>전적 입력<button style="width: 150px" @click="getAllUserList">User refresh</button></h3>
     <h4>(진행 중인 리그만 입력 가능)</h4>
 
     <table>
       <thead>
       <tr>
         <th>경기 날짜</th>
-        <th>리그 선택</th>
+        <th>배틀 선택</th>
         <th v-if="roundList.length != 0">라운드 선택</th>
         <th>맵 선택</th><th>Battle Type</th>
         <th><label>승자</label></th>
@@ -21,7 +21,7 @@
         <td><datepicker v-model="recordData.date" :language="languages[1]" :format="dateFormat"></datepicker></td>
         <td>
           <div class="user-container">
-            <vue-multiselect v-model="recordData.battleId" placeholder="리그 검색" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="battleList" :multiple="false"></vue-multiselect>
+            <vue-multiselect v-model="recordData.battleId" placeholder="배틀 검색" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="battleList" :multiple="false"></vue-multiselect>
           </div>
         </td>
         <td v-if="roundList.length != 0">
@@ -103,7 +103,7 @@
           <td>{{record.date | moment(mDateFormat)}}</td>
           <td>{{record.battleId.name}}</td>
           <td>{{record.map.name}}</td>
-          <td>{{setBattleType(record.battleType)}}</td>
+          <td>{{$defs.gameTypeList[record.battleType].name}}</td>
           <td><label v-for="user in record.winners" class="user-label" :class="user.tribe">{{user.userName}}</label></td>
           <td><label v-for="user in record.losers" class="user-label" :class="user.tribe">{{user.userName}}</label></td>
           <td>{{record.videoLink}}</td>
@@ -176,7 +176,8 @@
       },
 
       userSearchLabel ({userName, bNetId, tribe}) {
-        return `${userName}(${bNetId.split(' ')[0]})`
+        //return `${userName}(${bNetId.split(' ')[0]})`
+        return `${userName}(${bNetId})`
       },
 
       addWinners () {
@@ -214,10 +215,6 @@
           }
         }
       },
-
-      setBattleType (index) {
-        return this.$defs.gameTypeList[index].name
-      },
     },
     mounted() {
       this.getMapList()
@@ -230,9 +227,11 @@
     computed: {
       roundList: function () {
         let retArray = []
-        if (this.recordData.battleId.isRound) {
-          for (let i = 0; i < this.recordData.battleId.roundCount; i++) {
-            retArray.push(i + 1)
+        if (this.recordData.battleId != null) {
+          if (this.recordData.battleId.isRound) {
+            for (let i = 0; i < this.recordData.battleId.roundCount; i++) {
+              retArray.push(i + 1)
+            }
           }
         }
         return retArray

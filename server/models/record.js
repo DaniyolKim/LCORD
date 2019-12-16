@@ -6,7 +6,7 @@ let recordSchema = new Schema({
     battleId: { type: mongoose.Schema.Types.ObjectId, ref: 'battle' },
     roundNum: Number, //풀 라운드 방식일 경우
     map: { type: mongoose.Schema.Types.ObjectId, ref: 'map' },
-    gameType: Number,
+    battleType: Number,
     winners: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
     losers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
     videoLink: String,

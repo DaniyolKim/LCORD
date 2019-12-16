@@ -75,7 +75,7 @@
         this.battleData.managers.push(this.userDBIndex)
         this.$lcordAPI.battle.create(this.battleData)
           .then((resp) => {
-            //alert(resp)
+            alert('배틀 생성 완료')
           })
       },
     },

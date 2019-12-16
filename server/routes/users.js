@@ -33,6 +33,33 @@ router.post('/', function(req, res){
     });
 });
 
+router.post('/list', function(req, res){
+  let userList = req.body
+  let users = []
+  for (let i = 0; i < userList.length; i++) {
+    let body = userList[i]
+    let user = new User({
+      userId: body.userId,
+      userName: body.userName,
+      bNetId: body.bNetId,
+      nickName: body.nickName,
+      afreecaId: body.afreecaId,
+      tier: body.tier,
+      tribe: body.tribe,
+      created_date: Date.now(),
+    })
+
+    user.encryptPwd(body.pwd)
+    user.optionalInfo = (body.optionalInfo != undefined) ? body.optionalInfo : { apm: 0, grade: '', comment: '' }
+
+    users.push(user)
+  }
+
+  for (let i = 0; i< users.length; i++) {
+    users[i].save()
+  }
+});
+
 // GET ALL USERS
 router.get('/', function(req, res) {
     User.find().select('-pwd').sort('userName')

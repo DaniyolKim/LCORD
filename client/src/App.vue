@@ -25,7 +25,7 @@ export default {
           component: logo,
           hiddenOnCollapse: true
         },
-        {
+        /*{
           header: true,
           title: '순위',
           hiddenOnCollapse: true
@@ -47,7 +47,7 @@ export default {
         },
         {
           component: separator
-        },
+        },*/
         {
           header: true,
           title: '배틀',

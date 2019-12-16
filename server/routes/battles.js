@@ -2,7 +2,7 @@ let express = require('express')
 let router = express.Router()
 let Battle = require('../models/battle')
 
-// CREATE League
+// CREATE Battle
 router.post('/', function(req, res) {
     let body = req.body
     let battle  = new Battle({
@@ -30,64 +30,64 @@ router.post('/', function(req, res) {
     })
 })
 
-// GET ALL League
+// GET ALL Battle
 router.get('/', function(req, res) {
     Battle.find()
-        .then(leagues => {
-            res.json(leagues)
+        .then(battles => {
+            res.json(battles)
         })
         .catch(error => {
             return res.status(500).send({error: 'database failure'})
         })
 })
 
-// GET ALL League by onProgressing
+// GET ALL Battle by onProgressing
 router.get('/onProgressing/:onProgressing', function(req, res) {
     Battle.find({onProgressing: req.params.onProgressing})
-        .then(leagues => {
-            res.json(leagues)
+        .then(battles => {
+            res.json(battles)
         })
         .catch(error => {
             return res.status(500).send({error: 'database failure'})
         })
 })
 
-// GET ALL League by type
+// GET ALL Battle by type
 router.get('/type/:type', function(req, res) {
     Battle.find({type: req.params.type})
-        .then(leagues => {
-            res.json(leagues)
+        .then(battles => {
+            res.json(battles)
         })
         .catch(error => {
             return res.status(500).send({error: 'database failure'})
         })
 })
 
-// GET SINGLE League
+// GET SINGLE Battle
 router.get('/name/:name', function(req, res) {
     Battle.findOne({name: req.params.name}).populate('managers', 'userName')
-        .then(league => {
-            if(!league) {
-                return res.status(404).json({error: 'league not found'})
+        .then(battle => {
+            if(!battle) {
+                return res.status(404).json({error: 'battle not found'})
             }
-            res.json(league)
+            res.json(battle)
         })
         .catch(error => {
             return res.status(500).json({error: err})
         })
 })
 
-// UPDATE THE League
+// UPDATE THE Battle
 router.put('/:name', function(req, res) {
     Battle.update({ name: req.params.name }, { $set: req.body }, function(err, output){
     if(err) res.status(500).json({ error: 'database failure' })
     console.log(output)
-    if(!output.n) return res.status(404).json({ error: 'league not found' })
-    res.json( { message: 'league updated' } )
+    if(!output.n) return res.status(404).json({ error: 'battle not found' })
+    res.json( { message: 'battle updated' } )
   })
 })
 
-// DELETE League
+// DELETE battle
 router.delete('/:name', function(req, res) {
     Battle.remove({ name: req.params.name }, function(err, output){
     if(err) return res.status(500).json({ error: "database failure" })

@@ -60,7 +60,13 @@ const apis = {
     async getAllUsers () {
       return await axios.get(urls.getUser)
         .then(resp =>{
-          return resp.data
+          let allUsers = resp.data
+          for (let i = 0; i < allUsers.length; i++) {
+            allUsers[i].winCount = 0
+            allUsers[i].loseCount = 0
+            allUsers[i].winRate = 0
+          }
+          return allUsers
         })
         .catch(error => {
           return error
@@ -175,6 +181,17 @@ const apis = {
 
     async getAllRecords() {
       return await axios.get(comm.urls.record)
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          console.log(error.response)
+          return error
+        })
+    },
+
+    async getAllRecordsByBattleId(battleId) {
+      return await axios.get(comm.urls.record + 'byBattle/' + battleId)
         .then(resp =>{
           return resp.data
         })
