@@ -1,9 +1,11 @@
 <template>
   <div class="root">
-    <div style="display: flex; flex-direction: row;align-items: center;justify-content: center">
-      <h2 v-if="isProgressing == 'true'">진행 중인 배틀</h2>
-      <h2 v-else>종료 된 배틀</h2>
-      <div style="width: 20%; margin-left: 20px">
+    <div style="display: flex; flex-direction: column;align-items: center;justify-content: center">
+      <div style="width: 99%; margin: 10px 0px">
+        <h2 v-if="isProgressing == 'true'">진행 중인 배틀</h2>
+        <h2 v-else>종료 된 배틀</h2>
+      </div>
+      <div style="width: 99%;">
         <vue-multiselect v-model="selectedBattle" placeholder="배틀 선택" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="battleList" :multiple="false" :taggable="true"></vue-multiselect>
       </div>
     </div>
@@ -18,23 +20,40 @@
 
       <hr>
       <!--개인 전-->
-      <div v-if="selectedBattle.type == 0">
+      <div v-if="selectedBattle.type == 0" class="container-table">
         <table>
           <thead>
           <tr>
-            <th>순위</th><th>이름</th><th>종족</th><th>승</th><th>패</th>
-            <th>승률(%)</th><th>상세보기</th>
+            <th rowspan="2">순위</th><th rowspan="2">이름</th>
+            <th colspan="4">전체</th>
+            <th colspan="3" style="background-color: #4285f4">vs 테란</th>
+            <th colspan="3" style="background-color: darkorange">vs 프로토스</th>
+            <th colspan="3" style="background-color: blueviolet">vs 저그</th>
+          </tr>
+          <tr>
+            <th>승</th><th>패</th><th>승률%)</th><th title="(승 X 3) - 패">승점</th>
+            <th style="background-color: #4285f4">승</th><th style="background-color: #4285f4">패</th><th style="background-color: #4285f4">승률%)</th>
+            <th style="background-color: darkorange">승</th><th style="background-color: darkorange">패</th><th style="background-color: darkorange">승률%)</th>
+            <th style="background-color: blueviolet">승</th><th style="background-color: blueviolet">패</th><th style="background-color: blueviolet">승률%)</th>
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(user, index) in sortedRanking">
+          <tr v-for="(ranker, index) in sortedRanking">
             <td>{{index + 1}}</td>
-            <td>{{user.userName}}</td>
-            <td>{{user.tribe}}</td>
-            <td>{{user.winCount}}</td>
-            <td>{{user.loseCount}}</td>
-            <td>{{user.winRate}}</td>
-            <td><button>상세</button></td>
+            <td>{{ranker.user.userName}}({{ranker.user.tribe | cvtTribe}})</td>
+            <td>{{ranker.total.winCount}}</td>
+            <td>{{ranker.total.loseCount}}</td>
+            <td>{{ranker.total.winRate}}</td>
+            <td>{{ranker.total.winScore}}</td>
+            <td>{{ranker.vsTerran.winCount}}</td>
+            <td>{{ranker.vsTerran.loseCount}}</td>
+            <td>{{ranker.vsTerran.winRate}}</td>
+            <td>{{ranker.vsProtoss.winCount}}</td>
+            <td>{{ranker.vsProtoss.loseCount}}</td>
+            <td>{{ranker.vsProtoss.winRate}}</td>
+            <td>{{ranker.vsZerg.winCount}}</td>
+            <td>{{ranker.vsZerg.loseCount}}</td>
+            <td>{{ranker.vsZerg.winRate}}</td>
           </tr>
           </tbody>
         </table>
@@ -50,17 +69,9 @@
         이벤트 전
       </div>
 
-      <div>
+      <div class="container-table">
         <div>
-          <label>
-            (<label>구분 : </label>
-            <label class="terran">테란</label>
-            <label class="zerg">저그</label>
-            <label class="protoss">플토</label>
-            <label class="random">랜덤</label>
-            )
-          </label>
-          <button class="btn" @click="getRecordListByBattleId(selectedBattle._id)">refresh</button>
+          <button class="btn" @click="refreshRecord">refresh</button>
         </div>
 
         <table>
@@ -78,8 +89,8 @@
             <td>{{record.date | moment(mDateFormat)}}</td>
             <td>{{record.map.name}}</td>
             <td>{{$defs.gameTypeList[record.battleType].name}}</td>
-            <td><label v-for="user in record.winners" class="user-label" :class="user.tribe">{{user.userName}}</label></td>
-            <td><label v-for="user in record.losers" class="user-label" :class="user.tribe">{{user.userName}}</label></td>
+            <td><label v-for="user in record.winners" class="user-label" :class="user.tribe">{{user.userName}}({{user.tribe | cvtTribe}})</label></td>
+            <td><label v-for="user in record.losers" class="user-label" :class="user.tribe">{{user.userName}}({{user.tribe | cvtTribe}})</label></td>
             <td>{{record.videoLink}}</td>
           </tr>
           </tbody>
@@ -214,7 +225,8 @@
         battleList: [],
         selectedBattle: null,
         recordList: [],
-        userList: [],
+        //userList: [],
+        rankerList: [],
 
         roundList: [
           {name: 'Round 1', matchList: [
@@ -299,12 +311,12 @@
       }
     },
     methods: {
-      async getAllUserList () {
+      /*async getAllUserList () {
         await this.$lcordAPI.user.getAllUsers()
           .then((resp) => {
             this.userList = resp
           })
-      },
+      },*/
       /*convertTearName(level) {
         if (level == '1') {
           return 'GOD'
@@ -335,7 +347,7 @@
         }
       },*/
 
-      showModalDetail (name, match, isEdit) {
+      /*showModalDetail (name, match, isEdit) {
         this.$modal.show(DemoSizeModal,
           { title: name + ' ' + match.home + ' vs ' + match.away,
             match: match,
@@ -347,9 +359,9 @@
             clickToClose: !isEdit,
           }
           )
-      },
+      },*/
 
-      getMembers (teamName) {
+      /*getMembers (teamName) {
         let index = this.teamList.findIndex( x => x.name === teamName)
         let members = this.teamList[index].members
         let userList = []
@@ -360,7 +372,7 @@
           }
         }
         return userList
-      },
+      },*/
 
       getBattleList () {
         this.selectedBattle = null
@@ -374,48 +386,32 @@
         this.$lcordAPI.record.getAllRecordsByBattleId(battleId)
           .then(resp => {
             this.recordList = resp
+        })
+      },
 
-            this.getAllUserList()
-              .then(() => {
-                for (let i = 0; i < this.userList.length; i++) {
-                  let user = this.userList[i]
-                  user.loseCount = 0
-                  user.winCount = 0
-                  user.winRate = 0
-                  for (let j = 0; j < this.recordList.length; j++) {
-                    let losers = this.recordList[j].losers
-                    let winners = this.recordList[j].winners
-
-                    let loseIndex = losers.findIndex(x => x._id == user._id)
-                    if (loseIndex != -1) user.loseCount += 1
-
-                    let winIndex = winners.findIndex(x => x._id == user._id)
-                    if (winIndex != -1) user.winCount += 1
-
-                    user.winRate = Math.round((user.winCount * 100) / (user.winCount + user.loseCount) * 100) / 100
-                  }
-                }
-              })
+      getRankerListByBattleId (battleId) {
+        this.$lcordAPI.record.getRankersByBattleId(battleId)
+          .then(resp => {
+            this.rankerList = resp
           })
+      },
+      refreshRecord () {
+        this.getRecordListByBattleId(this.selectedBattle._id)
+        this.getRankerListByBattleId(this.selectedBattle._id)
       }
     },
     beforeMount() {
       this.getBattleList()
-      this.getAllUserList()
     },
     computed: {
       sortedRanking: function () {
-        let retList = this.userList
-
-        for (let i = retList.length-1; i > -1; i--) {
-          if (isNaN(retList[i].winRate)) retList.splice(i, 1)
-        }
+        let retList = this.rankerList
 
         retList.sort(function (a, b) {
-          return a.winRate > b.winRate ? -1 : a.winRate < b.winRate ? 1 : 0
+          return a.total.winScore > b.total.winScore ? -1 : a.total.winScore < b.total.winScore ? 1 : 0
         })
 
-        return retList.slice(0, 10)
+        return retList
       }
     },
     watch: {
@@ -425,14 +421,28 @@
       selectedBattle: function (newVal) {
         if (newVal != null) {
           this.getRecordListByBattleId(newVal._id)
+          this.getRankerListByBattleId(newVal._id)
         }
       }
     },
+    filters: {
+      cvtTribe: function (val) {
+        if (val == 'terran') {
+          return 'T'
+        } else if (val == 'protoss') {
+          return 'P'
+        } else if (val == 'zerg') {
+          return 'Z'
+        } else {
+          return 'R'
+        }
+      }
+    }
   }
 </script>
 
 <style scoped>
-  .root > div {
+  /*.root > div {
     margin-top: 20px;
     margin-bottom: 20px;
   }
@@ -461,5 +471,5 @@
   }
   .container-team-list > div { width: 12%}
 
-  .btn { max-width: 150px; padding: 6px }
+  .btn { max-width: 150px; padding: 6px }*/
 </style>

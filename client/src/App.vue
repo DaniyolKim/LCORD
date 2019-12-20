@@ -2,7 +2,7 @@
   <div id="app">
     <div class="contents-area">
       <header-area style="height: 5vh"/>
-      <router-view class="body"/>
+      <router-view style="height: 93vh; overflow-y: auto"></router-view>
     </div>
     <sidebar-menu :menu="menu" :showChild="false" :width="menuWidth" :widthCollapsed="menuWidthCollabse" :collapsed="true"/>
   </div>
@@ -99,90 +99,14 @@ export default {
   },
 }
 </script>
-
+<style src="./assets/stylesCommon.css"></style>
+<style src="./assets/stylesMobile.css"></style>
+<style src="./assets/stylesDesktop.css"></style>
 <style>
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    background-color: ghostwhite;
-  }
-  .contents-area {
-    padding-left: 50px;
-  }
-  .body {
-    padding: 1vh;
-    height: 91vh;
-    overflow-y: auto;
-  }
-
-  hr { border-color: rgba(0, 0, 0, 0.1); margin: 10px; }
-
-  button {
-    width: 100%;
-    padding: 10px;
-    color: white;
-    background-color: #303033;
-    border: solid 2px #303033;
-    border-radius: 5px;
-    font-size: 20px;
-  }
-  button:hover {
-    background-color: #545459;
-    border: solid 2px white;
-  }
-
-  table {
-    width: 98%;
-    margin: 1%;
-    border-collapse: collapse;
-  }
-
-  th {
-    background: #303033;
-    color: white;
-  }
-
-  th, td {
-    border: solid #545459 1px;
-    height: 35px;
-  }
-
-  td > div {
-    min-width: 50px;
-    margin: 3px;
-  }
-
-  tr:nth-child(2n) {
-    background: #cbcbcb;
-  }
-  tr {
-    background: #e7e7e7;
-  }
-
-  input, select, textarea {
-    font-size: 16px;
-    padding: 10px;
-    border: solid 1px #e8e8e8;
-    border-radius: 5px;
-    width: 200px;
-  }
-
-  .terran {
-    color: white;
-    background: #4285f4;
-  }
-  .zerg {
-    color: white;
-    background: purple;
-  }
-  .protoss {
-    color: white;
-    background: green;
-  }
-  .random {
-    color: white;
-    background: black;
   }
 </style>

@@ -1,0 +1,17 @@
+/* Tablet Styles */
+@media only screen and (min-width: 401px) and (max-width: 960px) {
+  .login-logo { width: 350px; }
+
+  .container-account { flex-direction: column-reverse; padding: 10px; }
+  .container-my-info { flex-direction: column; padding: 10px; align-content: center; }
+}
+
+/* Desktop Styles */
+@media only screen and (min-width: 961px) {
+  .login-logo { width: 400px; }
+
+  .container-account { flex-direction: row; margin: 1vh 0px;}
+  .about { width: 42vw; }
+  .info { width: 40vw; }
+  .container-my-info { flex-direction: column; margin: 1vh 0px; align-items: center; }
+}

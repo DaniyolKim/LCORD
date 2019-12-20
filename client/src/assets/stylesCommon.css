@@ -1,0 +1,41 @@
+.body { padding: 1vh; height: 91vh; overflow-y: auto; }
+/*Login.vue*/
+.contents-area { padding-left: 50px; }
+.container-login { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 70vh; }
+.login-form { background-color: #424246; border-radius: 5px; }
+.login-logo { border-radius: 5px; }
+
+.login-error-text { color: red; min-height: 30px; }
+.login-container-input { margin: 10px;}
+input[type=text], input[type=password], input[type=number] { font-size: 16px; padding: 10px; border: solid 1px #e8e8e8; border-radius: 5px; }
+.login-btn { width: 45%; }
+
+/*CreateAccount.vue*/
+.container-account { display: flex; justify-content: space-around; align-content: space-around; }
+h2 { background: #303033; color: white; padding: 5px; margin-top: 0px; margin-bottom: 0px; }
+.btn-dup-check { width: 35%; height: 100%; padding: 7px; }
+.div-account-detail {
+  border-radius: 5px;
+  border: solid #545459 1px;
+  background: white;
+}
+.div-detail {
+  padding: 10px;
+}
+
+/*MyInfo.vue*/
+.container-my-info { display: flex; justify-content: center; }
+
+/*BattleInfo.vue*/
+.container-table { display: flex; flex-direction: column; justify-items: center; width: calc(100% - 10px); margin: 0px 10px; }
+
+button { color: white; background-color: #303033; border: solid 2px #303033; border-radius: 5px; padding: 10px 0px; }
+button:hover { background-color: #545459; border: solid 2px white; }
+hr { border-color: rgba(0, 0, 0, 0.1); margin: 10px; }
+button, span, .multiselect__single, textarea, div { font-size: 16px;}
+
+table { border-collapse: collapse; }
+th { background: #303033; color: white; }
+th, td { border: solid #545459 1px; }
+tr:nth-child(2n) { background: #cbcbcb; }
+tr { background: #e7e7e7; }

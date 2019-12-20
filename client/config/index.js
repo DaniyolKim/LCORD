@@ -27,7 +27,7 @@ module.exports = {
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    
+
     /**
      * Source Maps
      */
@@ -45,10 +45,10 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../../server/public/index.html'),
+    index: path.resolve(__dirname, '../../clientExpress/public/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../../server/public'),
+    assetsRoot: path.resolve(__dirname, '../../clientExpress/public'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
 

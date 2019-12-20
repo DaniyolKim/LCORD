@@ -60,8 +60,8 @@
   }
 </script>
 <style>
-  .size-modal-content {
+  /*.size-modal-content {
     padding: 10px;
     overflow: auto;
-  }
+  }*/
 </style>

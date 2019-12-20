@@ -1,0 +1,13 @@
+/* Mobile Styles */
+@media only screen and (max-width: 400px) {
+  .login-form { width: 90% }
+  .login-logo { width: calc(100%); }
+  .login-error-text { color: red; min-height: 10px; font-size: 12px; }
+
+  .container-account { flex-direction: column-reverse; padding: 10px;}
+  input[type=text], input[type=password], input[type=number] { font-size: 12px; }
+  .btn-dup-check { padding: 8px;}
+  button, span, .multiselect__single, textarea, div { font-size: 12px;}
+
+  .container-my-info { flex-direction: column; padding: 10px; align-content: center; }
+}

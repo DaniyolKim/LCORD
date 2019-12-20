@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="container-table">
     <h3>전적 입력<button style="width: 150px" @click="getAllUserList">User refresh</button></h3>
-    <h4>(진행 중인 리그만 입력 가능)</h4>
+    <label>(진행 중인 리그만 입력 가능)</label>
 
     <table>
       <thead>
@@ -31,7 +31,7 @@
         </td>
         <td>
           <div class="user-container">
-            <vue-multiselect v-model="recordData.map" placeholder="맵 이름 검색" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="mapList" :multiple="false"></vue-multiselect>
+            <vue-multiselect v-model="recordData.map" placeholder="맵 검색" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="mapList" :multiple="false"></vue-multiselect>
           </div>
         </td>
         <td>
@@ -77,17 +77,9 @@
 
     <hr>
 
-    <div>
-      <h3>최근 입력 된 전적(최근 추가 된 20개)<button class="btn-record-page" @click="getAllRecords">refresh</button></h3>
-      <h4>(Refresh로 확인 하고 중복 확인한 뒤 입력 할 것!)</h4>
-      <label>
-        (<label>구분 : </label>
-        <label class="terran">테란</label>
-        <label class="zerg">저그</label>
-        <label class="protoss">플토</label>
-        <label class="random">랜덤</label>
-        )
-      </label>
+    <div class="container-table">
+      <h3>최근 입력 된 전적(최근 추가 된 20개)<button class="btn-record-page" @click="getAllRecords">Refresh</button></h3>
+      <label>(Refresh로 중복 확인한 뒤 입력 할 것!)</label>
       <table>
         <thead>
         <tr>
@@ -244,7 +236,7 @@
 </script>
 
 <style scoped>
-  .user-container {
+  /*.user-container {
     width: 200px;
     margin: auto;
   }
@@ -253,5 +245,5 @@
     margin: 5px;
   }
 
-  .btn-record-page { max-width: 150px; padding: 6px }
+  .btn-record-page { max-width: 150px; padding: 6px }*/
 </style>

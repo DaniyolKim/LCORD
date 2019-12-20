@@ -199,6 +199,17 @@ const apis = {
           console.log(error.response)
           return error
         })
+    },
+
+    async getRankersByBattleId(battleId) {
+      return await axios.get(comm.urls.record + 'rankOfBattle/' + battleId)
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          console.log(error.response)
+          return error
+        })
     }
   }
 }
