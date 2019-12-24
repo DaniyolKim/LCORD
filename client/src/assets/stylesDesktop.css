@@ -1,5 +1,7 @@
 /* Tablet Styles */
 @media only screen and (min-width: 401px) and (max-width: 960px) {
+  #app { font-size: 8px; }
+
   .login-logo { width: 350px; }
 
   .container-account { flex-direction: column-reverse; padding: 10px; }
@@ -8,6 +10,7 @@
 
 /* Desktop Styles */
 @media only screen and (min-width: 961px) {
+  .root { margin: 0px 15vw; }
   .login-logo { width: 400px; }
 
   .container-account { flex-direction: row; margin: 1vh 0px;}

@@ -24,36 +24,74 @@
         <table>
           <thead>
           <tr>
-            <th rowspan="2">순위</th><th rowspan="2">이름</th>
-            <th colspan="4">전체</th>
-            <th colspan="3" style="background-color: #4285f4">vs 테란</th>
-            <th colspan="3" style="background-color: darkorange">vs 프로토스</th>
-            <th colspan="3" style="background-color: blueviolet">vs 저그</th>
+            <th rowspan="2" class="double-bottom">순서</th>
+            <th rowspan="2" class="double-left double-bottom" :class="{ active: rankerSortKey === 'name'}" @click="sortRankerList('name')">이름
+              <span class="arrow" :class="rankerOrder['name'] > 0 ? 'asc' : 'dsc'"></span>
+            </th>
+            <th colspan="4" class="double-left">전체</th>
+            <th colspan="3" class="double-left bg-terran">vs 테란</th>
+            <th colspan="3" class="double-left bg-protoss">vs 프로토스</th>
+            <th colspan="3" class="double-left bg-zerg">vs 저그</th>
           </tr>
-          <tr>
-            <th>승</th><th>패</th><th>승률%)</th><th title="(승 X 3) - 패">승점</th>
-            <th style="background-color: #4285f4">승</th><th style="background-color: #4285f4">패</th><th style="background-color: #4285f4">승률%)</th>
-            <th style="background-color: darkorange">승</th><th style="background-color: darkorange">패</th><th style="background-color: darkorange">승률%)</th>
-            <th style="background-color: blueviolet">승</th><th style="background-color: blueviolet">패</th><th style="background-color: blueviolet">승률%)</th>
+          <tr class="double-bottom">
+            <th class="double-left" :class="{ active: rankerSortKey === 'totWin'}" @click="sortRankerList('totWin')">승
+              <span class="arrow" :class="rankerOrder['totWin'] > 0 ? 'asc' : 'dsc'"></span>
+            </th>
+            <th :class="{ active: rankerSortKey === 'totLose'}" @click="sortRankerList('totLose')">패
+              <span class="arrow" :class="rankerOrder['totLose'] > 0 ? 'asc' : 'dsc'"></span>
+            </th>
+            <th :class="{ active: rankerSortKey === 'totRate'}" @click="sortRankerList('totRate')">승률(%)
+              <span class="arrow" :class="rankerOrder['totRate'] > 0 ? 'asc' : 'dsc'"></span>
+            </th>
+            <th style="background-color: rgb(57, 173, 57)" :class="{ active: rankerSortKey === 'totScore'}" @click="sortRankerList('totScore')" title="(승 X 3) - 패">승점
+              <span class="arrow" :class="rankerOrder['totScore'] > 0 ? 'asc' : 'dsc'"></span>
+            </th>
+            <th class="double-left bg-terran" :class="{ active: rankerSortKey === 'vsTWin'}" @click="sortRankerList('vsTWin')">승
+              <span class="arrow" :class="rankerOrder['vsTWin'] > 0 ? 'asc' : 'dsc'"></span>
+            </th>
+            <th class="bg-terran" :class="{ active: rankerSortKey === 'vsTLose'}" @click="sortRankerList('vsTLose')">패
+              <span class="arrow" :class="rankerOrder['vsTLose'] > 0 ? 'asc' : 'dsc'"></span>
+            </th>
+            <th class="bg-terran" :class="{ active: rankerSortKey === 'vsTRate'}" @click="sortRankerList('vsTRate')">승률(%)
+              <span class="arrow" :class="rankerOrder['vsTRate'] > 0 ? 'asc' : 'dsc'"></span>
+            </th>
+            <th class="double-left bg-protoss" :class="{ active: rankerSortKey === 'vsPWin'}" @click="sortRankerList('vsPWin')">승
+              <span class="arrow" :class="rankerOrder['vsPWin'] > 0 ? 'asc' : 'dsc'"></span>
+            </th>
+            <th class="bg-protoss" :class="{ active: rankerSortKey === 'vsPLose'}" @click="sortRankerList('vsPLose')">패
+              <span class="arrow" :class="rankerOrder['vsPLose'] > 0 ? 'asc' : 'dsc'"></span>
+            </th>
+            <th class="bg-protoss" :class="{ active: rankerSortKey === 'vsPRate'}" @click="sortRankerList('vsPRate')">승률(%)
+              <span class="arrow" :class="rankerOrder['vsPRate'] > 0 ? 'asc' : 'dsc'"></span>
+            </th>
+            <th class="double-left bg-zerg" :class="{ active: rankerSortKey === 'vsZWin'}" @click="sortRankerList('vsZWin')">승
+              <span class="arrow" :class="rankerOrder['vsZWin'] > 0 ? 'asc' : 'dsc'"></span>
+            </th>
+            <th class="bg-zerg" :class="{ active: rankerSortKey === 'vsZLose'}" @click="sortRankerList('vsZLose')">패
+              <span class="arrow" :class="rankerOrder['vsZLose'] > 0 ? 'asc' : 'dsc'"></span>
+            </th>
+            <th class="bg-zerg" :class="{ active: rankerSortKey === 'vsZRate'}" @click="sortRankerList('vsZRate')">승률(%)
+              <span class="arrow" :class="rankerOrder['vsZRate'] > 0 ? 'asc' : 'dsc'"></span>
+            </th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="(ranker, index) in sortedRanking">
             <td>{{index + 1}}</td>
-            <td>{{ranker.user.userName}}({{ranker.user.tribe | cvtTribe}})</td>
-            <td>{{ranker.total.winCount}}</td>
+            <td class="double-left">{{ranker.user.userName}}({{ranker.user.tribe | cvtTribe}})</td>
+            <td class="double-left">{{ranker.total.winCount}}</td>
             <td>{{ranker.total.loseCount}}</td>
-            <td>{{ranker.total.winRate}}</td>
-            <td>{{ranker.total.winScore}}</td>
-            <td>{{ranker.vsTerran.winCount}}</td>
+            <td class="td-winRate-total">{{ranker.total.winRate}}</td>
+            <td class="td-winScore" :class="{ topRanker : index < 5 && rankerSortKey == 'totScore'}">{{ranker.total.winScore}}</td>
+            <td class="double-left">{{ranker.vsTerran.winCount}}</td>
             <td>{{ranker.vsTerran.loseCount}}</td>
-            <td>{{ranker.vsTerran.winRate}}</td>
-            <td>{{ranker.vsProtoss.winCount}}</td>
+            <td class="td-winRate-vsTerran">{{ranker.vsTerran.winRate}}</td>
+            <td class="double-left">{{ranker.vsProtoss.winCount}}</td>
             <td>{{ranker.vsProtoss.loseCount}}</td>
-            <td>{{ranker.vsProtoss.winRate}}</td>
-            <td>{{ranker.vsZerg.winCount}}</td>
+            <td class="td-winRate-vsProtoss">{{ranker.vsProtoss.winRate}}</td>
+            <td class="double-left">{{ranker.vsZerg.winCount}}</td>
             <td>{{ranker.vsZerg.loseCount}}</td>
-            <td>{{ranker.vsZerg.winRate}}</td>
+            <td class="td-winRate-vsZerg">{{ranker.vsZerg.winRate}}</td>
           </tr>
           </tbody>
         </table>
@@ -70,9 +108,6 @@
       </div>
 
       <div class="container-table">
-        <div>
-          <button class="btn" @click="refreshRecord">refresh</button>
-        </div>
 
         <table>
           <thead>
@@ -85,7 +120,7 @@
           </tr>
           </thead>
           <tbody>
-          <tr v-for="record in recordList">
+          <tr v-for="record in sortedRecords">
             <td>{{record.date | moment(mDateFormat)}}</td>
             <td>{{record.map.name}}</td>
             <td>{{$defs.gameTypeList[record.battleType].name}}</td>
@@ -207,6 +242,10 @@
         </div>
       </div>
       <hr>-->
+      <div>
+        <button class="btn" @click="refreshRecord">refresh</button>
+      </div>
+
     </div>
 
     <modals-container/>
@@ -224,9 +263,15 @@
         mDateFormat: 'YYYY-MM-DD',
         battleList: [],
         selectedBattle: null,
-        recordList: [],
-        //userList: [],
+
         rankerList: [],
+        rankerSortKeys: ['name', 'totWin', 'totLose', 'totRate', 'totScore', 'vsTWin', 'vsTLose', 'vsTRate', 'vsPWin', 'vsPLose', 'vsPRate', 'vsZWin', 'vsZLose', 'vsZRate'],
+        rankerSortKey: 'totScore',
+        rankerOrder: { name: 1, totWin: 1, totLose: 1, totRate: 1, totScore: 1,
+          vsTWin: 1, vsTLose: 1, vsTRate: 1, vsPWin: 1, vsPLose: 1, vsPRate: 1,
+          vsZWin: 1, vsZLose: 1, vsZRate: 1 },
+
+        recordList: [],
 
         roundList: [
           {name: 'Round 1', matchList: [
@@ -398,7 +443,62 @@
       refreshRecord () {
         this.getRecordListByBattleId(this.selectedBattle._id)
         this.getRankerListByBattleId(this.selectedBattle._id)
-      }
+      },
+
+      sortRankerList(key) {
+        this.rankerOrder[key] = this.rankerOrder[key] * -1
+        this.rankerSortKey = key
+      },
+      rankerListCompare (sortKey, order, retList) {
+        if (sortKey != '') {
+          retList.sort((a, b) => {
+            if (sortKey == 'name') {
+              a = a['user'].userName
+              b = b['user'].userName
+            } else if (sortKey == 'totScore') {
+              a = a['total'].winScore
+              b = b['total'].winScore
+            } else {
+              let targets = this.getSortTarget(sortKey, a, b)
+              a = targets[0]
+              b = targets[1]
+            }
+
+            if (sortKey == 'name') {
+              return (a.length - b.length) * order || (a.localeCompare(b)) * order
+            } else {
+              return (a > b ? -1 : a < b ? 1 : 0) * order
+            }
+          })
+        }
+      },
+      getSortTarget(sortKey, a, b) {
+        if (sortKey.indexOf('tot') != -1) {
+          a = a['total']
+          b = b['total']
+        } else if (sortKey.indexOf('vsT') != -1) {
+          a = a['vsTerran']
+          b = b['vsTerran']
+        } else if (sortKey.indexOf('vsP') != -1) {
+          a = a['vsProtoss']
+          b = b['vsProtoss']
+        } else if (sortKey.indexOf('vsZ') != -1) {
+          a = a['vsZerg']
+          b = b['vsZerg']
+        }
+
+        if (sortKey.indexOf('Win') != -1) {
+          a = a.winCount
+          b = b.winCount
+        } else if (sortKey.indexOf('Lose') != -1) {
+          a = a.loseCount
+          b = b.loseCount
+        } else if (sortKey.indexOf('Rate') != -1) {
+          a = a.winRate
+          b = b.winRate
+        }
+        return [a, b]
+      },
     },
     beforeMount() {
       this.getBattleList()
@@ -407,10 +507,14 @@
       sortedRanking: function () {
         let retList = this.rankerList
 
-        retList.sort(function (a, b) {
-          return a.total.winScore > b.total.winScore ? -1 : a.total.winScore < b.total.winScore ? 1 : 0
-        })
+        let sortKey = this.rankerSortKey
+        let order = this.rankerOrder[sortKey] || 1
+        this.rankerListCompare(sortKey, order, retList)
 
+        return retList
+      },
+      sortedRecords: function () {
+        let retList = this.recordList
         return retList
       }
     },
@@ -442,6 +546,31 @@
 </script>
 
 <style scoped>
+  .topRanker { color: crimson; font-weight: bold; }
+  th.active { color: crimson; text-shadow: 0 0 1px #fff; }
+  th.active .arrow { opacity: 1; }
+
+  .arrow {
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    height: 0;
+    margin-left: 5px;
+    opacity: 0.66;
+  }
+
+  .arrow.dsc {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid crimson;
+  }
+
+  .arrow.asc {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid crimson;
+  }
+
   /*.root > div {
     margin-top: 20px;
     margin-bottom: 20px;
