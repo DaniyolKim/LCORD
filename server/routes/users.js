@@ -71,6 +71,19 @@ router.get('/', function(req, res) {
         })
 });
 
+// GET ALL USERS using sortKey
+router.get('/sortBy/:sortKey/:order', function(req, res) {
+  let order = req.params.order == 'asc' ? '' : '-'
+  let sortKey = order + req.params.sortKey
+  User.find().select('-pwd').sort(sortKey)
+    .then(users => {
+      res.json(users);
+    })
+    .catch(error => {
+      return res.status(500).send({error: 'database failure'});
+    })
+});
+
 //check duplicated user id
 router.post('/checkId', function(req, res){
     User.findOne({userId: req.body.userId})
