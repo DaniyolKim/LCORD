@@ -92,6 +92,19 @@ export default {
             },
           ]
         },
+        {
+          component: separator
+        },
+        {
+          header: true,
+          title: '랭크',
+          hiddenOnCollapse: true
+        },
+        {
+          href: '/user/userList',
+          title: '유저 리스트',
+          icon: 'fas fa-sitemap'
+        },
       ],
       menuWidth: '200px',
       menuWidthCollabse: '50px',

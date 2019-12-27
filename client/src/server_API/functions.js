@@ -73,6 +73,17 @@ const apis = {
         })
     },
 
+    async getSortedAllUsers (sortArg) {
+      return await axios.get(urls.getUser + '/sortBy/' + sortArg.key + '/' + sortArg.order)
+        .then(resp =>{
+          let allUsers = resp.data
+          return allUsers
+        })
+        .catch(error => {
+          return error
+        })
+    },
+
     async getInfo (userId) {
       return await axios.get(urls.getUser + userId)
         .then(resp =>{
@@ -203,6 +214,30 @@ const apis = {
 
     async getRankersByBattleId(battleId) {
       return await axios.get(comm.urls.record + 'rankOfBattle/' + battleId)
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          console.log(error.response)
+          return error
+        })
+    }
+  },
+
+  ability:{
+    async create (abilityData) {
+      return await axios.post(comm.urls.ability, abilityData)
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          console.log(error.response)
+          return error
+        })
+    },
+
+    async getAbilityOfUser (userId) {
+      return await axios.get(comm.urls.ability + 'userId/' + userId)
         .then(resp =>{
           return resp.data
         })

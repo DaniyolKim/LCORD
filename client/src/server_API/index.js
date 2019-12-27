@@ -7,6 +7,7 @@ const urls = {
   battle: API_URL + '/battles/',
   maps: API_URL + '/maps/',
   record: API_URL + '/record/',
+  ability: API_URL + '/ability/',
 }
 
 const defs = {

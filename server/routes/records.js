@@ -93,6 +93,43 @@ router.get('/rankOfBattle/:battleId', function(req, res) {
       })
 })
 
+/* Get winRate of user*/
+router.get('/userWinRate/:userId', function(req, res) {
+    Record.find({winners: req.params.userId}).find({losers: req.params.userId})
+      .then(records => {
+          let rankerList = []
+
+          records.forEach(record => {
+              let winner = record.winners[0]
+              let winnerTribe = winner.tribe
+
+              let loser = record.losers[0]
+              let loserTribe = loser.tribe
+
+              let wIndex = rankerList.findIndex(x => x.user.userId == winner.userId)
+              let wRanker = findRanker(wIndex, winner, rankerList)
+              countWin(wRanker, loserTribe)
+
+              let lIndex = rankerList.findIndex(x => x.user.userId == loser.userId)
+              let lRanker = findRanker(lIndex, loser, rankerList)
+              countLose(lRanker, winnerTribe)
+          })
+
+          rankerList.forEach(ranker => {
+              //ranker.total.winScore = calWinScore(ranker.total.winCount, ranker.total.loseCount)
+              ranker.total.winRate = calWinRate(ranker.total.winCount, ranker.total.loseCount)
+              ranker.vsTerran.winRate = calWinRate(ranker.vsTerran.winCount, ranker.vsTerran.loseCount)
+              ranker.vsProtoss.winRate = calWinRate(ranker.vsProtoss.winCount, ranker.vsProtoss.loseCount)
+              ranker.vsZerg.winRate = calWinRate(ranker.vsZerg.winCount, ranker.vsZerg.loseCount)
+          })
+
+          res.json(rankerList)
+      })
+      .catch(error => {
+          return res.status(500).send({error: 'database failure'})
+      })
+})
+
 function findRanker(index, target, rankerList) {
     let newObj = {}
     if (index == -1) {
@@ -138,8 +175,8 @@ function calWinScore (winCount, loseCount) {
 }
 
 function calWinRate (winCount, loseCount) {
-    let retVal = Math.round((winCount * 100) / (winCount + loseCount) * 100) / 100
-    return isNaN(retVal) ? 0 : retVal
+    let retVal = (winCount * 100) / (winCount + loseCount)
+    return isNaN(retVal) ? 0 : retVal.toFixed(2)
 }
 
 module.exports = router;

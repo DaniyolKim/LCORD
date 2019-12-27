@@ -14,7 +14,8 @@ let userSchema = new Schema({
     afreecaId: String,
     tier: Number,
     created_date: { type: Date, default: Date.now  },
-    optionalInfo: { apm: Number, grade: String, comment: String }
+    optionalInfo: { apm: Number, grade: String, comment: String },
+    abilityScore: { type: Number, default: 0.0 }
 });
 
 userSchema.methods.encryptPwd = function (pwd) {

@@ -23,6 +23,10 @@ Vue.use(VModal, { dynamic: true })
 
 Vue.component('vue-multiselect', window.VueMultiselect.default)
 
+import VueApexCharts from 'vue-apexcharts'
+Vue.use(VueApexCharts)
+Vue.component('apexchart', VueApexCharts)
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

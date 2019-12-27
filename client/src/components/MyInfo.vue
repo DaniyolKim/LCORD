@@ -18,6 +18,15 @@
       <div>래더 등급 : {{optionalInfo.grade | checkValue}}</div>
       <div>소개 : {{optionalInfo.comment | checkValue}}</div>
     </div>
+    <br>
+    <div class="div-account-detail about">
+      <h2>다면 평가</h2>
+      <div style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; height: 300px; padding: 15px;">
+        <apexchart type=radar height="100%" :options="chartOptionsStats" :series="chartSeriesStats"></apexchart>
+        <apexchart type=radar height="100%" :options="chartOptionsVS" :series="chartSeriesVS"></apexchart>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -31,6 +40,22 @@ export default {
       userInfo: null,
       optionalInfo: null,
       mDateFormat: 'YYYY-MM-DD',
+
+      abilities: {},
+
+      chartOptionsVS: {
+        title: { text: '종족별 승률', align: 'center', },
+        labels: ['Terran', 'Zerg', 'Protoss'],
+        yaxis: { min: 0, max: 100, tickAmount: 2 },
+        chart: { toolbar: {  show: false }},
+        theme: { palette: 'palette8' } // upto palette10
+      },
+      chartSeriesVS: [
+        {
+          name: "종족별 승률(%)",
+          data: [ 10, 57, 60 ]
+        },
+      ],
     }
   },
   methods: {
@@ -40,6 +65,12 @@ export default {
           this.userInfo = resp
           this.optionalInfo = resp.optionalInfo
         })
+    },
+    getUserAbilities () {
+      this.$lcordAPI.ability.getAbilityOfUser(this.userDBIndex)
+        .then(resp => {
+          this.abilities = resp
+        })
     }
   },
   mounted() {
@@ -47,11 +78,30 @@ export default {
       this.$router.push({name: 'Login'})
     }
     this.getUserInfo()
+    this.getUserAbilities()
   },
   computed: {
     ...mapGetters({
       userId: 'getUserId',
-    })
+      userDBIndex: 'getUserDBIndex',
+    }),
+    chartOptionsStats: function() {
+      let retObj = {
+        title: { text: 'Total 능력치 : ' + this.abilities.totalScore, align: 'center', },
+        labels: ['빌드', '컨트롤', '판단', '자원 관리', '확장능력'],
+        yaxis: { min: 0, max: 5, tickAmount: 4 },
+        chart: { toolbar: {  show: false }},
+        theme: { palette: 'palette7' } // upto palette10
+      }
+      return retObj
+    },
+    chartSeriesStats: function () {
+      let retObj = [{ name: "",
+        data: [this.abilities.build, this.abilities.control, this.abilities.judgement, this.abilities.manageResource, this.abilities.manageMulti ]
+      }]
+
+      return retObj
+    },
   },
   filters: {
     checkValue: function (val) {

@@ -39,6 +39,9 @@ app.use('/maps', mapsRouter);
 let recordRouter = require('./routes/records');
 app.use('/record', recordRouter);
 
+let abilitiesRouter = require('./routes/abilities');
+app.use('/ability', abilitiesRouter);
+
 let mongoose = require('mongoose');
 let db = mongoose.connection;
 db.on('error', console.error);
