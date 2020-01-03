@@ -108,7 +108,6 @@
       </div>
 
       <div class="container-table">
-
         <table>
           <thead>
           <tr>

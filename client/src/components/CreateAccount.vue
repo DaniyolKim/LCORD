@@ -9,7 +9,7 @@
         <div style="font-weight: bold;">*참고 사항*</div>
         <li><b>배틀 :</b> 일반적으로 사용하는 리그 경기를 통칭합니다. 관리자만이 배틀의 정보를 편집할 수 있습니다. 배틀을 생성한 사람이 관리자가 되며, 생성자가 임의의 가입자를 관리자에 추가 할 수 있습니다.</li>
         <li><b>전적 :</b> 배틀을 기반으로 가입자들간의 승/패 결과를 기입합니다. 결과를 베이스로 팀/가입자의 순위를 알 수 있습니다.</li>
-        <li>전적입력 시 가입 안한 사용자는 추가 할 수 없습니다. 상대의 가입 독려 부탁 드립니다.^^</li>
+        <li>전적입력 시 가입 안한 플레이어는 추가 할 수 없습니다. 상대의 가입 독려 부탁 드립니다.^^</li>
         <li><b>방송 URL :</b> 방송 경기의 경우 기입하며, 경기를 다시보기 할 수 있는 Web 경로입니다.</li>
         <li><b>악의적으로 전적을 조작하는 행위는 금지하며, 적발시 계정 삭제 합니다.</b></li>
       </ul>
@@ -30,7 +30,7 @@
           <div>
             <input type="password" v-model="accountParams.pwd_confirm" required placeholder="비밀번호 확인">
           </div>
-          <h3>개인 정보<i class="far fa-question-circle" title="LCORD에서 수집한 개인 정보는 사용자 구별을 위한 부수적인 수단이며, 상업적으로 사용 및 악용하지 않습니다."></i></h3>
+          <h3>개인 정보<i class="far fa-question-circle" title="LCORD에서 수집한 개인 정보는 플레이어 구별을 위한 부수적인 수단이며, 상업적으로 사용 및 악용하지 않습니다."></i></h3>
           <div>
             <input type="text" v-model="accountParams.userName" required placeholder="이름">
           </div>

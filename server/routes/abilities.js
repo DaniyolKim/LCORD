@@ -44,26 +44,28 @@ router.get('/userId/:userId', function(req, res) {
       .populate('targetUser', '_id userName userId tribe bNetId')
       .populate('writer', '_id userName userId tribe bNetId')
         .then(abilities => {
-            let retAbility = {}
-            let keys = ['build', 'control', 'judgement', 'manageResource', 'manageMulti', 'totalScore']
-            abilities.forEach((ability, index) => {
-                if (index == 0) {
-                    retAbility = ability
-                } else {
-                    for (let i = 0; i < keys.length; i++) {
-                        let keyName = keys[i]
-                        retAbility[keyName] += ability[keyName]
-                    }
-                }
-            })
-
-            for (let i = 0; i < keys.length; i++) {
+          let summary = {}
+          let keys = ['build', 'control', 'judgement', 'manageResource', 'manageMulti', 'totalScore']
+          abilities.forEach((ability, index) => {
+            if (index == 0) {
+              summary = ability
+            } else {
+              for (let i = 0; i < keys.length; i++) {
                 let keyName = keys[i]
-                retAbility[keyName] /= abilities.length
-                retAbility[keyName] = retAbility[keyName].toFixed(2)
+                summary[keyName] += ability[keyName]
+              }
             }
+          })
 
-            res.json(retAbility)
+          for (let i = 0; i < keys.length; i++) {
+              let keyName = keys[i]
+              summary[keyName] /= abilities.length
+              summary[keyName] = summary[keyName].toFixed(2)
+          }
+
+          let retAbility = { abilityList: abilities, totalScore: summary.totalScore,
+            summary: [summary.build, summary.control, summary.judgement, summary.manageResource, summary.manageMulti], }
+          res.json(retAbility)
         })
         .catch(error => {
             return res.status(500).send({error: 'database failure'})

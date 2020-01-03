@@ -95,39 +95,45 @@ router.get('/rankOfBattle/:battleId', function(req, res) {
 
 /* Get winRate of user*/
 router.get('/userWinRate/:userId', function(req, res) {
-    Record.find({winners: req.params.userId}).find({losers: req.params.userId})
-      .then(records => {
-          let rankerList = []
+  let userId = req.params.userId
+  Record.find({ $or: [ {winners: userId}, {losers: userId} ] })
+    .populate('winners', '_id userName userId tribe bNetId')
+    .populate('losers', '_id userName userId tribe bNetId')
+    .populate('map').sort('-date').limit(20)
+    .then(records => {
+      let vsRate = { summary: [],
+        total: { loseCount: 0, winCount: 0, winRate: 0 },
+        vsTerran: { loseCount: 0, winCount: 0, winRate: 0 },
+        vsProtoss: { loseCount: 0, winCount: 0, winRate: 0 },
+        vsZerg: { loseCount: 0, winCount: 0, winRate: 0 },
+      }
+      records.forEach(record => {
+        let winner = record.winners[0]
+        let winnerTribe = winner.tribe
 
-          records.forEach(record => {
-              let winner = record.winners[0]
-              let winnerTribe = winner.tribe
+        let loser = record.losers[0]
+        let loserTribe = loser.tribe
 
-              let loser = record.losers[0]
-              let loserTribe = loser.tribe
-
-              let wIndex = rankerList.findIndex(x => x.user.userId == winner.userId)
-              let wRanker = findRanker(wIndex, winner, rankerList)
-              countWin(wRanker, loserTribe)
-
-              let lIndex = rankerList.findIndex(x => x.user.userId == loser.userId)
-              let lRanker = findRanker(lIndex, loser, rankerList)
-              countLose(lRanker, winnerTribe)
-          })
-
-          rankerList.forEach(ranker => {
-              //ranker.total.winScore = calWinScore(ranker.total.winCount, ranker.total.loseCount)
-              ranker.total.winRate = calWinRate(ranker.total.winCount, ranker.total.loseCount)
-              ranker.vsTerran.winRate = calWinRate(ranker.vsTerran.winCount, ranker.vsTerran.loseCount)
-              ranker.vsProtoss.winRate = calWinRate(ranker.vsProtoss.winCount, ranker.vsProtoss.loseCount)
-              ranker.vsZerg.winRate = calWinRate(ranker.vsZerg.winCount, ranker.vsZerg.loseCount)
-          })
-
-          res.json(rankerList)
+        if (userId == winner._id) {
+          countWin(vsRate, loserTribe)
+        } else {
+          countLose(vsRate, winnerTribe)
+        }
       })
-      .catch(error => {
-          return res.status(500).send({error: 'database failure'})
-      })
+
+      vsRate.total.winRate = calWinRate(vsRate.total.winCount, vsRate.total.loseCount)
+      vsRate.vsTerran.winRate = calWinRate(vsRate.vsTerran.winCount, vsRate.vsTerran.loseCount)
+      vsRate.vsProtoss.winRate = calWinRate(vsRate.vsProtoss.winCount, vsRate.vsProtoss.loseCount)
+      vsRate.vsZerg.winRate = calWinRate(vsRate.vsZerg.winCount, vsRate.vsZerg.loseCount)
+
+      let respObj = { recordList: records,
+        summary: [vsRate.vsTerran.winRate, vsRate.vsZerg.winRate, vsRate.vsProtoss.winRate]
+      }
+      res.json(respObj)
+    })
+    .catch(error => {
+        return res.status(500).send({error: 'database failure'})
+    })
 })
 
 function findRanker(index, target, rankerList) {

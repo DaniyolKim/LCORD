@@ -12,7 +12,7 @@ let userSchema = new Schema({
     nickName: String,
     tribe: String,
     afreecaId: String,
-    tier: Number,
+    tier: { type: Number, default: 0 },
     created_date: { type: Date, default: Date.now  },
     optionalInfo: { apm: Number, grade: String, comment: String },
     abilityScore: { type: Number, default: 0.0 }

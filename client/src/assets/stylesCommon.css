@@ -12,7 +12,7 @@ input[type=text], input[type=password], input[type=number] { font-size: 16px; pa
 
 /*CreateAccount.vue*/
 .container-account { display: flex; justify-content: space-around; align-content: space-around; }
-h2 { background: #303033; color: white; padding: 5px; margin-top: 0px; margin-bottom: 0px; }
+h2 { background: #404043; color: white; padding: 5px; margin-top: 0px; margin-bottom: 0px; }
 .btn-dup-check { width: 35%; height: 100%; padding: 7px; }
 .div-account-detail {
   border-radius: 5px;

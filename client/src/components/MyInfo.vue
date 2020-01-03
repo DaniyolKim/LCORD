@@ -1,6 +1,6 @@
 <template>
   <div class="container-my-info">
-    <h3>My account</h3>
+    <h3>플레이어 정보</h3>
     <div class="div-account-detail about">
       <h2>필수 정보</h2>
       <div>ID : {{userInfo.userId}}</div>
@@ -20,7 +20,7 @@
     </div>
     <br>
     <div class="div-account-detail about">
-      <h2>다면 평가</h2>
+      <h2>평가 정보</h2>
       <div style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; height: 300px; padding: 15px;">
         <apexchart type=radar height="100%" :options="chartOptionsStats" :series="chartSeriesStats"></apexchart>
         <apexchart type=radar height="100%" :options="chartOptionsVS" :series="chartSeriesVS"></apexchart>
@@ -41,7 +41,8 @@ export default {
       optionalInfo: null,
       mDateFormat: 'YYYY-MM-DD',
 
-      abilities: {},
+      ability: '',
+      vsRecords: '',
 
       chartOptionsVS: {
         title: { text: '종족별 승률', align: 'center', },
@@ -50,12 +51,6 @@ export default {
         chart: { toolbar: {  show: false }},
         theme: { palette: 'palette8' } // upto palette10
       },
-      chartSeriesVS: [
-        {
-          name: "종족별 승률(%)",
-          data: [ 10, 57, 60 ]
-        },
-      ],
     }
   },
   methods: {
@@ -69,7 +64,13 @@ export default {
     getUserAbilities () {
       this.$lcordAPI.ability.getAbilityOfUser(this.userDBIndex)
         .then(resp => {
-          this.abilities = resp
+          this.ability = resp
+        })
+    },
+    getWinRateOfUser () {
+      this.$lcordAPI.record.getWinRateOfUser(this.userDBIndex)
+        .then(resp => {
+          this.vsRecords = resp
         })
     }
   },
@@ -79,6 +80,7 @@ export default {
     }
     this.getUserInfo()
     this.getUserAbilities()
+    this.getWinRateOfUser()
   },
   computed: {
     ...mapGetters({
@@ -87,7 +89,7 @@ export default {
     }),
     chartOptionsStats: function() {
       let retObj = {
-        title: { text: 'Total 능력치 : ' + this.abilities.totalScore, align: 'center', },
+        title: { text: 'Total 능력치 : ' + this.ability.totalScore, align: 'center', },
         labels: ['빌드', '컨트롤', '판단', '자원 관리', '확장능력'],
         yaxis: { min: 0, max: 5, tickAmount: 4 },
         chart: { toolbar: {  show: false }},
@@ -97,9 +99,15 @@ export default {
     },
     chartSeriesStats: function () {
       let retObj = [{ name: "",
-        data: [this.abilities.build, this.abilities.control, this.abilities.judgement, this.abilities.manageResource, this.abilities.manageMulti ]
+        data: this.ability.summary
       }]
 
+      return retObj
+    },
+    chartSeriesVS: function () {
+      let retObj = [{ name: "종족별 승률(%)",
+        data: this.vsRecords.summary
+      }]
       return retObj
     },
   },

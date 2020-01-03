@@ -221,6 +221,17 @@ const apis = {
           console.log(error.response)
           return error
         })
+    },
+
+    async getWinRateOfUser(userId) {
+      return await axios.get(comm.urls.record + 'userWinRate/' + userId)
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          console.log(error.response)
+          return error
+        })
     }
   },
 
