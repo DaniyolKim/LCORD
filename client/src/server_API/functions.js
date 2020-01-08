@@ -46,7 +46,7 @@ const apis = {
     async create (accountInfo) {
       let reqBody = accountInfo
       reqBody.tribe = accountInfo.tribe.val
-      reqBody.tier = accountInfo.tier.val
+      reqBody.tier = accountInfo.tier.type
       reqBody.optionalInfo.grade = (accountInfo.optionalInfo.grade == '') ? '' : accountInfo.optionalInfo.grade.val
       return await axios.post(urls.getUser, reqBody)
         .then(resp =>{
@@ -256,7 +256,18 @@ const apis = {
           console.log(error.response)
           return error
         })
-    }
+    },
+
+    async delete (abilityId, score, targetUserId, isFirst) {
+      return await axios.delete(comm.urls.ability + abilityId + '/' + score + '/' + targetUserId + '/' + isFirst)
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          console.log(error.response)
+          return error
+        })
+    },
   }
 }
 

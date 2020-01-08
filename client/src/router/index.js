@@ -80,9 +80,9 @@ export default new Router({
       path: '/user/userList',
       name: 'UserList',
       component: UserList,
-      /*beforeEnter: function (to, from, next) {
+      beforeEnter: function (to, from, next) {
         checkAuth(to, from, next)
-      }*/
+      }
     },
     /*{
       path: '/manage/createBattlePerson',

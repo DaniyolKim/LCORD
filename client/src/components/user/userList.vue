@@ -14,7 +14,7 @@
             <td>{{player.userName}}({{player.tribe | cvtTribe}})</td>
             <td>{{player.bNetId}}</td>
             <td>{{player.nickName}}</td>
-            <td>{{player.tier}}</td>
+            <td>{{player.tier | cvtTier}}</td>
             <td>{{player.abilityScore}}</td>
           </tr>
           </tbody>
@@ -32,20 +32,21 @@
             <apexchart type=radar height="100%" :options="chartOptionsVS" :series="chartSeriesVS"></apexchart>
           </div>
 
-          <h3>능력 평가 리스트 <button style="width: 60px; margin-left: 10px;">+ 추가</button></h3>
+          <h3>능력 평가 리스트 <button style="width: 60px; margin-left: 10px;padding: 3px;" @click="showModalAbility">+ 추가</button></h3>
           <div class="container-table" style="height: 200px">
             <table>
               <thead>
               <tr>
                 <th>작성자</th>
                 <th>빌드</th><th>컨트롤</th><th>판단</th><th>자원관리</th><th>확장능력</th>
-                <th>총점</th>
+                <th>총점</th><th>편집</th>
               </tr>
               </thead>
               <tbody>
               <tr v-for="score in ability.abilityList">
                 <td>{{score.writer.userName}}</td>
                 <td>{{score.build}}</td><td>{{score.control}}</td><td>{{score.judgement}}</td><td>{{score.manageResource}}</td><td>{{score.manageMulti}}</td><td>{{score.totalScore}}</td>
+                <td><button style="padding: 3px;" @click="editAbility(score.writer._id)">편집</button></td>
               </tr>
               </tbody>
             </table>
@@ -80,10 +81,13 @@
         </div>
       </div>
     </div>
+    <modals-container/>
   </div>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+  import modalCreateAbility from './modalCreateAbility'
   export default {
     name: "userList",
     data () {
@@ -126,17 +130,42 @@
           .then(resp => {
             this.vsRecords = resp
           })
-      }
+      },
+      editAbility (writerId) {
+        if (this.userDBIndex == writerId) {
+          this.showModalAbility()
+        } else {
+          alert('본인이 작성한 평가만 삭제할 수 있습니다.')
+        }
+      },
+      showModalAbility () {
+        let isFirst = (this.ability.abilityList.length > 1) ? false : true
+        let index = this.ability.abilityList.findIndex(x => x.writer._id == this.userDBIndex)
+        this.$modal.show(modalCreateAbility,
+          { player: this.selectedPlayer,
+            oldData: this.ability.abilityList[index],
+            isFirst: isFirst
+          },
+          {
+            width: '700px',
+            height: '470px',
+            clickToClose: false,
+          }
+        )
+      },
     },
     mounted() {
       this.getAllPlayers()
     },
     computed: {
+      ...mapGetters({
+        userDBIndex: 'getUserDBIndex',
+      }),
       chartOptionsStats: function() {
         let retObj = {
           title: { text: 'Total 능력치 : ' + this.ability.totalScore, align: 'center', },
           labels: ['빌드', '컨트롤', '판단', '자원 관리', '확장능력'],
-          yaxis: { min: 0, max: 5, tickAmount: 4 },
+          yaxis: { min: 0, max: 5, tickAmount: 5 },
           chart: { toolbar: {  show: false }},
           theme: { palette: 'palette7' } // upto palette10
         }
@@ -176,6 +205,10 @@
         } else {
           return 'R'
         }
+      },
+      cvtTier: function (val) {
+        let tierList = [ { name: 'NONE', type: 0}, { name: 'AMOEBA', type: 1}, { name: 'ANIMAL', type: 2}, { name: 'HUMAN', type: 3}, { name: 'GOD', type: 4} ]
+        return tierList[val].name
       }
     }
   }

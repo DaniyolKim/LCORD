@@ -27,6 +27,10 @@ import VueApexCharts from 'vue-apexcharts'
 Vue.use(VueApexCharts)
 Vue.component('apexchart', VueApexCharts)
 
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/antd.css'
+Vue.component('VueSlider', VueSlider)
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
