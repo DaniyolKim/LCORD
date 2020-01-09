@@ -92,10 +92,10 @@
     },
     methods: {
       closeModal () {
-        this.$emit('close')
+        this.$emit('close', true)
       },
       cancelEvaluation () {
-        this.$emit('close')
+        this.$emit('close', false)
       },
       addEvaluation () {
         if (this.reqData.totalScore == 0) {

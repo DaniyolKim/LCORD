@@ -91,7 +91,7 @@ export default {
       let retObj = {
         title: { text: 'Total 능력치 : ' + this.ability.totalScore, align: 'center', },
         labels: ['빌드', '컨트롤', '판단', '자원 관리', '확장능력'],
-        yaxis: { min: 0, max: 5, tickAmount: 4 },
+        yaxis: { min: 0, max: 5, tickAmount: 5 },
         chart: { toolbar: {  show: false }},
         theme: { palette: 'palette7' } // upto palette10
       }

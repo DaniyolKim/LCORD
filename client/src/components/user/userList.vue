@@ -23,10 +23,10 @@
     </div>
 
     <div style="height: 100%; width: 48%;">
-      <h2>{{selectedPlayer.userName}} 상세 정보</h2>
+      <h2>{{selectedPlayer.userName}}님의 상세 정보</h2>
       <div style="height: 95%;overflow-y: auto;">
         <div v-if="selectedPlayer != ''">
-          <h3>능력 / 종족별 그래프</h3>
+          <h3>능력 / 종족별 승률 그래프</h3>
           <div style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; height: 300px; padding: 15px;">
             <apexchart type=radar height="100%" :options="chartOptionsStats" :series="chartSeriesStats"></apexchart>
             <apexchart type=radar height="100%" :options="chartOptionsVS" :series="chartSeriesVS"></apexchart>
@@ -81,7 +81,7 @@
         </div>
       </div>
     </div>
-    <modals-container/>
+    <modals-container @close="updateData"/>
   </div>
 </template>
 
@@ -119,8 +119,8 @@
         this.getUserAbilities()
         this.getWinRateOfUser()
       },
-      getUserAbilities () {
-        this.$lcordAPI.ability.getAbilityOfUser(this.selectedPlayer._id)
+      async getUserAbilities () {
+        await this.$lcordAPI.ability.getAbilityOfUser(this.selectedPlayer._id)
           .then(resp => {
             this.ability = resp
           })
@@ -153,6 +153,15 @@
           }
         )
       },
+      updateData (isRefresh) {
+        if (isRefresh) {
+          this.getWinRateOfUser()
+          this.getUserAbilities()
+            .then(() => {
+              this.getAllPlayers()
+            })
+        }
+      }
     },
     mounted() {
       this.getAllPlayers()
