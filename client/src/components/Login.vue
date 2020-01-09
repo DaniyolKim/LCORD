@@ -26,8 +26,8 @@ export default {
   data () {
     return {
       loginParams: {
-        userId: 'MarchTerraN',
-        pwd: '1234',
+        userId: '',
+        pwd: '',
       },
       error: ' ',
       nextPageName: ''
