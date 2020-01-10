@@ -139,12 +139,12 @@
         }
       },
       showModalAbility () {
-        let isFirst = (this.ability.abilityList.length > 1) ? false : true
+        let abilityCount = this.ability.abilityList.length
         let index = this.ability.abilityList.findIndex(x => x.writer._id == this.userDBIndex)
         this.$modal.show(modalCreateAbility,
           { player: this.selectedPlayer,
             oldData: this.ability.abilityList[index],
-            isFirst: isFirst
+            abilityCount: abilityCount
           },
           {
             width: '700px',

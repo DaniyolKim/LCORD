@@ -111,21 +111,25 @@
         <table>
           <thead>
           <tr>
+            <th>작성자</th>
             <th>경기 날짜</th>
             <th>맵</th><th>Battle Type</th>
             <th><label>승자</label></th>
             <th><label>패자</label></th>
             <th>방송 URL</th>
+            <th>삭제</th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="record in sortedRecords">
+            <td>{{record.writer.userName}}</td>
             <td>{{record.date | moment(mDateFormat)}}</td>
             <td>{{record.map.name}}</td>
             <td>{{$defs.gameTypeList[record.battleType].name}}</td>
             <td><label v-for="user in record.winners" class="user-label" :class="user.tribe">{{user.userName}}({{user.tribe | cvtTribe}})</label></td>
             <td><label v-for="user in record.losers" class="user-label" :class="user.tribe">{{user.userName}}({{user.tribe | cvtTribe}})</label></td>
             <td>{{record.videoLink}}</td>
+            <td><button @click="delRecord(record)">삭제</button></td>
           </tr>
           </tbody>
         </table>
@@ -242,7 +246,7 @@
       </div>
       <hr>-->
       <div>
-        <button class="btn" @click="refreshRecord">refresh</button>
+        <button class="btn" @click="refreshRecord">REFRESH</button>
       </div>
 
     </div>
@@ -252,6 +256,7 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   import DemoSizeModal from './modalDetail'
   export default {
     name: "BattleInfo",
@@ -498,11 +503,31 @@
         }
         return [a, b]
       },
+      delRecord (record) {
+        if (this.userDBIndex == '') {
+          alert('로그인 한 뒤 본인이 작성한 전적만 삭제 가능합니다.')
+        } else {
+          if (record.writer._id == this.userDBIndex) {
+            let result = confirm('삭제하시겠습니까?')
+            if (result) {
+              this.$lcordAPI.record.delete(record._id)
+                .then(() => {
+                  this.refreshRecord()
+                })
+            }
+          } else {
+            alert('본인이 작성한 전적만 삭제 가능합니다.')
+          }
+        }
+      },
     },
     beforeMount() {
       this.getBattleList()
     },
     computed: {
+      ...mapGetters({
+        userDBIndex: 'getUserDBIndex',
+      }),
       sortedRanking: function () {
         let retList = this.rankerList
 
@@ -515,7 +540,7 @@
       sortedRecords: function () {
         let retList = this.recordList
         return retList
-      }
+      },
     },
     watch: {
       isProgressing: function () {
@@ -569,6 +594,8 @@
     border-right: 8px solid transparent;
     border-top: 8px solid crimson;
   }
+
+  button { padding: 5px 10px; }
 
   /*.root > div {
     margin-top: 20px;

@@ -190,6 +190,17 @@ const apis = {
         })
     },
 
+    async delete (recordId) {
+      return await axios.delete(comm.urls.record + recordId)
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          console.log(error.response)
+          return error
+        })
+    },
+
     async getAllRecords() {
       return await axios.get(comm.urls.record)
         .then(resp =>{
@@ -258,8 +269,8 @@ const apis = {
         })
     },
 
-    async delete (abilityId, score, targetUserId, isFirst) {
-      return await axios.delete(comm.urls.ability + abilityId + '/' + score + '/' + targetUserId + '/' + isFirst)
+    async delete (abilityId, score, targetUserId, abilityCount) {
+      return await axios.delete(comm.urls.ability + abilityId + '/' + score + '/' + targetUserId + '/' + abilityCount)
         .then(resp =>{
           return resp.data
         })

@@ -26,6 +26,7 @@
 
       <div class="footer">
         <button @click="cancelEvaluation">취소</button>
+        <button v-if="oldData != undefined" @click="delEvaluation">삭제</button>
         <button @click="addEvaluation">확인</button>
       </div>
     </div>
@@ -36,7 +37,7 @@
   import { mapGetters } from 'vuex'
   export default {
     name: "modal_createAbility",
-    props: ['player', 'oldData', 'isFirst'],
+    props: ['player', 'oldData', 'abilityCount'],
     data () {
       return {
         sliderOption: {
@@ -110,7 +111,7 @@
                 this.closeModal()
               })
           } else { //update
-            this.$lcordAPI.ability.delete(this.originData._id, this.originData.totalScore, this.player._id, this.isFirst)
+            this.$lcordAPI.ability.delete(this.originData._id, this.originData.totalScore, this.player._id, this.abilityCount)
               .then(() => {
                 this.$lcordAPI.ability.create(this.reqData)
                   .then(() => {
@@ -118,6 +119,15 @@
                   })
               })
           }
+        }
+      },
+      delEvaluation () {
+        let result = confirm('삭제 하시겠습니까?')
+        if (result) {
+          this.$lcordAPI.ability.delete(this.originData._id, this.originData.totalScore, this.player._id, this.abilityCount)
+            .then(() => {
+              this.closeModal()
+            })
         }
       }
     },

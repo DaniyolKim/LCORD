@@ -92,18 +92,15 @@ router.put('/:_id', function(req, res){
 });
 
 // DELETE ability
-router.delete('/:_id/:score/:targetUserId/:isFirst', function(req, res) {
-    let isFirst = req.params.isFirst
-    let score = req.params.score
+router.delete('/:_id/:score/:targetUserId/:abilityCount', function(req, res) {
+    let score = parseFloat(req.params.score)
+    let abilityCount = parseFloat(req.params.abilityCount)
 
     User.findOne({_id: req.params.targetUserId}).select('-pwd')
         .then(user => {
-            if (isFirst == 'true') {
-                user.abilityScore = 0.0
-            } else {
-                let oldScore = user.abilityScore
-                user.abilityScore = ((2 * oldScore ) - score).toFixed(2)
-            }
+            let oldScore = user.abilityScore
+            user.abilityScore = (((abilityCount * oldScore ) - score)/(abilityCount-1)).toFixed(2)
+
             user.save()
         })
 

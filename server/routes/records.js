@@ -43,6 +43,7 @@ router.get('/', function(req, res) {
 // GET ALL Records by BattleId
 router.get('/byBattle/:battleId', function(req, res) {
     Record.find({battleId: req.params.battleId})
+      .populate('writer', '_id userName userId tribe bNetId')
       .populate('winners', '_id userName userId tribe bNetId')
       .populate('losers', '_id userName userId tribe bNetId')
       .populate('map').sort('-date')
@@ -135,6 +136,15 @@ router.get('/userWinRate/:userId', function(req, res) {
         return res.status(500).send({error: 'database failure'})
     })
 })
+
+// DELETE RECORD
+router.delete('/:_id', function(req, res){
+  Record.remove({ _id: req.params._id }, function(err, output){
+    if(err) return res.status(500).json({ error: "database failure" });
+
+    res.status(204).end();
+  })
+});
 
 function findRanker(index, target, rankerList) {
     let newObj = {}
