@@ -31,7 +31,7 @@ router.get('/', function(req, res) {
     Record.find().populate('battleId' , '_id name')
         .populate('winners', '_id userName userId tribe bNetId')
         .populate('losers', '_id userName userId tribe bNetId')
-        .populate('map').sort('-date').limit(20)
+        .populate('map').sort('-date').limit(50)
         .then(records => {
             res.json(records);
         })
@@ -100,7 +100,7 @@ router.get('/userWinRate/:userId', function(req, res) {
   Record.find({ $or: [ {winners: userId}, {losers: userId} ] })
     .populate('winners', '_id userName userId tribe bNetId')
     .populate('losers', '_id userName userId tribe bNetId')
-    .populate('map').sort('-date').limit(20)
+    .populate('map').sort('-date')
     .then(records => {
       let vsRate = { summary: [],
         total: { loseCount: 0, winCount: 0, winRate: 0 },

@@ -226,7 +226,14 @@ const apis = {
     async getRankersByBattleId(battleId) {
       return await axios.get(comm.urls.record + 'rankOfBattle/' + battleId)
         .then(resp =>{
-          return resp.data
+          let retResp = resp.data
+          retResp.forEach(function (ranker) {
+            ranker.total.winRate = parseFloat(ranker.total.winRate)
+            ranker.vsTerran.winRate = parseFloat(ranker.vsTerran.winRate)
+            ranker.vsProtoss.winRate = parseFloat(ranker.vsProtoss.winRate)
+            ranker.vsZerg.winRate = parseFloat(ranker.vsZerg.winRate)
+          })
+          return retResp
         })
         .catch(error => {
           console.log(error.response)

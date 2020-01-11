@@ -102,7 +102,7 @@ export default {
         },
         {
           href: '/user/userList',
-          title: '유저 리스트',
+          title: '플레이어 리스트',
           icon: 'fas fa-sitemap'
         },
       ],

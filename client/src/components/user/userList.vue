@@ -26,6 +26,17 @@
       <h2>{{selectedPlayer.userName}}님의 상세 정보</h2>
       <div style="height: 95%;overflow-y: auto;">
         <div v-if="selectedPlayer != ''">
+          <h3>선택 정보</h3>
+          <div>
+            <div>
+              <label>● 평균 APM : {{selectedPlayer.optionalInfo.apm}}</label>
+              <label style="margin-left: 10px">● 래더 등급 : {{selectedPlayer.optionalInfo.grade}}</label>
+            </div>
+            <div>
+              <label>● 소개 : {{selectedPlayer.optionalInfo.comment}}</label>
+            </div>
+          </div>
+
           <h3>능력 / 종족별 승률 그래프</h3>
           <div style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; height: 300px; padding: 15px;">
             <apexchart type=radar height="100%" :options="chartOptionsStats" :series="chartSeriesStats"></apexchart>
