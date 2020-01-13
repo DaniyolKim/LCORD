@@ -22,6 +22,7 @@
     "vue-router": "^3.0.1",
     "vue-sidebar-menu": "^4.2.1",
     "vue-slider-component": "^3.1.0",
+    "vue-toast-notification": "0.0.3",
     "vuejs-datepicker": "^1.6.2",
     "vuex": "^3.1.1"
   },

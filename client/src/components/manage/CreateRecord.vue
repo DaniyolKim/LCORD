@@ -105,7 +105,7 @@
         </tbody>
       </table>
     </div>
-
+    <modals-container/>
   </div>
 </template>
 
@@ -162,10 +162,10 @@
           this.$lcordAPI.map.create(this.mapName)
             .then(() => {
               this.getMapList()
-              alert('맵 추가 완료!')
+              this.$toast.info('맵 추가 완료', {position: 'top'})
             })
         } else {
-          alert('맵 이름을 입력해 주세요. -_-')
+          this.$toast.warning('맵 이름을 입력해 주세요.', {position: 'top'})
         }
       },
 
@@ -187,17 +187,21 @@
 
       addRecord() {
         if (this.recordData.battleId == '' || this.recordData.winners.length == 0 || this.recordData.losers.length == 0 || this.recordData.map == '') {
-          alert('필수 항목 확인 바랍니다.')
+          this.$toast.warning('필수 항목 확인 바랍니다.', {position: 'top'})
         } else {
           if (this.userDBIndex == '') {
-            alert('로그인이 필요합니다.')
+            this.$toast.info('로그인이 필요한 서비스입니다. 로그인 화면으로 이동합니다.', {position: 'top'})
             this.$router.push({name: 'Login'})
           } else {
+            this.$modal.show('loading-modal')
+
             this.recordData.writer = this.userDBIndex
             this.$lcordAPI.record.create(this.recordData)
               .then((resp) => {
+                this.$modal.hide('loading-modal')
+
                 if (resp.isAxiosError) {
-                  alert('필수 항목 확인 바랍니다.')
+                  this.$toast.warning('필수 항목 확인 바랍니다.', {position: 'top'})
                 } else {
                   this.recordData.map = ''
                   this.recordData.battleType = 0

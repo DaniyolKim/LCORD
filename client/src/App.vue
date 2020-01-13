@@ -5,6 +5,7 @@
       <router-view style="height: 93vh; overflow-y: auto"></router-view>
     </div>
     <sidebar-menu :menu="menu" :showChild="false" :width="menuWidth" :widthCollapsed="menuWidthCollabse" :collapsed="true"/>
+    <modal-loading/>
   </div>
 </template>
 <script>

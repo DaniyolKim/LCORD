@@ -30,6 +30,7 @@
         <button @click="addEvaluation">확인</button>
       </div>
     </div>
+  <v-dialog/>
   </div>
 </template>
 
@@ -93,6 +94,7 @@
     },
     methods: {
       closeModal () {
+        this.$modal.hide('loading-modal')
         this.$emit('close', true)
       },
       cancelEvaluation () {
@@ -100,8 +102,9 @@
       },
       addEvaluation () {
         if (this.reqData.totalScore == 0) {
-          alert('인간적으로 0점은 주지 맙시다 -_-')
+          this.$toast.warning('인간적으로 0점은 주지 맙시다 -_-', {position: 'top'})
         } else {
+          this.$modal.show('loading-modal')
           if (this.oldData == undefined) { //create
             this.reqData.targetUser = this.player._id
             this.reqData.writer = this.userDBIndex
@@ -122,13 +125,28 @@
         }
       },
       delEvaluation () {
-        let result = confirm('삭제 하시겠습니까?')
-        if (result) {
-          this.$lcordAPI.ability.delete(this.originData._id, this.originData.totalScore, this.player._id, this.abilityCount)
-            .then(() => {
-              this.closeModal()
-            })
-        }
+        this.$modal.show('dialog', {
+          title: '평가 삭제',
+          text: '해당 평가를 삭제하시겠습니까?',
+          buttons: [
+            {
+              title: '취소',
+              handler: () => {
+                this.$modal.hide('dialog')
+              }
+            },
+            {
+              title: '확인',
+              handler: () => {
+                this.$modal.hide('dialog')
+                this.$lcordAPI.ability.delete(this.originData._id, this.originData.totalScore, this.player._id, this.abilityCount)
+                  .then(() => {
+                    this.closeModal()
+                  })
+              }
+            }
+          ]
+        })
       }
     },
     mounted() {

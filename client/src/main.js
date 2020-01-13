@@ -19,7 +19,7 @@ import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 Vue.use(VueSidebarMenu)
 
 import VModal from 'vue-js-modal'
-Vue.use(VModal, { dynamic: true })
+Vue.use(VModal, { dynamic: true, dialog: true })
 
 Vue.component('vue-multiselect', window.VueMultiselect.default)
 
@@ -30,6 +30,13 @@ Vue.component('apexchart', VueApexCharts)
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/antd.css'
 Vue.component('VueSlider', VueSlider)
+
+import ModalLoading from './components/module/loading'
+Vue.component('modal-loading', ModalLoading)
+
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/index.css';
+Vue.use(VueToast);
 
 Vue.config.productionTip = false
 

@@ -250,7 +250,7 @@
       </div>
 
     </div>
-
+    <v-dialog/>
     <modals-container/>
   </div>
 </template>
@@ -505,18 +505,33 @@
       },
       delRecord (record) {
         if (this.userDBIndex == '') {
-          alert('로그인 한 뒤 본인이 작성한 전적만 삭제 가능합니다.')
+          this.$toast.info('로그인 한 뒤 본인이 작성한 전적만 삭제 가능합니다.', {position: 'top'})
         } else {
           if (record.writer._id == this.userDBIndex) {
-            let result = confirm('삭제하시겠습니까?')
-            if (result) {
-              this.$lcordAPI.record.delete(record._id)
-                .then(() => {
-                  this.refreshRecord()
-                })
-            }
+            this.$modal.show('dialog', {
+              title: '전적 삭제',
+              text: '해당 전적을 삭제하시겠습니까?',
+              buttons: [
+                {
+                  title: '취소',
+                  handler: () => {
+                    this.$modal.hide('dialog')
+                  }
+                },
+                {
+                  title: '확인',
+                  handler: () => {
+                    this.$lcordAPI.record.delete(record._id)
+                      .then(() => {
+                        this.$modal.hide('dialog')
+                        this.refreshRecord()
+                      })
+                  }
+                }
+              ]
+            })
           } else {
-            alert('본인이 작성한 전적만 삭제 가능합니다.')
+            this.$toast.info('본인이 작성한 전적만 삭제 가능합니다.', {position: 'top'})
           }
         }
       },

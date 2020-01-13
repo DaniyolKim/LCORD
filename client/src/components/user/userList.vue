@@ -92,7 +92,7 @@
         </div>
       </div>
     </div>
-    <modals-container @close="updateData"/>
+    <modals-container @close="updateData"></modals-container>
   </div>
 </template>
 
@@ -146,7 +146,7 @@
         if (this.userDBIndex == writerId) {
           this.showModalAbility()
         } else {
-          alert('본인이 작성한 평가만 삭제할 수 있습니다.')
+          this.$toast.info('본인이 작성한 평가만 삭제할 수 있습니다.', {position: 'top'})
         }
       },
       showModalAbility () {

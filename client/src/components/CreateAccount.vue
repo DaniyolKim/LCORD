@@ -93,11 +93,13 @@ export default {
   },
   methods: {
     async createAccount () {
+      this.$modal.show('loading-modal')
       this.accountParams.optionalInfo = this.optionalInfo
       this.$lcordAPI.user.create(this.accountParams)
         .then((resp) => {
+          this.$modal.hide('loading-modal')
           if (resp.isAxiosError) {
-            alert('입력 오류')
+            this.$toast.error('필수 정보 입력 내용을 빠짐없이 입력 바랍니다.', {position: 'top'})
           } else {
             this.$router.push({name: 'Login'})
           }
@@ -108,13 +110,13 @@ export default {
         this.$lcordAPI.user.checkId(this.accountParams)
           .then(resp => {
             if (resp.isAxiosError) {
-              alert('이미 등록 된 아이디입니다.')
+              this.$toast.warning('이미 등록 된 아이디입니다.', {position: 'top'})
             } else {
-              alert('사용 가능한 아이디입니다.')
+              this.$toast.info('사용 가능한 아이디입니다.', {position: 'top'})
             }
           })
       } else {
-        alert('사용하실 아이디를 입력해 주세요.')
+        this.$toast.warning('사용하실 아이디를 입력해 주세요.', {position: 'top'})
       }
     }
   },

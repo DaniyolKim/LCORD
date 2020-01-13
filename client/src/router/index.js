@@ -116,7 +116,7 @@ function checkAuth (to, from, next) {
   if(commAPI.isAuth()) {
     next()
   } else {
-    alert('로그인이 필요한 서비스입니다.')
+    Vue.$toast.info('로그인이 필요한 서비스입니다. 로그인 화면으로 이동합니다.', {position: 'top'})
     next({name: 'Login', params: {toName: to.name}})
   }
 }

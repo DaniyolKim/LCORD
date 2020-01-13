@@ -73,9 +73,11 @@
     methods: {
       async createBattle () {
         this.battleData.managers.push(this.userDBIndex)
+        this.$modal.show('loading-modal')
         this.$lcordAPI.battle.create(this.battleData)
           .then((resp) => {
-            alert('배틀 생성 완료')
+            this.$modal.hide('loading-modal')
+            this.$toast.success('배틀 생성 완료.', {position: 'top'})
           })
       },
     },
