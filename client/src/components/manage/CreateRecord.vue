@@ -77,14 +77,15 @@
 
     <hr>
 
-    <div class="container-table">
-      <h3>최근 입력 된 전적(최근 추가 된 20개)<button class="btn-record-page" @click="getAllRecords">Refresh</button></h3>
+    <div class="container-table" style="height: 500px">
+      <h3>최근 입력 된 전적(최근 추가 된 50개)<button class="btn-record-page" @click="getAllRecords">Refresh</button></h3>
       <label>(Refresh로 중복 확인한 뒤 입력 할 것!)</label>
       <table>
         <thead>
         <tr>
+          <th>작성자</th>
           <th>경기 날짜</th>
-          <th>리그</th><th>맵</th><th>Battle Type</th>
+          <th>배틀 이름</th><th>맵</th><th>Battle Type</th>
           <th><label>승자</label></th>
           <th><label>패자</label></th>
           <th>방송 URL</th>
@@ -92,8 +93,9 @@
         </thead>
         <tbody>
         <tr v-for="record in recordList">
+          <td>{{record.writer.userName}}</td>
           <td>{{record.date | moment(mDateFormat)}}</td>
-          <td>{{record.battleId.name}}</td>
+          <td>{{record.battleId | getBattleName}}</td>
           <td>{{record.map.name}}</td>
           <td>{{$defs.gameTypeList[record.battleType].name}}</td>
           <td><label v-for="user in record.winners" class="user-label" :class="user.tribe">{{user.userName}}</label></td>
@@ -231,6 +233,15 @@
       ...mapGetters({
         userDBIndex: 'getUserDBIndex',
       })
+    },
+    filters: {
+      getBattleName(battleInfo) {
+        if (battleInfo != undefined) {
+          return battleInfo.name
+        } else {
+          return ''
+        }
+      }
     }
   }
 </script>

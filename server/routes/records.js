@@ -29,6 +29,7 @@ router.post('/', function(req, res){
 // GET ALL Records
 router.get('/', function(req, res) {
     Record.find().populate('battleId' , '_id name')
+        .populate('writer', '_id userName userId tribe bNetId')
         .populate('winners', '_id userName userId tribe bNetId')
         .populate('losers', '_id userName userId tribe bNetId')
         .populate('map').sort('-date').limit(50)
