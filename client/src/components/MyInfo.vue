@@ -118,17 +118,32 @@ export default {
       }]
       return retObj
     },
-    cvtTribe: function () {
-      let index = this.$defs.tribes.findIndex(x => x.val == this.accountParams.tribe)
-      return this.$defs.tribes[index]
+    cvtTribe: {
+      get: function () {
+        let index = this.$defs.tribes.findIndex(x => x.val == this.accountParams.tribe)
+        return this.$defs.tribes[index]
+      },
+      set: function (newValue) {
+        this.accountParams.tribe = newValue.val
+      }
     },
-    cvtGrade: function () {
-      let index = this.$defs.grades.findIndex(x => x.val == this.optionalInfo.grade)
-      return this.$defs.grades[index]
+    cvtGrade: {
+      get: function () {
+        let index = this.$defs.grades.findIndex(x => x.val == this.optionalInfo.grade)
+        return this.$defs.grades[index]
+      },
+      set: function (newValue) {
+        this.optionalInfo.grade = newValue.val
+      }
     },
-    cvtTier: function () {
-      let index = this.$defs.tierList.findIndex(x => x.type == this.accountParams.tier)
-      return this.$defs.tierList[index]
+    cvtTier: {
+      get: function () {
+        let index = this.$defs.tierList.findIndex(x => x.type == this.accountParams.tier)
+        return this.$defs.tierList[index]
+      },
+      set: function (newValue) {
+        this.accountParams.tier = newValue.type
+      }
     }
   },
   filters: {
