@@ -16,5 +16,5 @@
   .container-account { flex-direction: row; margin: 1vh 0px;}
   .about { width: 42vw; }
   .info { width: 40vw; }
-  .container-my-info { flex-direction: column; margin: 1vh 0px; align-items: center; }
+  .container-my-info { flex-direction: column; margin: 1vh 0px; align-items: center; justify-content: flex-start }
 }

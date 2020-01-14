@@ -57,6 +57,21 @@ const apis = {
         })
     },
 
+    async update (accountInfo) {
+      let reqBody = accountInfo
+      reqBody.tribe = accountInfo.tribe
+      reqBody.tier = accountInfo.tier
+      reqBody.optionalInfo.grade = (accountInfo.optionalInfo.grade == '') ? '' : accountInfo.optionalInfo.grade
+      delete reqBody.abilityScore
+      return await axios.put(urls.getUser + accountInfo._id, reqBody)
+        .then(resp =>{
+          return resp
+        })
+        .catch(error => {
+          return error
+        })
+    },
+
     async getAllUsers () {
       return await axios.get(urls.getUser)
         .then(resp =>{
@@ -84,8 +99,8 @@ const apis = {
         })
     },
 
-    async getInfo (userId) {
-      return await axios.get(urls.getUser + userId)
+    async getInfo (userDBIndex) {
+      return await axios.get(urls.getUser + userDBIndex)
         .then(resp =>{
           return resp.data
         })

@@ -100,11 +100,11 @@ router.post('/checkId', function(req, res){
 });
 
 // GET SINGLE USER
-router.get('/:userId', function(req, res){
+router.get('/:_id', function(req, res){
     let tokenInfo = req.headers.authorization
     let decoded = jwt.verify(tokenInfo, secretObj.secret)
     if (decoded) {
-        User.findOne({userId: req.params.userId}).select('-pwd')
+        User.findOne({_id: req.params._id}).select('-pwd')
             .then(user => {
                 if(!user) {
                     return res.status(404).json({error: 'user not found'})
