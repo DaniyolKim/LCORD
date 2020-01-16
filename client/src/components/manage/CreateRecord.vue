@@ -80,30 +80,7 @@
     <div class="container-table" style="height: 500px">
       <h3>최근 입력 된 전적(최근 추가 된 50개)<button class="btn-record-page" @click="getAllRecords">Refresh</button></h3>
       <label>(Refresh로 중복 확인한 뒤 입력 할 것!)</label>
-      <table>
-        <thead>
-        <tr>
-          <th>작성자</th>
-          <th>경기 날짜</th>
-          <th>배틀 이름</th><th>맵</th><th>Battle Type</th>
-          <th><label>승자</label></th>
-          <th><label>패자</label></th>
-          <th>방송 URL</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="record in recordList">
-          <td>{{record.writer.userName}}</td>
-          <td>{{record.date | moment(mDateFormat)}}</td>
-          <td>{{record.battleId | getBattleName}}</td>
-          <td>{{record.map.name}}</td>
-          <td>{{$defs.gameTypeList[record.battleType].name}}</td>
-          <td><label v-for="user in record.winners" class="user-label" :class="user.tribe">{{user.userName}}</label></td>
-          <td><label v-for="user in record.losers" class="user-label" :class="user.tribe">{{user.userName}}</label></td>
-          <td>{{record.videoLink}}</td>
-        </tr>
-        </tbody>
-      </table>
+      <vue-record-list :record-list="recordList" :show-battle-name="true" style="height: 400px;"></vue-record-list>
     </div>
     <modals-container/>
   </div>
@@ -113,9 +90,10 @@
   import { mapGetters } from 'vuex'
   import Datepicker from 'vuejs-datepicker'
   import {en, ko} from 'vuejs-datepicker/dist/locale'
+  import VueRecordList from '../module/vueRecordList'
   export default {
     name: "CreateRecord",
-    components: {Datepicker},
+    components: {Datepicker, VueRecordList},
     data () {
       return {
         languages: [en, ko],
@@ -127,7 +105,6 @@
         mapList: [],
         recordList: [],
         recordData: { battleId: '', battleType: 0, roundNum: 0, winners: [], losers: [], date: new Date(), map: '', videoLink: '', writer: '' },
-        //battleType: '',
       }
     },
     methods: {
@@ -150,9 +127,10 @@
           })
       },
       getAllRecords () {
-        this.recordList = []
+        this.$modal.show('loading-modal')
         this.$lcordAPI.record.getAllRecords()
           .then((resp) => {
+            this.$modal.hide('loading-modal')
             this.recordList = resp
           })
       },
@@ -221,6 +199,10 @@
       this.getAllRecords()
 
       this.recordData.battleType = 0
+
+      this.$EventBus.$on('refRecordList', () => {
+        this.getAllRecords()
+      })
     },
     computed: {
       roundList: function () {
@@ -251,6 +233,7 @@
 </script>
 
 <style scoped>
+  button { padding: 5px 10px; }
   /*.user-container {
     width: 200px;
     margin: auto;

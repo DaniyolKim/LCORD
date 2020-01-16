@@ -107,33 +107,7 @@
         이벤트 전
       </div>
 
-      <div class="container-table">
-        <table>
-          <thead>
-          <tr>
-            <th>작성자</th>
-            <th>경기 날짜</th>
-            <th>맵</th><th>Battle Type</th>
-            <th><label>승자</label></th>
-            <th><label>패자</label></th>
-            <th>방송 URL</th>
-            <th>삭제</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="record in sortedRecords">
-            <td>{{record.writer.userName}}</td>
-            <td>{{record.date | moment(mDateFormat)}}</td>
-            <td>{{record.map.name}}</td>
-            <td>{{$defs.gameTypeList[record.battleType].name}}</td>
-            <td><label v-for="user in record.winners" class="user-label" :class="user.tribe">{{user.userName}}({{user.tribe | cvtTribe}})</label></td>
-            <td><label v-for="user in record.losers" class="user-label" :class="user.tribe">{{user.userName}}({{user.tribe | cvtTribe}})</label></td>
-            <td>{{record.videoLink}}</td>
-            <td><button @click="delRecord(record)">삭제</button></td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+      <vue-record-list :record-list="recordList" :show-battle-name="false" style="height: 300px;" @reqRefresh="refreshRecord"></vue-record-list>
 
       <!--<hr>
       <div>
@@ -250,7 +224,7 @@
       </div>
 
     </div>
-    <v-dialog/>
+
     <modals-container/>
   </div>
 </template>
@@ -258,10 +232,11 @@
 <script>
   import { mapGetters } from 'vuex'
   import DemoSizeModal from './modalDetail'
+  import VueRecordList from '../module/vueRecordList'
   export default {
     name: "BattleInfo",
     props: ['isProgressing'],
-    components: { DemoSizeModal, },
+    components: {VueRecordList, DemoSizeModal, },
     data () {
       return {
         mDateFormat: 'YYYY-MM-DD',
@@ -503,7 +478,7 @@
         }
         return [a, b]
       },
-      delRecord (record) {
+      /*delRecord (record) {
         if (this.userDBIndex == '') {
           this.$toast.info('로그인 한 뒤 본인이 작성한 전적만 삭제 가능합니다.', {position: 'top'})
         } else {
@@ -534,10 +509,13 @@
             this.$toast.info('본인이 작성한 전적만 삭제 가능합니다.', {position: 'top'})
           }
         }
-      },
+      },*/
     },
     beforeMount() {
       this.getBattleList()
+      this.$EventBus.$on('refRecordList', () => {
+        this.refreshRecord()
+      })
     },
     computed: {
       ...mapGetters({
@@ -552,10 +530,10 @@
 
         return retList
       },
-      sortedRecords: function () {
+      /*sortedRecords: function () {
         let retList = this.recordList
         return retList
-      },
+      },*/
     },
     watch: {
       isProgressing: function () {

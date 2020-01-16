@@ -38,6 +38,8 @@ import VueToast from 'vue-toast-notification';
 import 'vue-toast-notification/dist/index.css';
 Vue.use(VueToast);
 
+Vue.prototype.$EventBus = new Vue();
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

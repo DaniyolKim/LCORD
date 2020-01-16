@@ -28,7 +28,8 @@ router.post('/', function(req, res){
 
 // GET ALL Records
 router.get('/', function(req, res) {
-    Record.find().populate('battleId' , '_id name')
+    Record.find()
+        .populate('battleId' , '_id name')
         .populate('writer', '_id userName userId tribe bNetId')
         .populate('winners', '_id userName userId tribe bNetId')
         .populate('losers', '_id userName userId tribe bNetId')
@@ -44,6 +45,7 @@ router.get('/', function(req, res) {
 // GET ALL Records by BattleId
 router.get('/byBattle/:battleId', function(req, res) {
     Record.find({battleId: req.params.battleId})
+      .populate('battleId' , '_id name')
       .populate('writer', '_id userName userId tribe bNetId')
       .populate('winners', '_id userName userId tribe bNetId')
       .populate('losers', '_id userName userId tribe bNetId')
@@ -59,6 +61,7 @@ router.get('/byBattle/:battleId', function(req, res) {
 /* Get rankerList by battleId*/
 router.get('/rankOfBattle/:battleId', function(req, res) {
     Record.find({battleId: req.params.battleId})
+      .populate('battleId' , '_id name')
       .populate('winners', '_id userName userId tribe bNetId')
       .populate('losers', '_id userName userId tribe bNetId')
       .then(records => {
@@ -99,6 +102,8 @@ router.get('/rankOfBattle/:battleId', function(req, res) {
 router.get('/userWinRate/:userId', function(req, res) {
   let userId = req.params.userId
   Record.find({ $or: [ {winners: userId}, {losers: userId} ] })
+    .populate('battleId' , '_id name')
+    .populate('writer', '_id userName userId tribe bNetId')
     .populate('winners', '_id userName userId tribe bNetId')
     .populate('losers', '_id userName userId tribe bNetId')
     .populate('map').sort('-date')
@@ -144,6 +149,16 @@ router.delete('/:_id', function(req, res){
     if(err) return res.status(500).json({ error: "database failure" });
 
     res.status(204).end();
+  })
+});
+
+// UPDATE THE RECORD
+router.put('/:_id', function(req, res){
+  Record.update({ _id: req.params._id }, { $set: req.body }, function(err, output){
+    if(err) res.status(500).json({ error: 'database failure' });
+    console.log(output);
+    if(!output.n) return res.status(404).json({ error: 'record not found' });
+    res.json( { message: 'record updated' } );
   })
 });
 

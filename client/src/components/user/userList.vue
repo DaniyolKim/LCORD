@@ -64,12 +64,13 @@
           </div>
 
           <h3>전적</h3>
-          <div class="container-table" style="height: 200px">
+          <vue-record-list :record-list="sortedRecords" :show-battle-name="true" style="height: 200px;" @reqRefresh="updateData"></vue-record-list>
+          <!--<div class="container-table" style="height: 200px">
             <table>
               <thead>
               <tr>
                 <th>경기 날짜</th>
-                <th>맵</th><!--<th>Battle Type</th>-->
+                <th>맵</th>&lt;!&ndash;<th>Battle Type</th>&ndash;&gt;
                 <th><label>승자</label></th>
                 <th><label>패자</label></th>
                 <th>방송 URL</th>
@@ -85,7 +86,7 @@
               </tr>
               </tbody>
             </table>
-          </div>
+          </div>-->
         </div>
         <div v-else>
           상세 정보를 보시려면 플레이어를 선택하세요.
@@ -99,8 +100,10 @@
 <script>
   import { mapGetters } from 'vuex'
   import modalCreateAbility from './modalCreateAbility'
+  import VueRecordList from '../module/vueRecordList'
   export default {
     name: "userList",
+    components: {VueRecordList, },
     data () {
       return {
         mDateFormat: 'YYYY-MM-DD',
@@ -176,6 +179,9 @@
     },
     mounted() {
       this.getAllPlayers()
+      this.$EventBus.$on('refRecordList', () => {
+        this.updateData(true)
+      })
     },
     computed: {
       ...mapGetters({

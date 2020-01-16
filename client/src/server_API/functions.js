@@ -205,6 +205,23 @@ const apis = {
         })
     },
 
+    async update (recordData) {
+      recordData.battleId = recordData.battleId._id
+      recordData.winners = getUserIds(recordData.winners)
+      recordData.losers = getUserIds(recordData.losers)
+      recordData.map = recordData.map._id
+      recordData.writer = recordData.writer._id
+
+      return await axios.put(comm.urls.record + recordData._id, recordData)
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          console.log(error.response)
+          return error
+        })
+    },
+
     async delete (recordId) {
       return await axios.delete(comm.urls.record + recordId)
         .then(resp =>{
