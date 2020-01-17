@@ -12,4 +12,9 @@
   button, span, .multiselect__single, textarea, div { font-size: 8px;}
 
   .container-my-info { flex-direction: column; padding: 10px; align-content: center; }
+
+  /*CreateRecord*/
+  .container-create-record { flex-direction: column; }
+  .create-record-article { width: 100%; }
+  .battle-info-article { width: 100%; }
 }

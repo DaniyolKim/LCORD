@@ -1,86 +1,75 @@
 <template>
-  <div class="container-table">
-    <h3>전적 입력<button style="width: 150px" @click="getAllUserList">User refresh</button></h3>
-    <label>(진행 중인 리그만 입력 가능)</label>
-
-    <table>
-      <thead>
-      <tr>
-        <th>경기 날짜</th>
-        <th>배틀 선택</th>
-        <th v-if="roundList.length != 0">라운드 선택</th>
-        <th>맵 선택</th><th>Battle Type</th>
-        <th><label>승자</label></th>
-        <th><label>패자</label></th>
-        <th>방송 URL(필수아님)</th>
-        <th>입력</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td><datepicker v-model="recordData.date" :language="languages[1]" :format="dateFormat"></datepicker></td>
-        <td>
-          <div class="user-container">
-            <vue-multiselect v-model="recordData.battleId" placeholder="배틀 검색" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="battleList" :multiple="false"></vue-multiselect>
+  <div class="container-create-record">
+    <div class="create-record-article">
+      <div>
+        <h3>맵 추가</h3>
+        <h4>경기 하신 맵이 없다면 추가해주세요.</h4>
+        <div>
+          <input type="text" v-model="mapName" placeholder="맵이름만 입력"><button class="header-button" @click="addMap">add map</button>
+        </div>
+      </div>
+      <hr>
+      <div>
+        <h3>전적 입력<button class="header-button" @click="getAllUserList">User refresh</button></h3>
+        <label>(진행 중인 리그만 입력 가능)</label>
+        <div class="contents-container">
+          <div class="input-area">
+            <div class="container-info">
+              <label>경기 날짜</label>
+              <div class="info-input">
+                <datepicker v-model="recordData.date" :language="languages[1]" :format="dateFormat"></datepicker>
+              </div>
+            </div>
+            <div class="container-info">
+              <label>배틀 선택</label>
+              <div class="info-input">
+                <vue-multiselect v-model="recordData.battleId" placeholder="배틀 검색" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="battleList" :multiple="false"></vue-multiselect>
+              </div>
+            </div>
+            <div class="container-info">
+              <label>맵 선택</label>
+              <div class="info-input">
+                <vue-multiselect v-model="recordData.map" placeholder="맵 검색" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="mapList" :multiple="false"></vue-multiselect>
+              </div>
+            </div>
+            <div class="container-info">
+              <label>배틀 타입</label>
+              <select v-model="recordData.battleType">
+                <option v-for="type in $defs.gameTypeList" :value="type.type">{{type.name}}</option>
+              </select>
+            </div>
+            <div class="container-info">
+              <label>승자</label>
+              <div class="info-input">
+                <vue-multiselect v-model="recordData.winners" placeholder="이름 검색" track-by="userName" selectLabel="추가" selectedLabel="선택 됨" deselectLabel="제거"
+                                 :options="userList" :multiple="true" :taggable="true" @select="addWinners" :custom-label="userSearchLabel" :show-labels="false"></vue-multiselect>
+              </div>
+            </div>
+            <div class="container-info">
+              <label>패자</label>
+              <div class="info-input">
+                <vue-multiselect v-model="recordData.losers" placeholder="이름 검색" label="userName" track-by="userName" selectLabel="추가" selectedLabel="선택 됨" deselectLabel="제거"
+                                 :options="userList" :multiple="true" :taggable="true" @select="addLosers" :custom-label="userSearchLabel" :show-labels="false"></vue-multiselect>
+              </div>
+            </div>
+            <div class="container-info">
+              <label>방송 URL</label>
+              <div class="info-input">
+                <input type="url" v-model="recordData.videoLink" placeholder="방송 링크 url 입력">
+              </div>
+            </div>
           </div>
-        </td>
-        <td v-if="roundList.length != 0">
-          <select v-model="recordData.roundNum">
-            <option v-for="num in roundList" :value="num">{{num}}</option>
-          </select>
-        </td>
-        <td>
-          <div class="user-container">
-            <vue-multiselect v-model="recordData.map" placeholder="맵 검색" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="mapList" :multiple="false"></vue-multiselect>
-          </div>
-        </td>
-        <td>
-          <div>
-            <select v-model="recordData.battleType">
-              <option v-for="type in $defs.gameTypeList" :value="type.type">{{type.name}}</option>
-            </select>
-          </div>
-        </td>
-        <td>
-          <div class="user-container">
-            <vue-multiselect v-model="recordData.winners" placeholder="이름 검색" track-by="userName" selectLabel="추가" selectedLabel="선택 됨" deselectLabel="제거"
-                             :options="userList" :multiple="true" :taggable="true" @select="addWinners" :custom-label="userSearchLabel" :show-labels="false"></vue-multiselect>
-          </div>
-        </td>
-        <td>
-          <div class="user-container">
-            <vue-multiselect v-model="recordData.losers" placeholder="이름 검색" label="userName" track-by="userName" selectLabel="추가" selectedLabel="선택 됨" deselectLabel="제거"
-                             :options="userList" :multiple="true" :taggable="true" @select="addLosers" :custom-label="userSearchLabel" :show-labels="false"></vue-multiselect>
-          </div>
-        </td>
-        <td>
-          <div>
-            <input type="url" v-model="recordData.videoLink" placeholder="방송 링크 url 입력">
-          </div>
-        </td>
-        <td>
-          <div>
-            <button @click="addRecord">전송</button>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-
-    <hr>
-
-    <h3>맵 추가</h3>
-    <h4>경기 하신 맵이 없다면 추가해주세요.</h4>
-    <div>
-      <input type="text" v-model="mapName" placeholder="맵이름만 입력"><button class="btn-record-page" @click="addMap">add map</button>
+        </div>
+        <button style="width: 51%" @click="addRecord">전적 추가</button>
+      </div>
     </div>
 
-    <hr>
-
-    <div class="container-table" style="height: 500px">
-      <h3>최근 입력 된 전적(최근 추가 된 50개)<button class="btn-record-page" @click="getAllRecords">Refresh</button></h3>
-      <label>(Refresh로 중복 확인한 뒤 입력 할 것!)</label>
-      <vue-record-list :record-list="recordList" :show-battle-name="true" style="height: 400px;"></vue-record-list>
+    <div class="create-record-article">
+      <div>
+        <h3>최근 입력 된 전적(최근 추가 된 50개)<button class="header-button" @click="getAllRecords">Refresh</button></h3>
+        <label>(Refresh로 중복 확인한 뒤 입력 할 것!)</label>
+        <vue-record-list :record-list="recordList" :show-battle-name="true" style="height: 770px;"></vue-record-list>
+      </div>
     </div>
     <modals-container/>
   </div>
@@ -234,6 +223,14 @@
 
 <style scoped>
   button { padding: 5px 10px; }
+  .header-button { margin-left: 15px; }
+  .contents-container { height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
+  .container-info { display: flex; flex-direction: row; align-items: center; justify-content: center; height: 45px; }
+  .info-input { width: 310px; }
+  .input-area { display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 20px;}
+  label { width: 150px; text-align: right; margin-right: 15px; }
+  input { font-size: 16px; padding: 10px; border: solid 1px #e8e8e8; border-radius: 5px; width: 288px;}
+  select { font-size: 16px; padding: 10px; border: solid 1px #e8e8e8; border-radius: 5px; width: 310px;}
   /*.user-container {
     width: 200px;
     margin: auto;

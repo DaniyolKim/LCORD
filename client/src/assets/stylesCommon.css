@@ -14,27 +14,27 @@ input[type=text], input[type=password], input[type=number] { font-size: 16px; pa
 .container-account { display: flex; justify-content: space-around; align-content: space-around; }
 h2 { background: #404043; color: white; padding: 5px; margin-top: 0px; margin-bottom: 0px; }
 .btn-dup-check { width: 35%; height: 100%; padding: 7px; }
-.div-account-detail {
-  border-radius: 5px;
-  border: solid #545459 1px;
-  background: white;
-}
-.div-detail {
-  padding: 10px;
-}
+.div-account-detail { border-radius: 5px; border: solid #545459 1px; background: white; }
+.div-detail { padding: 10px; }
 
 /*MyInfo.vue*/
 .container-my-info { display: flex; justify-content: center; }
 
+/*CreateRecord*/
+.container-create-record { display: flex; flex-direction: row; justify-content: flex-start; align-items: center; }
+.create-record-article { width: 50%; height: 100%; }
+
 /*BattleInfo.vue*/
-.container-table { display: flex; flex-direction: column; justify-items: center; padding: 0px 10px; height: 300px; overflow-x: scroll; overflow-y: auto; margin-bottom: 15px; }
+.container-battle-info { display: flex; flex-direction: row; justify-content: flex-start; align-items: center; }
+.battle-info-article { width: 50%; height: 98%; padding: 5px;}
+.container-table { display: flex; flex-direction: column; justify-items: center; overflow-x: scroll; overflow-y: auto; }
 
 button { color: white; background-color: #303033; border: solid 2px #303033; border-radius: 5px; padding: 10px 0px; }
 button:hover { background-color: #545459; border: solid 2px white; }
 hr { border-color: rgba(0, 0, 0, 0.1); margin: 10px; }
 button, span, .multiselect__single, textarea, div { font-size: 16px;}
 
-table { border-collapse: collapse; }
+table { border: solid black 2px; border-collapse: collapse; }
 th { background: #303033; color: white; }
 th, td { border: 1px solid white; }
 tr:nth-child(2n) { background: #cbcbcb; }

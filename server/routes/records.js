@@ -143,6 +143,24 @@ router.get('/userWinRate/:userId', function(req, res) {
     })
 })
 
+/* GET Records by BattleId and userId*/
+router.get('/battleAndUser/:battleId/:userId', function(req, res) {
+  let battleId = req.params.battleId
+  let userId = req.params.userId
+  Record.find({ $or: [ {winners: userId}, {losers: userId} ] }, {battleId: battleId})
+    .populate('battleId' , '_id name')
+    .populate('writer', '_id userName userId tribe bNetId')
+    .populate('winners', '_id userName userId tribe bNetId')
+    .populate('losers', '_id userName userId tribe bNetId')
+    .populate('map').sort('-date')
+    .then(records => {
+      res.json(records)
+    })
+    .catch(error => {
+      return res.status(500).send({error: 'database failure'})
+    })
+})
+
 // DELETE RECORD
 router.delete('/:_id', function(req, res){
   Record.remove({ _id: req.params._id }, function(err, output){

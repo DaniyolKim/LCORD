@@ -94,5 +94,4 @@
 
 <style scoped>
   button { padding: 5px 10px; }
-  .container-table { display: flex; flex-direction: column; justify-items: center; padding: 0px 10px; overflow-x: scroll; overflow-y: auto; margin-bottom: 15px; }
 </style>
