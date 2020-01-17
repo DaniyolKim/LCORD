@@ -44,7 +44,7 @@
               <th :class="{ active: rankerSortKey === 'totRate'}" @click="sortRankerList('totRate')">승률(%)
                 <span class="arrow" :class="rankerOrder['totRate'] > 0 ? 'asc' : 'dsc'"></span>
               </th>
-              <th style="background-color: rgb(57, 173, 57)" :class="{ active: rankerSortKey === 'totScore'}" @click="sortRankerList('totScore')" title="(승 X 3) - 패">승점
+              <th style="background-color: rgb(57, 173, 57)" :class="{ active: rankerSortKey === 'totScore'}" @click="sortRankerList('totScore')" title="(승 X 2) - 패">승점
                 <span class="arrow" :class="rankerOrder['totScore'] > 0 ? 'asc' : 'dsc'"></span>
               </th>
               <th class="double-left bg-terran" :class="{ active: rankerSortKey === 'vsTWin'}" @click="sortRankerList('vsTWin')">승
@@ -157,15 +157,19 @@
       },
 
       getRecordListByBattleId (battleId) {
+        this.$modal.show('loading-modal')
         this.$lcordAPI.record.getAllRecordsByBattleId(battleId)
           .then(resp => {
+            this.$modal.hide('loading-modal')
             this.recordList = resp
         })
       },
 
       getRankerListByBattleId (battleId) {
+        this.$modal.show('loading-modal')
         this.$lcordAPI.record.getRankersByBattleId(battleId)
           .then(resp => {
+            this.$modal.hide('loading-modal')
             this.rankerList = resp
           })
       },

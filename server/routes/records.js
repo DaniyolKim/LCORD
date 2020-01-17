@@ -220,7 +220,7 @@ function countLose(ranker, winTribe) {
 }
 
 function calWinScore (winCount, loseCount) {
-    let retVal = (winCount * 3) - loseCount
+    let retVal = (winCount * 2) - loseCount
     return isNaN(retVal) ? 0 : retVal
 }
 
