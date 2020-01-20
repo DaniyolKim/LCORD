@@ -53,7 +53,7 @@
 <script>
   import {mapGetters} from 'vuex'
   export default {
-    name: "CreateBattleTeam",
+    name: "modal_CreateBattle",
     data () {
       return {
         battleData: {

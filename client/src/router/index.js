@@ -10,8 +10,7 @@ import MyInfo from '../components/MyInfo'
 import RankInfo from '../components/rank/RankInfo'
 import BattleInfo from '../components/battle/BattleInfo'
 import CreateRecord from '../components/manage/CreateRecord'
-import CreateBattle from '../components/manage/CreateBattle'
-import UpdateBattle from '../components/manage/UpdateBattle'
+import ManageBattle from '../components/manage/ManageBattle'
 import UserList from '../components/user/userList'
 
 Vue.use(require('vue-moment'))
@@ -61,20 +60,12 @@ export default new Router({
       }
     },
     {
-      path: '/manage/createBattle',
-      name: 'CreateBattle',
-      component: CreateBattle,
-      beforeEnter: function (to, from, next) {
+      path: '/manage/manageBattle',
+      name: 'ManageBattle',
+      component: ManageBattle,
+      /*beforeEnter: function (to, from, next) {
         checkAuth(to, from, next)
-      }
-    },
-    {
-      path: '/manage/updateBattle',
-      name: 'UpdateBattle',
-      component: UpdateBattle,
-      beforeEnter: function (to, from, next) {
-        checkAuth(to, from, next)
-      }
+      }*/
     },
     {
       path: '/user/userList',

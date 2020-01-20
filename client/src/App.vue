@@ -78,7 +78,10 @@ export default {
           icon: 'fa fa-download'
         },
         {
+          href: '/manage/manageBattle',
           title: '배틀 관리',
+          icon: 'fas fa-tools'
+          /*title: '배틀 관리',
           icon: 'fas fa-tools',
           child: [
             {
@@ -91,7 +94,7 @@ export default {
               title: '배틀 편집',
               icon: 'fas fa-edit'
             },
-          ]
+          ]*/
         },
         {
           component: separator

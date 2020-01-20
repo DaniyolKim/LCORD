@@ -30,7 +30,7 @@ router.post('/', function(req, res) {
     })
 })
 
-// GET ALL Battle
+// GET ALL Battles
 router.get('/', function(req, res) {
     Battle.find()
         .then(battles => {
@@ -41,7 +41,7 @@ router.get('/', function(req, res) {
         })
 })
 
-// GET ALL Battle by onProgressing
+// GET ALL onProgressing Battles
 router.get('/onProgressing/:onProgressing', function(req, res) {
     Battle.find({onProgressing: req.params.onProgressing})
         .then(battles => {

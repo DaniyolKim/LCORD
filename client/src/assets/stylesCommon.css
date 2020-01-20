@@ -29,6 +29,10 @@ h2 { background: #404043; color: white; padding: 5px; margin-top: 0px; margin-bo
 .battle-info-article { width: 50%; height: 98%; padding: 5px;}
 .container-table { display: flex; flex-direction: column; justify-items: center; overflow-x: scroll; overflow-y: auto; }
 
+/*CreateBattle.vue*/
+.container-create-battle { display: flex; flex-direction: row; justify-content: flex-start; align-items: center; }
+.create-battle-article { width: 50%; height: 98%; padding: 5px;}
+
 button { color: white; background-color: #303033; border: solid 2px #303033; border-radius: 5px; padding: 10px 0px; }
 button:hover { background-color: #545459; border: solid 2px white; }
 hr { border-color: rgba(0, 0, 0, 0.1); margin: 10px; }

@@ -64,7 +64,7 @@
               }
             )
           } else {
-            this.$toast.info('본인이 작성한 전적만 편집 가능합니다.', {position: 'top'})
+            this.$toast.info('관리자 또는 본인이 작성한 전적만 편집 가능합니다.', {position: 'top'})
           }
         }
       },

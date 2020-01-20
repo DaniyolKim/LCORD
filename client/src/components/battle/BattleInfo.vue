@@ -2,7 +2,7 @@
   <div class="container-battle-info">
     <div class="battle-info-article">
       <div style="display: flex; flex-direction: column;align-items: center;justify-content: center">
-        <div style="width: 99%; margin: 10px 0px">
+        <div style="width: 99%;">
           <h2 v-if="isProgressing == 'true'">진행 중인 배틀</h2>
           <h2 v-else>종료 된 배틀</h2>
         </div>
@@ -110,7 +110,7 @@
       </div>
     </div>
     <div class="battle-info-article">
-      <button class="btn" @click="refreshRecord">전체 전적 Refresh</button>
+      <h2 @click="refreshRecord">전적 리스트 (Click To Refresh)</h2>
       <hr>
       <div v-if="selectedBattle == null">
         배틀 리스트에서 항목을 선택해 주세요.
