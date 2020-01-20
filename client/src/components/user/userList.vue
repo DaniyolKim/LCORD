@@ -134,15 +134,19 @@
         this.getWinRateOfUser()
       },
       async getUserAbilities () {
+        this.$modal.show('loading-modal')
         await this.$lcordAPI.ability.getAbilityOfUser(this.selectedPlayer._id)
           .then(resp => {
             this.ability = resp
+            this.$modal.hide('loading-modal')
           })
       },
       getWinRateOfUser () {
+        this.$modal.show('loading-modal')
         this.$lcordAPI.record.getWinRateOfUser(this.selectedPlayer._id)
           .then(resp => {
             this.vsRecords = resp
+            this.$modal.hide('loading-modal')
           })
       },
       editAbility (writerId) {

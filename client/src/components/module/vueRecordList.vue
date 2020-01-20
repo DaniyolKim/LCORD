@@ -19,7 +19,7 @@
         <td>{{$defs.gameTypeList[record.battleType].name}}</td>
         <td><label v-for="user in record.winners" class="user-label" :class="user.tribe">{{user.userName}}({{user.tribe | cvtTribe}})</label></td>
         <td><label v-for="user in record.losers" class="user-label" :class="user.tribe">{{user.userName}}({{user.tribe | cvtTribe}})</label></td>
-        <td>{{record.videoLink}}</td>
+        <td><a v-if="record.videoLink != ''" :href="record.videoLink" target="_blank">click to move</a></td>
         <td><button @click="editRecord(record)">편집</button></td>
       </tr>
       </tbody>
@@ -54,7 +54,7 @@
         if (this.userDBIndex == '') {
           this.$toast.info('로그인 한 뒤 본인이 작성한 전적만 편집 가능합니다.', {position: 'top'})
         } else {
-          if (record.writer._id == this.userDBIndex) {
+          if (record.writer._id == this.userDBIndex || this.isAdmin(record.battleId.managers)) {
             this.$modal.show(modalEditRecord,
               { record: record },
               {
@@ -68,6 +68,11 @@
           }
         }
       },
+      isAdmin (managers) {
+        let myUserId = this.userDBIndex
+        let index = managers.findIndex(x => x == myUserId)
+        return (index == -1) ? false : true
+      }
     },
     filters: {
       cvtTribe: function (val) {

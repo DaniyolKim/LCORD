@@ -77,7 +77,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(ranker, index) in sortedRanking">
+            <tr v-for="(ranker, index) in sortedRanking" @click="getAllRecordsOfUser(ranker.user._id)">
               <td>{{index + 1}}</td>
               <td class="double-left">{{ranker.user.userName}}({{ranker.user.tribe | cvtTribe}})</td>
               <td class="double-left">{{ranker.total.winCount}}</td>
@@ -173,6 +173,24 @@
             this.rankerList = resp
           })
       },
+
+      getAllRecordsOfUser (userId) {
+        this.$modal.show('loading-modal')
+        this.$lcordAPI.record.getAllRecordsOfUser(userId)
+          .then(resp => {
+            let tempResp = []
+            let batlleId = this.selectedBattle._id
+            resp.forEach(function (rec) {
+              if (batlleId == rec.battleId._id) {
+                tempResp.push(rec)
+              }
+            })
+            this.recordList = tempResp
+
+            this.$modal.hide('loading-modal')
+          })
+      },
+
       refreshRecord () {
         this.getRecordListByBattleId(this.selectedBattle._id)
         this.getRankerListByBattleId(this.selectedBattle._id)

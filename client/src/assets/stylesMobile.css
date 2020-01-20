@@ -16,5 +16,8 @@
   /*CreateRecord*/
   .container-create-record { flex-direction: column; }
   .create-record-article { width: 100%; }
+
+  /*BattleInfo.vue*/
+  .container-battle-info { flex-direction: column; }
   .battle-info-article { width: 100%; }
 }

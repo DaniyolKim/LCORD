@@ -29,7 +29,7 @@ router.post('/', function(req, res){
 // GET ALL Records
 router.get('/', function(req, res) {
     Record.find()
-        .populate('battleId' , '_id name')
+        .populate('battleId' , '_id name managers')
         .populate('writer', '_id userName userId tribe bNetId')
         .populate('winners', '_id userName userId tribe bNetId')
         .populate('losers', '_id userName userId tribe bNetId')
@@ -45,7 +45,7 @@ router.get('/', function(req, res) {
 // GET ALL Records by BattleId
 router.get('/byBattle/:battleId', function(req, res) {
     Record.find({battleId: req.params.battleId})
-      .populate('battleId' , '_id name')
+      .populate('battleId' , '_id name managers')
       .populate('writer', '_id userName userId tribe bNetId')
       .populate('winners', '_id userName userId tribe bNetId')
       .populate('losers', '_id userName userId tribe bNetId')
@@ -61,7 +61,7 @@ router.get('/byBattle/:battleId', function(req, res) {
 /* Get rankerList by battleId*/
 router.get('/rankOfBattle/:battleId', function(req, res) {
     Record.find({battleId: req.params.battleId})
-      .populate('battleId' , '_id name')
+      .populate('battleId' , '_id name managers')
       .populate('winners', '_id userName userId tribe bNetId')
       .populate('losers', '_id userName userId tribe bNetId')
       .then(records => {
@@ -102,7 +102,7 @@ router.get('/rankOfBattle/:battleId', function(req, res) {
 router.get('/userWinRate/:userId', function(req, res) {
   let userId = req.params.userId
   Record.find({ $or: [ {winners: userId}, {losers: userId} ] })
-    .populate('battleId' , '_id name')
+    .populate('battleId' , '_id name managers')
     .populate('writer', '_id userName userId tribe bNetId')
     .populate('winners', '_id userName userId tribe bNetId')
     .populate('losers', '_id userName userId tribe bNetId')
@@ -143,12 +143,11 @@ router.get('/userWinRate/:userId', function(req, res) {
     })
 })
 
-/* GET Records by BattleId and userId*/
-router.get('/battleAndUser/:battleId/:userId', function(req, res) {
-  let battleId = req.params.battleId
+/* GET Records by userId*/
+router.get('/byUser/:userId', function(req, res) {
   let userId = req.params.userId
-  Record.find({ $or: [ {winners: userId}, {losers: userId} ] }, {battleId: battleId})
-    .populate('battleId' , '_id name')
+  Record.find({ $or: [ {winners: userId}, {losers: userId} ] })
+    .populate('battleId' , '_id name managers')
     .populate('writer', '_id userName userId tribe bNetId')
     .populate('winners', '_id userName userId tribe bNetId')
     .populate('losers', '_id userName userId tribe bNetId')
