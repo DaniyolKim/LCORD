@@ -63,9 +63,9 @@ export default new Router({
       path: '/manage/manageBattle',
       name: 'ManageBattle',
       component: ManageBattle,
-      /*beforeEnter: function (to, from, next) {
+      beforeEnter: function (to, from, next) {
         checkAuth(to, from, next)
-      }*/
+      }
     },
     {
       path: '/user/userList',

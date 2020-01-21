@@ -10,12 +10,13 @@
           </div>
         </li>
       </ul>
+      <button style="width: 100%;" @click="showModalCreate">배틀 추가</button>
     </div>
 
     <div class="create-battle-article">
       <h2>상세 정보</h2>
       <div v-if="selectedBattle == null">배틀 리스트에서 항목을 선택해 주세요.</div>
-      <div v-else>
+      <div v-else style="margin-top: 10px;">
         <div class="battle-elem">
           <label>배틀 이름</label>
           <input type="text" v-model="selectedBattle.name">
@@ -52,23 +53,29 @@
             <option v-for="isRound in $defs.isRoundList" :value="isRound.type">{{isRound.name}}</option>
           </select>
         </div>
-        <div class="battle-elem">
+
+        <div class="battle-elem battle-manager">
           <label>관리자</label>
-          <div style="width: 42.5%;">
-            <label>{{getManagerName}}</label>
+          <div style="width: 42.5%">
+            <vue-multiselect v-model="selectedBattle.managers" placeholder="이름 검색" label="userName" track-by="userId" selectLabel="추가" selectedLabel="선택 됨" deselectLabel="제거"
+                             :options="userList" :multiple="true" :taggable="true" :custom-label="userSearchLabel" :show-labels="false"
+            ></vue-multiselect>
           </div>
         </div>
         <br>
-        <button style="width: 62%;">업데이트</button>
+        <button style="width: 62%;" @click="updateBattleInfo">업데이트</button>
       </div>
     </div>
+    <modals-container @close="getBattleList"></modals-container>
   </div>
 </template>
 
 <script>
   import {mapGetters} from 'vuex'
+  import modalCreateBattle from "./modalCreateBattle";
   export default {
     name: "ManageBattle",
+    components: { modalCreateBattle },
     data () {
       return {
         selectedBattle: null,
@@ -79,9 +86,8 @@
     },
     methods: {
       getBattleList () {
-        this.selectedBattle = null
         this.$modal.show('loading-modal')
-        this.$lcordAPI.battle.getListByProgress(true)
+        this.$lcordAPI.battle.getAll()
           .then((resp) => {
             this.battleList = resp
             this.$modal.hide('loading-modal')
@@ -98,6 +104,31 @@
 
       selectBattle (battle) {
         this.selectedBattle = battle
+      },
+
+      userSearchLabel ({userName, bNetId, tribe}) {
+        return `${userName}(${bNetId})`
+      },
+
+      updateBattleInfo () {
+        this.$modal.show('loading-modal')
+        this.$lcordAPI.battle.update(this.selectedBattle)
+          .then(() => {
+            this.$toast.success('업데이트 성공', {position: 'top'})
+            this.getBattleList()
+            this.$modal.hide('loading-modal')
+          })
+      },
+
+      showModalCreate () {
+        this.$modal.show(modalCreateBattle,
+          { userList: this.userList },
+          {
+            width: '700px',
+            height: '470px',
+            clickToClose: false,
+          }
+        )
       }
     },
     mounted() {
@@ -108,31 +139,33 @@
       ...mapGetters({
         userDBIndex: 'getUserDBIndex',
       }),
-      getTierMin() {
-        return this.tierList[this.selectedBattle.tierMin]
-      },
-      getTierMax() {
-        return this.tierList[this.selectedBattle.tierMax]
-      },
-      getManagerName() {
-        let retList = []
-        let managerList = this.selectedBattle.managers
-        for (let i = 0; i < managerList.length; i++) {
-          let index = this.userList.findIndex(x => x._id == managerList[i])
-          retList.push(this.userList[index].userName)
+      getTierMin: {
+        get: function () {
+          return this.tierList[this.selectedBattle.tierMin]
+        },
+        set: function (newVal) {
+          this.selectedBattle.tierMin = newVal.type
         }
-        return retList
-      }
+      },
+      getTierMax: {
+        get: function () {
+          return this.tierList[this.selectedBattle.tierMax]
+        },
+        set: function (newVal) {
+          this.selectedBattle.tierMax = newVal.type
+        }
+      },
     }
   }
 </script>
 
 <style scoped>
-  ul { list-style-type: none; padding: 0px; width: 100%; height: 90%; border: solid #dcdcdc 1px; border-radius: 15px; overflow-y: auto; }
+  ul { list-style-type: none; padding: 0px; width: 100%; height: 87%; border: solid #dcdcdc 1px; border-radius: 15px; overflow-y: auto; }
   li { text-align: left; margin: 20px; padding-bottom: 15px; border-bottom: solid #dcdcdc 1px; }
   .battle-name { font-size: 18px; font-weight: bold; }
   .battle-desc { font-size: 12px; }
   .battle-elem { display: flex; flex-direction: row; align-items: center; justify-content: center; height: 45px; }
+  .battle-manager { align-items: flex-start; height: auto; }
   label { width: 150px; text-align: right; margin-right: 15px; }
   input { width: 40%; font-size: 14px; }
   select { font-size: 14px; padding: 10px; border: solid 1px #e8e8e8; border-radius: 5px; width: 42.5%;}

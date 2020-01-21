@@ -134,8 +134,19 @@ const apis = {
         })
     },
 
+    async getAll () {
+      return await axios.get(comm.urls.battle)
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          console.log(error.response)
+          return error
+        })
+    },
+
     async getListByProgress (isGoing) {
-      return await axios.get(comm.urls.battle + '/onProgressing/' + isGoing)
+      return await axios.get(comm.urls.battle + 'onProgressing/' + isGoing)
         .then(resp =>{
           return resp.data
         })
@@ -146,7 +157,7 @@ const apis = {
     },
 
     async getListByType (type) {
-      return await axios.get(comm.urls.battle + '/type/' + type)
+      return await axios.get(comm.urls.battle + 'type/' + type)
         .then(resp =>{
           return resp.data
         })
@@ -157,7 +168,15 @@ const apis = {
     },
 
     async update (reqInfo) {
-
+      delete reqInfo.__v
+      return await axios.put(comm.urls.battle + reqInfo._id, reqInfo)
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          console.log(error.response)
+          return error
+        })
     },
 
     async delete (reqInfo) {

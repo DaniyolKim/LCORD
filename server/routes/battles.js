@@ -7,7 +7,7 @@ router.post('/', function(req, res) {
     let body = req.body
     let battle  = new Battle({
         name: body.name,
-        description: body.desc,
+        description: body.description,
         tierMin: body.tierMin,
         tierMax: body.tierMax,
         teamCount: body.teamCount,
@@ -33,6 +33,7 @@ router.post('/', function(req, res) {
 // GET ALL Battles
 router.get('/', function(req, res) {
     Battle.find()
+      .populate('managers', '-pwd')
         .then(battles => {
             res.json(battles)
         })
@@ -78,18 +79,18 @@ router.get('/name/:name', function(req, res) {
 })
 
 // UPDATE THE Battle
-router.put('/:name', function(req, res) {
-    Battle.update({ name: req.params.name }, { $set: req.body }, function(err, output){
-    if(err) res.status(500).json({ error: 'database failure' })
-    console.log(output)
-    if(!output.n) return res.status(404).json({ error: 'battle not found' })
-    res.json( { message: 'battle updated' } )
-  })
+router.put('/:_id', function(req, res) {
+    Battle.update({ _id: req.params._id }, { $set: req.body }, function(err, output){
+        if(err) res.status(500).json({ error: 'database failure' })
+        console.log(output)
+        if(!output.n) return res.status(404).json({ error: 'battle not found' })
+        res.json( { message: 'battle updated' } )
+    })
 })
 
 // DELETE battle
-router.delete('/:name', function(req, res) {
-    Battle.remove({ name: req.params.name }, function(err, output){
+router.delete('/:_id', function(req, res) {
+    Battle.remove({ _id: req.params._id }, function(err, output){
     if(err) return res.status(500).json({ error: "database failure" })
 
     res.status(204).end()
