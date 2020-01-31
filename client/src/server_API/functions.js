@@ -44,10 +44,11 @@ const apis = {
     },
 
     async create (accountInfo) {
-      let reqBody = accountInfo
-      reqBody.tribe = accountInfo.tribe.val
-      reqBody.tier = accountInfo.tier.type
-      reqBody.optionalInfo.grade = (accountInfo.optionalInfo.grade == '') ? '' : accountInfo.optionalInfo.grade.val
+      let reqBody = JSON.parse(JSON.stringify(accountInfo))
+      reqBody.tribe = reqBody.tribe.val
+      reqBody.tier = reqBody.tier.type
+      reqBody.eloScore = 1000 + (reqBody.tier * 300)
+      reqBody.optionalInfo.grade = (reqBody.optionalInfo.grade == '') ? '' : reqBody.optionalInfo.grade.val
       return await axios.post(urls.getUser, reqBody)
         .then(resp =>{
           return resp
@@ -61,6 +62,7 @@ const apis = {
       let reqBody = accountInfo
       reqBody.tribe = accountInfo.tribe
       reqBody.tier = accountInfo.tier
+      reqBody.eloScore = 1000 + (accountInfo.tier * 300)
       reqBody.optionalInfo.grade = (accountInfo.optionalInfo.grade == '') ? '' : accountInfo.optionalInfo.grade
       delete reqBody.abilityScore
       return await axios.put(urls.getUser + accountInfo._id, reqBody)

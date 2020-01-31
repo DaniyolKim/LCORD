@@ -16,6 +16,7 @@ router.post('/', function(req, res){
         afreecaId: body.afreecaId,
         tier: body.tier,
         tribe: body.tribe,
+        eloScore: body.eloScore,
         created_date: Date.now(),
     })
 
