@@ -108,6 +108,16 @@ const apis = {
           return error
         })
     },
+
+    async initELO () {
+      return await axios.post(urls.getUser + 'initELO')
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          return error
+        })
+    },
   },
 
   battle: {
@@ -210,11 +220,12 @@ const apis = {
 
   record: {
     async create (recordData) {
-      recordData.battleId = recordData.battleId._id
-      recordData.winners = getUserIds(recordData.winners)
-      recordData.losers = getUserIds(recordData.losers)
+      let reqData = JSON.parse(JSON.stringify(recordData))
+      reqData.battleId = reqData.battleId._id
+      reqData.winners = getUserIds(reqData.winners)
+      reqData.losers = getUserIds(reqData.losers)
 
-      return await axios.post(comm.urls.record, recordData)
+      return await axios.post(comm.urls.record, reqData)
         .then(resp =>{
           return resp.data
         })
@@ -312,7 +323,17 @@ const apis = {
           console.log(error.response)
           return error
         })
-    }
+    },
+
+    async calELO (index) {
+      return await axios.post(urls.record + 'calELO/' + index)
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          return error
+        })
+    },
   },
 
   ability:{

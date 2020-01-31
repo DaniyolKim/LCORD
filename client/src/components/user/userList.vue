@@ -1,12 +1,13 @@
 <template>
   <div style="display: flex; flex-direction: row; justify-content: space-around">
     <div style="height: 100%; width: 48%;">
+      <!--<h2 @click="calELO">플레이어 리스트 ({{playerList.length}}명)</h2>-->
       <h2>플레이어 리스트 ({{playerList.length}}명)</h2>
       <div style="height: 95%;overflow-y: auto;">
         <table style="width: 100%">
           <thead>
           <tr>
-            <th>이름</th><th>베넷 아이디</th><th>별명</th><th>티어</th><th>스타 능력치</th>
+            <th>이름</th><th>베넷 아이디</th><th>별명</th><th>티어</th><th>스타 능력치</th><th>ELO Score</th>
           </tr>
           </thead>
           <tbody>
@@ -16,6 +17,7 @@
             <td>{{player.nickName}}</td>
             <td>{{player.tier | cvtTier}}</td>
             <td>{{player.abilityScore}}</td>
+            <td>{{player.eloScore}}</td>
           </tr>
           </tbody>
         </table>
@@ -107,7 +109,7 @@
     data () {
       return {
         mDateFormat: 'YYYY-MM-DD',
-        sortArg: { key: 'abilityScore', order: 'desc' },
+        sortArg: { key: 'eloScore', order: 'desc' },
         playerList: [],
         selectedPlayer: '',
         ability: '',
@@ -178,6 +180,14 @@
             .then(() => {
               this.getAllPlayers()
             })
+        }
+      },
+
+      async calELO () {
+        await this.$lcordAPI.user.initELO()
+
+        for (let i = 0; i < 288; i++) {
+          await this.$lcordAPI.record.calELO(i)
         }
       }
     },

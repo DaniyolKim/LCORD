@@ -15,7 +15,8 @@ let userSchema = new Schema({
     tier: { type: Number, default: 0 },
     created_date: { type: Date, default: Date.now  },
     optionalInfo: { apm: Number, grade: String, comment: String },
-    abilityScore: { type: Number, default: 0.0 }
+    abilityScore: { type: Number, default: 0.0 },
+    eloScore: { type: Number, default: 0 }
 });
 
 userSchema.methods.encryptPwd = function (pwd) {

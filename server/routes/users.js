@@ -33,6 +33,7 @@ router.post('/', function(req, res){
     });
 });
 
+// 다수의 계정을 생성하기 위한 임시 code
 router.post('/list', function(req, res){
   let userList = req.body
   let users = []
@@ -118,6 +119,22 @@ router.get('/:_id', function(req, res){
     } else {
         return res.status(400).json({error: 'wrong password'});
     }
+});
+
+// INIT ELO score
+router.post('/initELO', function(req, res){
+    User.find().select('-pwd')
+        .then(users => {
+            for (let i = 0; i< users.length; i++) {
+                let user = users[i]
+                user.eloScore = 1000 + user.tier * 300
+                user.save()
+            }
+            res.json('ELO init success');
+        })
+        .catch(error => {
+            return res.status(500).send({error: 'database failure'});
+        })
 });
 
 // UPDATE THE USER

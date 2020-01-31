@@ -2,10 +2,13 @@ let express = require('express')
 let router = express.Router()
 let Record = require('../models/record')
 
+let User = require('../models/user');
+let EloRating = require('elo-rating')
+
 // CREATE Record
-router.post('/', function(req, res){
+router.post('/', function(req, res) {
     let body = req.body
-    let record  = new Record({
+    let record = new Record({
         date: body.date,
         battleId: body.battleId,
         map: body.map,
@@ -16,15 +19,30 @@ router.post('/', function(req, res){
         writer: body.writer,
     })
 
-    record.save(function(err){
+    record.save(function (err) {
         if(err) {
             console.error(err);
             return res.status(500).send({error: 'database failure'});
+            return;
         }
 
-        res.json({result: record._id});
-    });
-});
+        Record.populate(record, [{path:'winners', select: 'eloScore'}, {path:'losers', select: 'eloScore'}],
+            async function (err, _record) {
+
+            let winner = _record.winners[0]
+            let loser = _record.losers[0]
+
+            console.log(winner._doc.eloScore +', '+ loser._doc.eloScore)
+            let resultELO = await EloRating.calculate(winner._doc.eloScore, loser._doc.eloScore)
+
+            console.log('win ' + resultELO.playerRating + ', lose ' + resultELO.opponentRating)
+            await winner.updateOne({eloScore: resultELO.playerRating})
+            await loser.updateOne({eloScore: resultELO.opponentRating})
+        })
+
+        res.json({result: 1});
+    })
+})
 
 // GET ALL Records
 router.get('/', function(req, res) {
@@ -160,6 +178,32 @@ router.get('/byUser/:userId', function(req, res) {
     })
 })
 
+// set elo score of all record
+router.post('/calELO/:index', function(req, res){
+    let index = req.params.index
+    Record.find()
+        .populate('winners', '_id eloScore')
+        .populate('losers', '_id eloScore')
+        .sort('date')
+        .then(async records => {
+            let record = records[index]
+            let winner = record.winners[0]
+            let loser = record.losers[0]
+
+            console.log(winner.eloScore +', '+ loser.eloScore)
+            let resultELO = await EloRating.calculate(winner.eloScore, loser.eloScore)
+
+            console.log('index ' + index + ' : win ' + resultELO.playerRating + ', lose ' + resultELO.opponentRating)
+            await winner.updateOne({eloScore: resultELO.playerRating})
+            await loser.updateOne({eloScore: resultELO.opponentRating})
+
+            await res.json('calELO success');
+        })
+        .catch(error => {
+            return res.status(500).send({error: 'database failure'});
+        })
+});
+
 // DELETE RECORD
 router.delete('/:_id', function(req, res){
   Record.remove({ _id: req.params._id }, function(err, output){
@@ -179,6 +223,7 @@ router.put('/:_id', function(req, res){
   })
 });
 
+/*local functions*/
 function findRanker(index, target, rankerList) {
     let newObj = {}
     if (index == -1) {
