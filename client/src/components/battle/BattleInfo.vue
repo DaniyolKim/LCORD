@@ -29,7 +29,7 @@
               <th rowspan="2" class="double-left double-bottom" :class="{ active: rankerSortKey === 'name'}" @click="sortRankerList('name')">이름
                 <span class="arrow" :class="rankerOrder['name'] > 0 ? 'asc' : 'dsc'"></span>
               </th>
-              <th colspan="4" class="double-left">전체</th>
+              <th colspan="5" class="double-left">전체</th>
               <th colspan="3" class="double-left bg-terran">vs 테란</th>
               <th colspan="3" class="double-left bg-protoss">vs 프로토스</th>
               <th colspan="3" class="double-left bg-zerg">vs 저그</th>
@@ -46,6 +46,9 @@
               </th>
               <th style="background-color: rgb(57, 173, 57)" :class="{ active: rankerSortKey === 'totScore'}" @click="sortRankerList('totScore')" title="(승 X 2) - 패">승점
                 <span class="arrow" :class="rankerOrder['totScore'] > 0 ? 'asc' : 'dsc'"></span>
+              </th>
+              <th :class="{ active: rankerSortKey === 'eloScore'}" @click="sortRankerList('eloScore')">ELO
+                <span class="arrow" :class="rankerOrder['eloScore'] > 0 ? 'asc' : 'dsc'"></span>
               </th>
               <th class="double-left bg-terran" :class="{ active: rankerSortKey === 'vsTWin'}" @click="sortRankerList('vsTWin')">승
                 <span class="arrow" :class="rankerOrder['vsTWin'] > 0 ? 'asc' : 'dsc'"></span>
@@ -84,6 +87,7 @@
               <td>{{ranker.total.loseCount}}</td>
               <td class="td-winRate-total">{{ranker.total.winRate}}</td>
               <td class="td-winScore" :class="{ topRanker : index < 5 && rankerSortKey == 'totScore'}">{{ranker.total.winScore}}</td>
+              <td class="td-winRate-total">{{ranker.user.eloScore}}</td>
               <td class="double-left">{{ranker.vsTerran.winCount}}</td>
               <td>{{ranker.vsTerran.loseCount}}</td>
               <td class="td-winRate-vsTerran">{{ranker.vsTerran.winRate}}</td>
@@ -138,9 +142,9 @@
         selectedBattle: null,
 
         rankerList: [],
-        rankerSortKeys: ['name', 'totWin', 'totLose', 'totRate', 'totScore', 'vsTWin', 'vsTLose', 'vsTRate', 'vsPWin', 'vsPLose', 'vsPRate', 'vsZWin', 'vsZLose', 'vsZRate'],
+        rankerSortKeys: ['name', 'totWin', 'totLose', 'totRate', 'totScore', 'eloScore', 'vsTWin', 'vsTLose', 'vsTRate', 'vsPWin', 'vsPLose', 'vsPRate', 'vsZWin', 'vsZLose', 'vsZRate'],
         rankerSortKey: 'totScore',
-        rankerOrder: { name: 1, totWin: 1, totLose: 1, totRate: 1, totScore: 1,
+        rankerOrder: { name: 1, totWin: 1, totLose: 1, totRate: 1, totScore: 1, eloScore: 1,
           vsTWin: 1, vsTLose: 1, vsTRate: 1, vsPWin: 1, vsPLose: 1, vsPRate: 1,
           vsZWin: 1, vsZLose: 1, vsZRate: 1 },
 
@@ -209,6 +213,9 @@
             } else if (sortKey == 'totScore') {
               a = a['total'].winScore
               b = b['total'].winScore
+            } else if (sortKey == 'eloScore') {
+              a = a['user'].eloScore
+              b = b['user'].eloScore
             } else {
               let targets = this.getSortTarget(sortKey, a, b)
               a = targets[0]

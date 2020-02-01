@@ -80,8 +80,8 @@ router.get('/byBattle/:battleId', function(req, res) {
 router.get('/rankOfBattle/:battleId', function(req, res) {
     Record.find({battleId: req.params.battleId})
       .populate('battleId' , '_id name managers')
-      .populate('winners', '_id userName userId tribe bNetId')
-      .populate('losers', '_id userName userId tribe bNetId')
+      .populate('winners', '_id userName userId tribe bNetId eloScore')
+      .populate('losers', '_id userName userId tribe bNetId eloScore')
       .then(records => {
           let rankerList = []
 
