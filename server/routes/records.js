@@ -51,7 +51,7 @@ router.get('/', function(req, res) {
         .populate('writer', '_id userName userId tribe bNetId')
         .populate('winners', '_id userName userId tribe bNetId')
         .populate('losers', '_id userName userId tribe bNetId')
-        .populate('map').sort('-date').limit(50)
+        .populate('map').sort('-_id').limit(50)
         .then(records => {
             res.json(records);
         })
