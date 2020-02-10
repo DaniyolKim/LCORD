@@ -24,4 +24,10 @@
   /*CreateBattle.vue*/
   .container-create-battle { flex-direction: column; }
   .create-battle-article { width: 100%; }
+
+  /*userList.vue*/
+  .container-user-list { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start}
+  .section-user-list { height: 60%; width: 100%; }
+  .container-chart { display: flex; flex-direction: column; justify-content: space-around; align-items: center; height: 500px; padding: 15px; }
+  .chart-style { height: 50%; width: 100%; }
 }

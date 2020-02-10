@@ -1,7 +1,7 @@
 <template>
-  <div style="display: flex; flex-direction: row; justify-content: space-around">
-    <div style="height: 100%; width: 48%;">
-      <!--<h2 @click="calELO">플레이어 리스트 ({{playerList.length}}명)</h2>-->
+  <div class="container-user-list">
+    <div class="section-user-list">
+      <!--<h2 @click="calELO">ELO 재계산</h2>-->
       <h2>플레이어 리스트 ({{playerList.length}}명)</h2>
       <div style="height: 95%;overflow-y: auto;">
         <table style="width: 100%">
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div style="height: 100%; width: 48%;">
+    <div class="section-user-list">
       <h2>{{selectedPlayer.userName}}님의 상세 정보</h2>
       <div style="height: 95%;overflow-y: auto;">
         <div v-if="selectedPlayer != ''">
@@ -40,9 +40,9 @@
           </div>
 
           <h3>능력 / 종족별 승률 그래프</h3>
-          <div style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; height: 300px; padding: 15px;">
-            <apexchart type=radar height="100%" :options="chartOptionsStats" :series="chartSeriesStats"></apexchart>
-            <apexchart type=radar height="100%" :options="chartOptionsVS" :series="chartSeriesVS"></apexchart>
+          <div class="container-chart">
+            <apexchart type=radar class="chart-style" :options="chartOptionsStats" :series="chartSeriesStats"></apexchart>
+            <apexchart type=radar class="chart-style" :options="chartOptionsVS" :series="chartSeriesVS"></apexchart>
           </div>
 
           <h3>능력 평가 리스트 <button style="width: 60px; margin-left: 10px;padding: 3px;" @click="showModalAbility">+ 추가</button></h3>
@@ -67,28 +67,6 @@
 
           <h3>전적</h3>
           <vue-record-list :record-list="sortedRecords" :show-battle-name="true" style="height: 200px;" @reqRefresh="updateData"></vue-record-list>
-          <!--<div class="container-table" style="height: 200px">
-            <table>
-              <thead>
-              <tr>
-                <th>경기 날짜</th>
-                <th>맵</th>&lt;!&ndash;<th>Battle Type</th>&ndash;&gt;
-                <th><label>승자</label></th>
-                <th><label>패자</label></th>
-                <th>방송 URL</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr v-for="record in sortedRecords">
-                <td>{{record.date | moment(mDateFormat)}}</td>
-                <td>{{record.map.name}}</td>
-                <td><label v-for="user in record.winners" class="user-label" :class="user.tribe">{{user.userName}}({{user.tribe | cvtTribe}})</label></td>
-                <td><label v-for="user in record.losers" class="user-label" :class="user.tribe">{{user.userName}}({{user.tribe | cvtTribe}})</label></td>
-                <td>{{record.videoLink}}</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>-->
         </div>
         <div v-else>
           상세 정보를 보시려면 플레이어를 선택하세요.
@@ -186,7 +164,7 @@
       async calELO () {
         await this.$lcordAPI.user.initELO()
 
-        for (let i = 0; i < 288; i++) {
+        for (let i = 0; i < 433; i++) {
           await this.$lcordAPI.record.calELO(i)
         }
       }
