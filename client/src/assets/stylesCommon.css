@@ -39,6 +39,11 @@ h2 { background: #404043; color: white; padding: 5px; margin-top: 0px; margin-bo
 .container-chart { display: flex; flex-direction: row; justify-content: space-around; align-items: center; height: 300px; padding: 15px; }
 .chart-style { height: 100%; width: 50%; }
 
+/*userCompare.vue*/
+.container-user-compare { display: flex; flex-direction: row; justify-content: flex-start; align-items: center; }
+.user-compare-section { width: 50%; height: 98%; padding: 5px;}
+.container-chart2 { display: flex; flex-direction: column; justify-content: space-between; align-items: center; height: 800px; padding: 15px; }
+
 button { color: white; background-color: #303033; border: solid 2px #303033; border-radius: 5px; padding: 10px 0px; }
 button:hover { background-color: #545459; border: solid 2px white; }
 hr { border-color: rgba(0, 0, 0, 0.1); margin: 10px; }

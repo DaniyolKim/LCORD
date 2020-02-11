@@ -56,7 +56,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="score in ability.abilityList">
+              <tr v-for="score in ability.abilityList" v-if="score.writer != null">
                 <td>{{score.writer.userName}}</td>
                 <td>{{score.build}}</td><td>{{score.control}}</td><td>{{score.judgement}}</td><td>{{score.manageResource}}</td><td>{{score.manageMulti}}</td><td>{{score.totalScore}}</td>
                 <td><button style="padding: 3px;" @click="editAbility(score.writer._id)">편집</button></td>
@@ -227,6 +227,10 @@
       cvtTier: function (val) {
         let tierList = [ { name: 'NONE', type: 0}, { name: 'AMOEBA', type: 1}, { name: 'ANIMAL', type: 2}, { name: 'HUMAN', type: 3}, { name: 'GOD', type: 4} ]
         return tierList[val].name
+      },
+      nullCheck: function (val) {
+        if (val == undefined || val == null) return 'unknown'
+        else return val
       }
     }
   }

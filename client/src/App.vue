@@ -26,29 +26,6 @@ export default {
           component: logo,
           hiddenOnCollapse: true
         },
-        /*{
-          header: true,
-          title: '순위',
-          hiddenOnCollapse: true
-        },
-        {
-          href: '/rank/0',
-          title: '개인 배틀',
-          icon: 'fas fa-user'
-        },
-        {
-          href: '/rank/1',
-          title: '팀 배틀',
-          icon: 'fas fa-sitemap'
-        },
-        {
-          href: '/rank/2',
-          title: '이벤트 배틀',
-          icon: 'fas fa-bowling-ball'
-        },
-        {
-          component: separator
-        },*/
         {
           header: true,
           title: '배틀',
@@ -81,33 +58,24 @@ export default {
           href: '/manage/manageBattle',
           title: '배틀 관리',
           icon: 'fas fa-tools'
-          /*title: '배틀 관리',
-          icon: 'fas fa-tools',
-          child: [
-            {
-              href: '/manage/createBattle',
-              title: '배틀 생성',
-              icon: 'fab fa-battle-net'
-            },
-            {
-              href: '/manage/updateBattle',
-              title: '배틀 편집',
-              icon: 'fas fa-edit'
-            },
-          ]*/
         },
         {
           component: separator
         },
         {
           header: true,
-          title: '랭크',
+          title: '플레이어',
           hiddenOnCollapse: true
         },
         {
           href: '/user/userList',
-          title: '플레이어 리스트',
+          title: 'ELO 순위',
           icon: 'fas fa-sitemap'
+        },
+        {
+          href: '/user/userCompare',
+          title: '비교',
+          icon: 'fas fa-balance-scale-right'
         },
       ],
       menuWidth: '200px',

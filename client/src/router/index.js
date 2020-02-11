@@ -7,11 +7,11 @@ import Main from '../components/Main'
 import Login from '../components/Login'
 import CreateAccount from '../components/CreateAccount'
 import MyInfo from '../components/MyInfo'
-import RankInfo from '../components/rank/RankInfo'
 import BattleInfo from '../components/battle/BattleInfo'
 import CreateRecord from '../components/manage/CreateRecord'
 import ManageBattle from '../components/manage/ManageBattle'
 import UserList from '../components/user/userList'
+import UserCompare from '../components/user/userCompare'
 
 Vue.use(require('vue-moment'))
 Vue.use(Router)
@@ -38,12 +38,6 @@ export default new Router({
       path: '/myInfo',
       name: 'MyInfo',
       component: MyInfo
-    },
-    {
-      path: '/rank/:type',
-      name: 'RankTeam',
-      component: RankInfo,
-      props: true,
     },
     {
       path: '/Battle/:isProgressing',
@@ -75,30 +69,14 @@ export default new Router({
         checkAuth(to, from, next)
       }
     },
-    /*{
-      path: '/manage/createBattlePerson',
-      name: 'CreateBattlePerson',
-      component: CreateBattlePerson,
+    {
+      path: '/user/userCompare',
+      name: 'UserCompare',
+      component: UserCompare,
       beforeEnter: function (to, from, next) {
         checkAuth(to, from, next)
       }
     },
-    {
-      path: '/manage/createBattleTeam',
-      name: 'CreateBattleTeam',
-      component: CreateBattleTeam,
-      beforeEnter: function (to, from, next) {
-        checkAuth(to, from, next)
-      }
-    },
-    {
-      path: '/manage/createBattleEvent',
-      name: 'CreateBattleEvent',
-      component: CreateBattleEvent,
-      beforeEnter: function (to, from, next) {
-        checkAuth(to, from, next)
-      }
-    },*/
   ]
 })
 
