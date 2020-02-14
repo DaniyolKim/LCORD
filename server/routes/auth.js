@@ -7,7 +7,7 @@ let secretObj = require('../config/jwt')
 
 router.post('/', function(req, res) {
     let body = req.body
-    let token = jwt.sign({ userId: body.userId }, secretObj.secret, { expiresIn: '1d' })
+    let token = jwt.sign({ userId: body.userId }, secretObj.secret, { expiresIn: '365d' })
 
     User.findOne({ userId: body.userId })
         .then(user => {
