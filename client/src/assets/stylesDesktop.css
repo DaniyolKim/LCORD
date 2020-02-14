@@ -1,12 +1,12 @@
 /* Tablet Styles */
-@media only screen and (min-width: 401px) and (max-width: 960px) {
+/*@media only screen and (min-width: 401px) and (max-width: 960px) {
   #app { font-size: 8px; }
 
   .login-logo { width: 350px; }
 
   .container-account { flex-direction: column-reverse; padding: 10px; }
   .container-my-info { flex-direction: column; padding: 10px; align-content: center; }
-}
+}*/
 
 /* Desktop Styles */
 @media only screen and (min-width: 961px) {

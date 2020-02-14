@@ -74,6 +74,16 @@ const apis = {
         })
     },
 
+    async updatePwd (userDBIndex, reqData) {
+      return await axios.put(urls.getUser + userDBIndex, reqData)
+        .then(resp =>{
+          return resp
+        })
+        .catch(error => {
+          return error
+        })
+    },
+
     async getAllUsers () {
       return await axios.get(urls.getUser)
         .then(resp =>{

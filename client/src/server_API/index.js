@@ -22,7 +22,7 @@ const defs = {
 
 const comFunction = {
   isAuth () {
-    if (store.getters.getUserToken == '') {
+    if (localStorage.getItem('userToken') == null) {
       return false
     } else {
       return true

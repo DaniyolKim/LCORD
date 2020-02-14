@@ -104,8 +104,8 @@ router.post('/checkId', function(req, res){
 // GET SINGLE USER
 router.get('/:_id', function(req, res){
     let tokenInfo = req.headers.authorization
-    let decoded = jwt.verify(tokenInfo, secretObj.secret)
-    if (decoded) {
+    /*let decoded = jwt.verify(tokenInfo, secretObj.secret)
+    if (decoded) {*/
         User.findOne({_id: req.params._id}).select('-pwd')
             .then(user => {
                 if(!user) {
@@ -117,9 +117,9 @@ router.get('/:_id', function(req, res){
             .catch(error => {
                 return res.status(500).json({error: err});
             })
-    } else {
+    /*} else {
         return res.status(400).json({error: 'wrong password'});
-    }
+    }*/
 });
 
 // INIT ELO score
@@ -140,12 +140,31 @@ router.post('/initELO', function(req, res){
 
 // UPDATE THE USER
 router.put('/:_id', function(req, res){
-  User.update({ _id: req.params._id }, { $set: req.body }, function(err, output){
-    if(err) res.status(500).json({ error: 'database failure' });
-    console.log(output);
-    if(!output.n) return res.status(404).json({ error: 'user not found' });
-    res.json( { message: 'user updated' } );
-  })
+    let body = req.body
+    if (body.pwd == undefined) {
+        User.update({ _id: req.params._id }, { $set: body }, function(err, output){
+            if(err) res.status(500).json({ error: 'database failure' });
+            console.log(output);
+            if(!output.n) return res.status(404).json({ error: 'user not found' });
+            res.json( { message: 'user updated' } );
+        })
+    } else if (body.pwd != '') {
+        User.findOne({_id: req.params._id})
+            .then(user => {
+                user.encryptPwd(body.pwd)
+                user.save(function (err) {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).send({error: 'database failure'});
+                        return;
+                    }
+
+                    res.json({result: 1});
+                })
+            })
+    } else {
+        return res.status(404).json({ error: 'empty password' });
+    }
 });
 
 // DELETE USER

@@ -3,7 +3,7 @@
     <h3>플레이어 정보 <button @click="updateMyInfo">업데이트</button></h3>
     <div class="div-account-detail about">
       <h2>필수 정보</h2>
-      <div class="container-info"><label>ID</label><label style="text-align: center">{{accountParams.userId}}</label></div>
+      <div class="container-info"><label>ID</label><input type="text" v-model="accountParams.userId" required placeholder="로그인 ID"></div>
       <div class="container-info"><label>이름</label><input type="text" v-model="accountParams.userName" required placeholder="이름"></div>
       <div class="container-info"><label>배틀넷 아이디</label><input type="text" v-model="accountParams.bNetId" required placeholder="배틀넷 아이디"></div>
       <div class="container-info"><label>아프리카 TV 아이디</label><input type="text" v-model="accountParams.afreecaId" required placeholder="아프리카 TV 아이디"></div>
@@ -18,6 +18,12 @@
       <div class="container-info"><label>평균 APM</label><input type="number" v-model="optionalInfo.apm" required placeholder="평균 APM(숫자)"></div>
       <div class="container-info"><label>래더 등급</label><div class="container-multiselect"><vue-multiselect v-model="cvtGrade" placeholder="래더 등급(시즌 평균) 선택" :options="$defs.grades" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거"></vue-multiselect></div></div>
       <div class="container-info"><label>소개</label><textarea style="width: 210px" v-model="optionalInfo.comment" placeholder="아이엠~ 그라운드~♬ 자기소개 하기!"></textarea></div>
+    </div>
+    <br>
+    <div class="div-account-detail about">
+      <h2>Password 변경</h2>
+      <div class="container-info"><label>Password 입력</label><input type="text" v-model="pwd" required></div>
+      <button @click="updatePassword">업데이트</button>
     </div>
     <br>
     <div class="div-account-detail about">
@@ -41,6 +47,7 @@ export default {
       accountParams: null,
       optionalInfo: null,
       mDateFormat: 'YYYY-MM-DD',
+      pwd: '',
 
       ability: '',
       vsRecords: '',
@@ -80,7 +87,18 @@ export default {
         .then(() => {
           this.$toast.success('업데이트 성공', {position: 'top'})
         })
-    }
+    },
+    updatePassword () {
+      if (this.pwd == '') {
+        this.$toast.error('Password를 입력해 주세요.', {position: 'top'})
+      } else {
+        let reqData = { pwd: this.pwd }
+        this.$lcordAPI.user.updatePwd(this.userDBIndex, reqData)
+          .then(() => {
+            this.$toast.success('업데이트 성공', {position: 'top'})
+          })
+      }
+    },
   },
   mounted() {
     if (this.$commAPI.isAuth() == false) {

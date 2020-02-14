@@ -46,7 +46,7 @@
           </div>
 
           <h3>능력 평가 리스트 <button style="width: 60px; margin-left: 10px;padding: 3px;" @click="showModalAbility">+ 추가</button></h3>
-          <div class="container-table" style="height: 200px">
+          <div class="container-table" style="max-height: 200px">
             <table>
               <thead>
               <tr>

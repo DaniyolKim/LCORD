@@ -1,5 +1,5 @@
 /* Mobile Styles */
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 960px) {
   #app { font-size: 8px; }
 
   .login-form { width: 90% }
@@ -11,7 +11,7 @@
   .btn-dup-check { padding: 8px;}
   button, span, .multiselect__single, textarea, div { font-size: 8px;}
 
-  .container-my-info { flex-direction: column; padding: 10px; align-content: center; }
+  .container-my-info { flex-direction: column; padding: 10px; align-content: center; justify-content: flex-start; }
 
   /*CreateRecord*/
   .container-create-record { flex-direction: column; }
