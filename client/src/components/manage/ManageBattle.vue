@@ -10,7 +10,7 @@
           </div>
         </li>
       </ul>
-      <button style="width: 100%;" @click="showModalCreate">배틀 추가</button>
+      <button style="width: 100%;" @click="showModalCreate" :disabled="userRole == 0">배틀 추가</button>
     </div>
 
     <div class="create-battle-article">
@@ -19,27 +19,27 @@
       <div v-else style="margin-top: 10px;">
         <div class="battle-elem">
           <label>배틀 이름</label>
-          <input type="text" v-model="selectedBattle.name">
+          <input type="text" v-model="selectedBattle.name" :disabled="userRole == 0">
         </div>
         <div class="battle-elem">
           <label>배틀 설명</label>
-          <input type="text" v-model="selectedBattle.description">
+          <input type="text" v-model="selectedBattle.description" :disabled="userRole == 0">
         </div>
         <div class="battle-elem">
           <label>참가 티어</label>
           <div style="width: 42.5%; display: flex; flex-direction: row; align-items: center; justify-content: space-between">
             <div style="width: 40%">
-              <vue-multiselect v-model="getTierMin" placeholder="티어 선택" :options="$defs.tierList" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거"></vue-multiselect>
+              <vue-multiselect v-model="getTierMin" placeholder="티어 선택" :options="$defs.tierList" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :disabled="userRole == 0"></vue-multiselect>
             </div>
             <div>~</div>
             <div style="width: 40%">
-              <vue-multiselect v-model="getTierMax" placeholder="티어 선택" :options="$defs.tierList" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거"></vue-multiselect>
+              <vue-multiselect v-model="getTierMax" placeholder="티어 선택" :options="$defs.tierList" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :disabled="userRole == 0"></vue-multiselect>
             </div>
           </div>
         </div>
         <div class="battle-elem">
           <label>배틀 타입</label>
-          <select v-model="selectedBattle.type">
+          <select v-model="selectedBattle.type" :disabled="userRole == 0">
             <option v-for="battle in $defs.battleTypeList" :value="battle.type">{{battle.name}}</option>
           </select>
         </div>
@@ -49,7 +49,7 @@
         </div>
         <div class="battle-elem">
           <label>진행 방식</label>
-          <select v-model="selectedBattle.isRound">
+          <select v-model="selectedBattle.isRound" :disabled="userRole == 0">
             <option v-for="isRound in $defs.isRoundList" :value="isRound.type">{{isRound.name}}</option>
           </select>
         </div>
@@ -58,12 +58,12 @@
           <label>관리자</label>
           <div style="width: 42.5%">
             <vue-multiselect v-model="selectedBattle.managers" placeholder="이름 검색" label="userName" track-by="userId" selectLabel="추가" selectedLabel="선택 됨" deselectLabel="제거"
-                             :options="userList" :multiple="true" :taggable="true" :custom-label="userSearchLabel" :show-labels="false"
+                             :options="userList" :multiple="true" :taggable="true" :custom-label="userSearchLabel" :show-labels="false" :disabled="userRole == 0"
             ></vue-multiselect>
           </div>
         </div>
         <br>
-        <button style="width: 62%;" @click="updateBattleInfo">업데이트</button>
+        <button style="width: 62%;" @click="updateBattleInfo" :disabled="userRole == 0">업데이트</button>
       </div>
     </div>
     <modals-container @close="getBattleList"></modals-container>
@@ -138,6 +138,7 @@
     computed: {
       ...mapGetters({
         userDBIndex: 'getUserDBIndex',
+        userRole: 'getUserRole'
       }),
       getTierMin: {
         get: function () {

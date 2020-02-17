@@ -24,6 +24,7 @@ const apis = {
           store.dispatch('updateUserDBIndex', data._id)
           store.dispatch('updateUserId', data.userId)
           store.dispatch('updateUserToken', data.token)
+          store.dispatch('updateUserRole', data.role)
           axios.defaults.headers.common['Authorization'] = store.getters.getUserToken
 
           return resp.data

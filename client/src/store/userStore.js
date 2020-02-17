@@ -2,6 +2,7 @@ const state = {
   userDBIndex: '',
   userId: '',
   userToken: '',
+  userRole: '',
 }
 
 const getters = {
@@ -16,6 +17,9 @@ const getters = {
   getUserToken: state => {
     return state.userToken;
     //return localStorage.getItem('userToken')
+  },
+  getUserRole: state => {
+    return state.userRole;
   }
 }
 
@@ -32,9 +36,14 @@ const mutations = {
     state.userToken = value
     //localStorage.setItem('userToken', value)
   },
+  updateUserRole(state, value) {
+    state.userRole = value
+  },
   clearUserInfo(state) {
     state.userId = ''
     state.userToken = ''
+    state.userDBIndex = ''
+    state.userRole = ''
     //localStorage.clear()
   }
 }
@@ -48,6 +57,9 @@ const actions = {
   },
   updateUserToken({commit}, value) {
     commit('updateUserToken', value)
+  },
+  updateUserRole({commit}, value) {
+    commit('updateUserRole', value)
   },
   clearUserInfo({commit}) {
     commit('clearUserInfo')
