@@ -53,7 +53,13 @@
           <h3>전적 리스트</h3>
           <div v-if="vsRecordList.length == 0">상대 전적이 없습니다.</div>
           <div v-else style="width: 98%;">
-            <vue-record-list :record-list="vsRecordList" :show-battle-name="true" style="width: 100%;height: 600px;"></vue-record-list>
+            <div v-if="compPlayers.length > 0">
+              <label>승률(%)</label><label>{{winRate}}</label>
+              <label>-</label>
+              <label>{{winCount}}</label><label>승</label>
+              <label>{{loseCount}}</label><label>패</label>
+            </div>
+            <vue-record-list :record-list="vsRecordList" :show-battle-name="true" style="width: 100%;height: 700px;"></vue-record-list>
           </div>
         </div>
       </div>
@@ -89,6 +95,9 @@
         abilityList: [],
         winRateList: [],
         recordList: [],
+        winCount: 0,
+        loseCount: 0,
+        winRate: 0.0,
         chartOptionsStats: {
           title: { text: '스타 능력치', align: 'center', },
           labels: ['빌드', '컨트롤', '판단', '자원 관리', '확장능력'],
@@ -140,7 +149,7 @@
         await this.$lcordAPI.ability.getAbilityOfUser(player._id)
           .then(resp => {
             player.abilitySummary = resp.summary
-            this.abilityList.push( {_id: player._id, name: player.userName, data: resp.summary})
+            this.abilityList.push({_id: player._id, name: player.userName, data: resp.summary})
             this.$modal.hide('loading-modal')
           })
       },
@@ -191,6 +200,8 @@
           if (this.compPlayers != null && this.compPlayers.length == 0) {
             retList = this.recordList
           } else {
+            this.winCount = 0;
+            this.loseCount = 0;
             for (let i in this.recordList) {
               let winners = this.recordList[i].winners
               let losers = this.recordList[i].losers
@@ -199,20 +210,26 @@
               let loseIndex = losers.findIndex(x => x._id === this.compPlayers[0]._id)
 
               if (winIndex != -1 || loseIndex != -1) {
+                if (winIndex > -1) this.loseCount += 1
+                else this.winCount += 1
                 retList.push(this.recordList[i])
               }
             }
+            this.winRate = (this.winCount / retList.length * 100).toFixed(2)
           }
         }
         return retList
       }
     },
     watch: {
+
       detPlayers: function () {
-        if (this.detPlayers != null) {
-          if (this.detPlayers != '') {
+        if (this.detPlayers == '' || this.detPlayers == null) {
+          this.abilityList.splice(0,1)
+          this.winRateList.splice(0,1)
+          this.recordList = []
+        } else {
             this.getAllRecordsOfUser(this.detPlayers._id)
-          }
         }
       },
 
