@@ -6,13 +6,13 @@
         <div style="display: flex; flex-direction: row; justify-content: center; align-items: center">
           <h4 style="width: 20%;text-align: right; margin-right: 15px;">기준 플레이어</h4>
           <vue-multiselect style="width: 75%;" v-model="detPlayers" placeholder="이름 검색" label="userName" track-by="userId" selectLabel="추가" selectedLabel="선택 됨" deselectLabel="제거"
-                           :options="userList" :multiple="false" :taggable="true" :custom-label="userSearchLabel" :show-labels="false" @select="selectPlayer" @remove="removePlayer"></vue-multiselect>
+                           :options="userList" :multiple="false" :taggable="true" :custom-label="userSearchLabel" :show-labels="false" @select="selectPlayer"></vue-multiselect>
         </div>
 
         <div style="display: flex; flex-direction: row; justify-content: center; align-items: center">
           <h4 style="width: 20%;text-align: right; margin-right: 15px;">비교 플레이어</h4>
           <vue-multiselect style="width: 75%;" v-model="compPlayers" placeholder="이름 검색" label="userName" track-by="userId" selectLabel="추가" selectedLabel="선택 됨" deselectLabel="제거"
-                           :options="userList" :multiple="true" :taggable="true" :custom-label="userSearchLabel" :show-labels="false" @select="selectPlayer" @remove="removePlayer"></vue-multiselect>
+                           :options="userList" :multiple="true" :taggable="true" :custom-label="userSearchLabel" :show-labels="false" @select="selectPlayer"></vue-multiselect>
         </div>
 
         <div v-if="detPlayers != ''" style="display: flex;flex-direction: column;align-items: center; justify-content: flex-start;">
@@ -25,7 +25,7 @@
             <tr>
               <th>전체</th><th>vs 테란</th><th>vs 저그</th><th>vs 플토</th>
               <th>총점</th><th>빌드</th><th>컨트롤</th><th>판단</th><th>자원 관리</th><th>확장능력</th>
-              <th>현재</th><th>승리 시</th><th>패배 시</th>
+              <th>현재</th>
             </tr>
             </thead>
             <tbody>
@@ -49,6 +49,12 @@
             </tr>
             </tbody>
           </table>
+
+          <h3>전적 리스트</h3>
+          <div v-if="vsRecordList.length == 0">상대 전적이 없습니다.</div>
+          <div v-else style="width: 98%;">
+            <vue-record-list :record-list="vsRecordList" :show-battle-name="true" style="width: 100%;height: 600px;"></vue-record-list>
+          </div>
         </div>
       </div>
     </div>
@@ -64,14 +70,17 @@
         </div>
       </div>
     </div>
+    <modals-container></modals-container>
   </div>
 </template>
 
 <script>
   import {mapGetters} from "vuex";
+  import VueRecordList from '../module/vueRecordList'
 
   export default {
     name: "userCompare",
+    components: {VueRecordList},
     data () {
       return {
         detPlayers: '',
@@ -79,6 +88,7 @@
         userList: [],
         abilityList: [],
         winRateList: [],
+        recordList: [],
         chartOptionsStats: {
           title: { text: '스타 능력치', align: 'center', },
           labels: ['빌드', '컨트롤', '판단', '자원 관리', '확장능력'],
@@ -124,6 +134,7 @@
         await this.getWinRateOfUser(player)
         await this.getUserAbilities(player)
       },
+
       async getUserAbilities (player) {
         this.$modal.show('loading-modal')
         await this.$lcordAPI.ability.getAbilityOfUser(player._id)
@@ -133,6 +144,7 @@
             this.$modal.hide('loading-modal')
           })
       },
+
       async getWinRateOfUser (player) {
         this.$modal.show('loading-modal')
         await this.$lcordAPI.record.getWinRateOfUser(player._id)
@@ -142,12 +154,23 @@
             this.$modal.hide('loading-modal')
           })
       },
+
       cmpAbilityScore (id) {
         let index = this.abilityList.findIndex(x => x._id == id)
 
         if (this.abilityList[index] == undefined) return []
         else  return this.abilityList[index].data
-      }
+      },
+
+      async getAllRecordsOfUser (userId) {
+        this.$modal.show('loading-modal')
+        await this.$lcordAPI.record.getAllRecordsOfUser(userId)
+          .then(resp => {
+            this.recordList = resp
+
+            this.$modal.hide('loading-modal')
+          })
+      },
     },
     mounted() {
       this.getAllPlayers()
@@ -156,10 +179,50 @@
       ...mapGetters({
         userDBIndex: 'getUserDBIndex',
       }),
+
       detAbilityScore: function () {
         if (this.abilityList[0] == undefined) return []
         else  return this.abilityList[0].data
       },
+
+      vsRecordList: function () {
+        let retList = []
+        if (this.recordList != null && this.recordList != '') {
+          if (this.compPlayers != null && this.compPlayers.length == 0) {
+            retList = this.recordList
+          } else {
+            for (let i in this.recordList) {
+              let winners = this.recordList[i].winners
+              let losers = this.recordList[i].losers
+
+              let winIndex = winners.findIndex(x => x._id === this.compPlayers[0]._id)
+              let loseIndex = losers.findIndex(x => x._id === this.compPlayers[0]._id)
+
+              if (winIndex != -1 || loseIndex != -1) {
+                retList.push(this.recordList[i])
+              }
+            }
+          }
+        }
+        return retList
+      }
+    },
+    watch: {
+      detPlayers: function () {
+        if (this.detPlayers != null) {
+          if (this.detPlayers != '') {
+            this.getAllRecordsOfUser(this.detPlayers._id)
+          }
+        }
+      },
+
+      compPlayers: function () {
+        if (this.compPlayers.length > 1) {
+          this.compPlayers.splice(0,1)
+          this.abilityList.splice(1,1)
+          this.winRateList.splice(1,1)
+        }
+      }
     },
     filters: {
       cvtTribe: function (val) {
