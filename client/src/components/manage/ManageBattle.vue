@@ -43,9 +43,9 @@
             <option v-for="battle in $defs.battleTypeList" :value="battle.type">{{battle.name}}</option>
           </select>
         </div>
-        <div v-if="selectedBattle.type === 1" class="battle-elem">
-          <label>참가 팀 수</label>
-
+        <div v-if="parseInt(selectedBattle.type) === 1" class="battle-elem">
+          <label>팀 관리</label>
+          <button style="width: 42.3%; margin-left: 2px" @click="showModalTeamBuilding">팀 빌딩</button>
         </div>
         <div class="battle-elem">
           <label>진행 방식</label>
@@ -73,6 +73,7 @@
 <script>
   import {mapGetters} from 'vuex'
   import modalCreateBattle from "./modalCreateBattle";
+  import modalTeamBuilding from "./modalTeamBuilding";
   export default {
     name: "ManageBattle",
     components: { modalCreateBattle },
@@ -126,6 +127,28 @@
           {
             width: '700px',
             height: '470px',
+            clickToClose: false,
+          }
+        )
+      },
+
+      showModalTeamBuilding () {
+        let cloneUserList = JSON.parse(JSON.stringify(this.userList))
+
+        let tbUserList = []
+        let tierMin = this.selectedBattle.tierMin
+        let tierMax = this.selectedBattle.tierMax
+        cloneUserList.forEach(function (user) {
+          if (user.tier >= tierMin && user.tier <= tierMax) {
+            tbUserList.push(user)
+          }
+        })
+
+        this.$modal.show(modalTeamBuilding,
+          { userList: tbUserList, battleId: this.selectedBattle._id },
+          {
+            width: '94%',
+            height: '95%',
             clickToClose: false,
           }
         )

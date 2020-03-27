@@ -28,10 +28,6 @@
           <option v-for="battle in $defs.battleTypeList" :value="battle.type">{{battle.name}}</option>
         </select>
       </div>
-      <div v-if="battleData.type === 1" class="battle-elem">
-        <label>참가 팀 수</label>
-
-      </div>
       <div class="battle-elem">
         <label>진행 방식</label>
         <select v-model="battleData.isRound">
@@ -69,7 +65,6 @@
           description: '',
           tierMin: 0,
           tierMax: 0,
-          teamCount: 8,
           type: 0,
           isRound: true,
           managers: [],

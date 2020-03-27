@@ -10,15 +10,14 @@ router.post('/', function(req, res) {
         description: body.description,
         tierMin: body.tierMin,
         tierMax: body.tierMax,
-        teamCount: body.teamCount,
         type: body.type,
         isRound: body.isRound,
         managers: body.managers
     })
 
-    if (battle.type == 1 && battle.isRound == true) { //팀 리그, 라운드 방식 선택 시
+    /*if (battle.type == 1 && battle.isRound == true) { //팀 리그, 라운드 방식 선택 시
         battle.roundCount = battle.teamCount - 1
-    }
+    }*/
 
     battle.save(function(err){
         if(err) {
