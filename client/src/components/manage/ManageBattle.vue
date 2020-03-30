@@ -45,7 +45,7 @@
         </div>
         <div v-if="parseInt(selectedBattle.type) === 1" class="battle-elem">
           <label>팀 관리</label>
-          <button style="width: 42.3%; margin-left: 2px" @click="showModalTeamBuilding">팀 빌딩</button>
+          <button style="width: 42.3%; margin-left: 2px" @click="showModalTeamBuilding" :disabled="userRole == 0">팀 빌딩</button>
         </div>
         <div class="battle-elem">
           <label>진행 방식</label>
@@ -144,8 +144,10 @@
           }
         })
 
+        let tbTeamList = []
+
         this.$modal.show(modalTeamBuilding,
-          { userList: tbUserList, battleId: this.selectedBattle._id },
+          { userList: tbUserList, battleId: this.selectedBattle._id, teamList: tbTeamList },
           {
             width: '94%',
             height: '95%',

@@ -4,21 +4,25 @@
     <div class="contents-container">
       <!--왼쪽-->
       <div class="tb-elem">
-        <h3>팀 구성(최대 8팀) <button style="width: 80px;padding: 0px" @click="addTeam">팀 추가</button></h3>
+        <h3>팀 구성(최대 8팀) <button style="width: 80px;padding: 0px" @click="addTeam">팀 추가</button>
+          <label><input type="checkbox" v-model="isSnakePick" style="width: 25px; margin: 0px;" @change="changeSnakePick">스네이크 픽 활성화</label>
+        </h3>
         <div class="team-container">
           <table style="width: 100%">
             <thead>
             <tr>
-              <th v-for="team in teamList" @click="selectTeam(team)" :class="{ active: selectedTeam.name === team.name}">{{team.name}}</th>
+              <th v-for="team in teamList" @click="selectTeam(team)" :class="{ active: selectedTeam.name === team.name}">
+                {{team.name}}({{team.members.length}}명)
+              </th>
             </tr>
             </thead>
             <tbody>
             <tr>
-              <td v-for="team in teamList">
+              <td v-for="team in teamList" @click="selectTeam(team)" style="vertical-align: top;">
                 <div v-if="team.members.length == 0">
                   팀장 먼저 추가하세요
                 </div>
-                <div v-else>
+                <div v-else class="member-container">
                   <div v-for="user in team.members">
                     <UserCard :user="user"></UserCard>
                   </div>
@@ -62,7 +66,7 @@
       </div>
     </div>
     <div class="footer">
-      <button @click="cancelEdit">취소</button>
+      <button @click="cancelEdit">취소(초기화)</button>
       <button @click="updateTeamBuild">확인</button>
     </div>
   </div>
@@ -73,13 +77,15 @@
   import UserCard from "../module/userCard"
   export default {
     name: "modal_TeamBuilding",
-    props: ['userList', 'c'],
+    props: [ 'userList', 'battleId', 'teamList', ],
     components: {UserCard},
     data () {
       return {
         tierList: [ { name: 'NONE', type: 0}, { name: 'AMOEBA', type: 1}, { name: 'ANIMAL', type: 2}, { name: 'HUMAN', type: 3}, { name: 'GOD', type: 4} ],
         teamList: [],
         selectedTeam : '',
+        isSnakePick: true,
+        shiftCounter: {row: 0, col:0},
       }
     },
     methods: {
@@ -88,6 +94,11 @@
       },
 
       updateTeamBuild () {
+        /*for (let i = 0; i < this.teamList.length; i++) {
+          this.teamList[i].captain = this.teamList[i].members[0]
+        }
+        let reqInfo = { _id: this.battleId, teamList: this.teamList }
+        this.$lcordAPI.battle.update(reqInfo)*/
         this.$emit('close')
       },
 
@@ -95,14 +106,15 @@
         let teamCount = this.teamList.length + 1
         if (teamCount < 9) {
           let team = {
-            battleId: this.battleId,
             name: teamCount + '팀',
-            captain: '',
-            manager: '',
+            /*captain: '',
+            manager: '',*/
             members: [],
             openTalkLink: ''
           }
           this.teamList.push(team)
+          this.selectedTeam = this.teamList[0]
+          this.shiftCounter = {row: 0, col:0}
         } else {
           this.$toast.error('최대 8개까지 팀 생성 가능합니다.', {position: 'top'})
         }
@@ -122,6 +134,41 @@
         userList.sort((a, b) => {
           return a.tier > b.tier ? -1 : a.tier < b.tier ? 1 : 0
         })
+      },
+
+      snakePick () {
+        if (this.isSnakePick) {
+          if (this.shiftCounter.row < 1) { //팀장 라인
+            this.shiftCounter.col += 1
+            this.selectTeam(this.teamList[this.shiftCounter.col])
+
+            if (this.shiftCounter.col == this.teamList.length - 1) {
+              this.shiftCounter.row += 1
+              this.shiftCounter.col = -1
+              this.selectTeam(this.teamList[this.teamList.length - 1])
+            }
+          } else {
+            if (this.shiftCounter.row % 2 == 1) { //순방향
+              this.shiftCounter.col += 1
+              if (this.shiftCounter.col == this.teamList.length) {
+                this.shiftCounter.row += 1
+                this.shiftCounter.col = this.teamList.length - 1
+              }
+            } else { //역방향
+              this.shiftCounter.col -= 1
+              if (this.shiftCounter.col == -1) {
+                this.shiftCounter.row += 1
+                this.shiftCounter.col = 0
+              }
+            }
+            this.selectTeam(this.teamList[this.shiftCounter.col])
+          }
+        }
+      },
+
+      changeSnakePick () {
+        this.shiftCounter = {row: 1, col:-1}
+        this.snakePick()
       }
     },
     mounted() {
@@ -132,10 +179,15 @@
           let existIndex = this.selectedTeam.members.findIndex(x => x._id == selUser._id)
 
           if (existIndex < 0) { //없는 경우, 추가
-            this.selectedTeam.members.push(selUser)
-
             let index = this.userList.findIndex(x => x._id == selUser._id)
-            this.userList.splice(index, 1)
+
+            if (index > -1) {
+              this.selectedTeam.members.push(selUser)
+              this.userList.splice(index, 1)
+
+              //선택한 팀 이동
+              this.snakePick()
+            }
           } else { //이미 있는 경우, 제거
             this.userList.push(selUser)
             this.selectedTeam.members.splice(existIndex, 1)
@@ -180,16 +232,16 @@
         this.sortUserListByTier(userList)
         return userList
       },
-    }
+    },
   }
 </script>
 
 <style scoped>
   .contents-container { height: inherit; display: flex; flex-direction: row; justify-content: space-between; align-items: center; padding-bottom: 5px}
   .footer { width: 100%; display: flex; flex-direction: row; justify-content: space-around; align-items: center;}
-  .tb-elem { display: flex; flex-direction: column; width: 50%; height: 85vh; overflow-y: auto; }
+  .tb-elem { display: flex; flex-direction: column; width: 50%; height: 85vh; overflow-y: auto; padding: 0 10px;}
   .team-container { display: flex; flex-direction: row; justify-content: space-between; align-items: center; }
-  .team-container > div { width: 12.5%; }
+  .member-container { display: flex; flex-direction: column; align-items: center; margin: 10px 0px; height: 100%;}
   .user-container { display: flex; flex-flow: row wrap; width: 100%; }
   button { width: 200px; }
   label { width: 150px; text-align: right; margin-right: 15px; }
