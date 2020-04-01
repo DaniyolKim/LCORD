@@ -135,16 +135,27 @@
       showModalTeamBuilding () {
         let cloneUserList = JSON.parse(JSON.stringify(this.userList))
 
+        let tbTeamList = JSON.parse(JSON.stringify(this.selectedBattle.teamList))
         let tbUserList = []
         let tierMin = this.selectedBattle.tierMin
         let tierMax = this.selectedBattle.tierMax
+
+        for (let i = 0; i < tbTeamList.length; i++) {
+          let members = tbTeamList[i].members
+          for (let j = 0; j < members.length; j++) {
+            let index = cloneUserList.findIndex(x => x._id === members[j])
+            if (index > -1) {
+              members[j] = cloneUserList[index]
+              cloneUserList[index].isExist = true
+            }
+          }
+        }
+
         cloneUserList.forEach(function (user) {
           if (user.tier >= tierMin && user.tier <= tierMax) {
-            tbUserList.push(user)
+            if (user.isExist == false || user.isExist == undefined) tbUserList.push(user)
           }
         })
-
-        let tbTeamList = []
 
         this.$modal.show(modalTeamBuilding,
           { userList: tbUserList, battleId: this.selectedBattle._id, teamList: tbTeamList },

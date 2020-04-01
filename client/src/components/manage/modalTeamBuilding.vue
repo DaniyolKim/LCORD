@@ -23,7 +23,7 @@
                   팀장 먼저 추가하세요
                 </div>
                 <div v-else class="member-container">
-                  <div v-for="user in team.members">
+                  <div v-for="user in team.members" style="margin: 1px 0px;">
                     <UserCard :user="user"></UserCard>
                   </div>
                 </div>
@@ -36,37 +36,39 @@
 
       <!--오른쪽-->
       <div class="tb-elem">
+        <h3>TOTAL({{userList.length}}명)</h3>
         <h3>ZERG({{userListZerg.length}}명)</h3>
         <div class="user-container">
-          <div v-for="user in userListZerg">
+          <div v-for="user in userListZerg" style="margin: 1px">
             <UserCard :user="user"></UserCard>
           </div>
         </div>
 
         <h3>PROTOSS({{userListProtoss.length}}명)</h3>
         <div class="user-container">
-          <div v-for="user in userListProtoss">
+          <div v-for="user in userListProtoss" style="margin: 1px">
             <UserCard :user="user"></UserCard>
           </div>
         </div>
 
         <h3>TERRAN({{userListTerran.length}}명)</h3>
         <div class="user-container">
-          <div v-for="user in userListTerran">
+          <div v-for="user in userListTerran" style="margin: 1px">
             <UserCard :user="user"></UserCard>
           </div>
         </div>
 
         <h3>RANDOM({{userListRandom.length}}명)</h3>
         <div class="user-container">
-          <div v-for="user in userListRandom">
+          <div v-for="user in userListRandom" style="margin: 1px">
             <UserCard :user="user"></UserCard>
           </div>
         </div>
       </div>
     </div>
     <div class="footer">
-      <button @click="cancelEdit">취소(초기화)</button>
+      <button @click="initTeam">초기화</button>
+      <button @click="cancelEdit">취소</button>
       <button @click="updateTeamBuild">확인</button>
     </div>
   </div>
@@ -82,7 +84,7 @@
     data () {
       return {
         tierList: [ { name: 'NONE', type: 0}, { name: 'AMOEBA', type: 1}, { name: 'ANIMAL', type: 2}, { name: 'HUMAN', type: 3}, { name: 'GOD', type: 4} ],
-        teamList: [],
+        //teamList: [],
         selectedTeam : '',
         isSnakePick: true,
         shiftCounter: {row: 0, col:0},
@@ -93,13 +95,24 @@
         this.$emit('close')
       },
 
+      initTeam () {
+        this.teamList = []
+        let reqInfo = { _id: this.battleId, teamList: this.teamList }
+        this.$lcordAPI.battle.update(reqInfo)
+          .then(() => {
+            this.$emit('close')
+          })
+      },
+
       updateTeamBuild () {
-        /*for (let i = 0; i < this.teamList.length; i++) {
+        for (let i = 0; i < this.teamList.length; i++) {
           this.teamList[i].captain = this.teamList[i].members[0]
         }
         let reqInfo = { _id: this.battleId, teamList: this.teamList }
-        this.$lcordAPI.battle.update(reqInfo)*/
-        this.$emit('close')
+        this.$lcordAPI.battle.update(reqInfo)
+          .then(() => {
+            this.$emit('close')
+          })
       },
 
       addTeam () {
@@ -168,6 +181,9 @@
 
       changeSnakePick () {
         this.shiftCounter = {row: 1, col:-1}
+        if (this.isSnakePick) {
+          this.$toast.info('스네이크 픽이 처음부터 시작 됩니다.', {position: 'top'})
+        }
         this.snakePick()
       }
     },
@@ -191,9 +207,17 @@
           } else { //이미 있는 경우, 제거
             this.userList.push(selUser)
             this.selectedTeam.members.splice(existIndex, 1)
+
+            if (this.isSnakePick == true) {
+              this.shiftCounter.row = existIndex
+              this.shiftCounter.col = this.teamList.findIndex(x => x.name === this.selectedTeam.name)
+            }
           }
         }
       })
+    },
+    beforeDestroy() {
+      this.$EventBus.$off('sendUserInfo')
     },
     computed: {
       ...mapGetters({
@@ -248,4 +272,5 @@
   input { width: 40%; font-size: 14px; }
   select { font-size: 14px; padding: 10px; border: solid 1px #e8e8e8; border-radius: 5px; width: 42.5%;}
   .active { background-color: red;}
+  h3 { margin: 5px 0px; }
 </style>
