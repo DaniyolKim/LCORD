@@ -40,7 +40,10 @@ Vue.use(VueToast);
 
 Vue.prototype.$EventBus = new Vue();
 
+import VueHtml2Canvas from 'vue-html2canvas'
+
 Vue.config.productionTip = false
+Vue.use(VueHtml2Canvas)
 
 /* eslint-disable no-new */
 new Vue({

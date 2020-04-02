@@ -52,6 +52,9 @@
     beforeMount() {
       this.orderTeamMemberByTier()
     },
+    mounted() {
+      this.$EventBus.$emit('cmpOrderTeamMember')
+    },
   }
 </script>
 

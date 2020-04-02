@@ -104,7 +104,10 @@
 
         <!--팀 전-->
         <div v-else-if="selectedBattle.type == 1">
-          <VueTeamList :player-list="playerList" :team-list="selectedBattle.teamList"></VueTeamList>
+          <a download="LG-SC-TeamList.png" :href="outPut">download</a>
+          <div ref="printTarget">
+            <VueTeamList :player-list="playerList" :team-list="selectedBattle.teamList"></VueTeamList>
+          </div>
         </div>
 
         <!--이벤트 전-->
@@ -153,9 +156,18 @@
           vsZWin: 1, vsZLose: 1, vsZRate: 1 },
 
         recordList: [],
+
+        outPut: null
       }
     },
     methods: {
+      async getPngTeamList () {
+        const options = {
+          type: 'dataURL'
+        }
+        this.outPut = await this.$html2canvas(this.$refs.printTarget, options)
+      },
+
       getBattleList () {
         this.selectedBattle = null
         this.$lcordAPI.battle.getListByProgress(this.isProgressing)
@@ -274,6 +286,9 @@
       this.getBattleList()
       this.$EventBus.$on('refRecordList', () => {
         this.refreshRecord()
+      })
+      this.$EventBus.$on('cmpOrderTeamMember', () => {
+        this.getPngTeamList()
       })
     },
     computed: {
