@@ -24,7 +24,7 @@
                 </div>
                 <div v-else class="member-container">
                   <div v-for="user in team.members" style="margin: 1px 0px;">
-                    <UserCard :user="user"></UserCard>
+                    <UserCard :user="user" :is-click-enable="true"></UserCard>
                   </div>
                 </div>
               </td>
@@ -40,28 +40,28 @@
         <h3>ZERG({{userListZerg.length}}명)</h3>
         <div class="user-container">
           <div v-for="user in userListZerg" style="margin: 1px">
-            <UserCard :user="user"></UserCard>
+            <UserCard :user="user" :is-click-enable="true"></UserCard>
           </div>
         </div>
 
         <h3>PROTOSS({{userListProtoss.length}}명)</h3>
         <div class="user-container">
           <div v-for="user in userListProtoss" style="margin: 1px">
-            <UserCard :user="user"></UserCard>
+            <UserCard :user="user" :is-click-enable="true"></UserCard>
           </div>
         </div>
 
         <h3>TERRAN({{userListTerran.length}}명)</h3>
         <div class="user-container">
           <div v-for="user in userListTerran" style="margin: 1px">
-            <UserCard :user="user"></UserCard>
+            <UserCard :user="user" :is-click-enable="true"></UserCard>
           </div>
         </div>
 
         <h3>RANDOM({{userListRandom.length}}명)</h3>
         <div class="user-container">
           <div v-for="user in userListRandom" style="margin: 1px">
-            <UserCard :user="user"></UserCard>
+            <UserCard :user="user" :is-click-enable="true"></UserCard>
           </div>
         </div>
       </div>
@@ -80,7 +80,7 @@
   export default {
     name: "modal_TeamBuilding",
     props: [ 'userList', 'battleId', 'teamList', ],
-    components: {UserCard},
+    components: { UserCard },
     data () {
       return {
         tierList: [ { name: 'NONE', type: 0}, { name: 'AMOEBA', type: 1}, { name: 'ANIMAL', type: 2}, { name: 'HUMAN', type: 3}, { name: 'GOD', type: 4} ],

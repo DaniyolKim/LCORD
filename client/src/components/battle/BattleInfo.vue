@@ -104,7 +104,7 @@
 
         <!--팀 전-->
         <div v-else-if="selectedBattle.type == 1">
-          팀 전
+          <VueTeamList :player-list="playerList" :team-list="selectedBattle.teamList"></VueTeamList>
         </div>
 
         <!--이벤트 전-->
@@ -131,14 +131,18 @@
   import { mapGetters } from 'vuex'
   import DemoSizeModal from './modalDetail'
   import VueRecordList from '../module/vueRecordList'
+  import VueTeamList from '../module/vueTeamList'
   export default {
     name: "BattleInfo",
     props: ['isProgressing'],
-    components: {VueRecordList, DemoSizeModal, },
+    components: {VueRecordList, VueTeamList, DemoSizeModal, },
     data () {
       return {
         mDateFormat: 'YYYY-MM-DD',
         battleList: [],
+        sortArg: { key: 'userName', order: 'asc' },
+        playerList: [],
+
         selectedBattle: null,
 
         rankerList: [],
@@ -157,6 +161,13 @@
         this.$lcordAPI.battle.getListByProgress(this.isProgressing)
           .then((resp) => {
             this.battleList = resp
+          })
+      },
+
+      getAllPlayers () {
+        this.$lcordAPI.user.getSortedAllUsers(this.sortArg)
+          .then(resp => {
+            this.playerList = resp
           })
       },
 
@@ -259,6 +270,7 @@
       },
     },
     beforeMount() {
+      this.getAllPlayers()
       this.getBattleList()
       this.$EventBus.$on('refRecordList', () => {
         this.refreshRecord()

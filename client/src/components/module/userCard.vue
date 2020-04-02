@@ -1,7 +1,6 @@
 <template>
   <div class="layout" :class="user.tribe" :title="'ELO: ' + user.eloScore + '\n' + '소개: ' + user.optionalInfo.comment"
-       @click="sendUserInfo"
-  >
+       @click="sendUserInfo">
     <div :class="'tier-div-' + user.tier">{{user.tier | cvtTier}}</div>
     <div style="font-size: 17px">{{user.userName}}</div>
     <div>{{user.bNetId}}</div>
@@ -11,10 +10,11 @@
 <script>
   export default {
     name: "userCard",
-    props: ['user'],
+    props: ['user', 'isClickEnable'],
     methods: {
       sendUserInfo () {
-        this.$EventBus.$emit('sendUserInfo', this.user)
+        if (this.isClickEnable)
+          this.$EventBus.$emit('sendUserInfo', this.user)
       },
     },
     filters: {
