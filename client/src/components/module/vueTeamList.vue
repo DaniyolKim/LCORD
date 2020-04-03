@@ -32,7 +32,7 @@
     data () {
       return {
         tierList: [
-          { name: 'GOD', value: 4 }, { name: 'HUMAN', value: 3 }, { name: 'ANIMAL', value: 2 }, { name: 'AMOEBA', value: 1 }, { name: 'NONE', value: 0 },
+          { name: '갓', value: 4 }, { name: '휴먼', value: 3 }, { name: '애니멀', value: 2 }, { name: '아메바', value: 1 }, { name: '미정', value: 0 },
         ]
       }
     },

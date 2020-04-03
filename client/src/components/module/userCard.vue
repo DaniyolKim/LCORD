@@ -28,7 +28,7 @@
 
 <style scoped>
   div { color: white; font-size: 13px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-  .layout { width: 105px; padding-bottom: 5px; border: gray solid 1px; border-radius: 7px; }
+  .layout { width: 95px; padding-bottom: 5px; border: gray solid 1px; border-radius: 7px; }
   .tier-div-1 { width: 100%; background-color: white; color: black; border-bottom: black solid 1px; }
   .tier-div-2 { width: 100%; background-color: green; border-bottom: white solid 1px; }
   .tier-div-3 { width: 100%; background-color: blue; border-bottom: white solid 1px; }
