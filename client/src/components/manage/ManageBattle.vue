@@ -151,9 +151,15 @@
           }
         }
 
+        let battleId = this.selectedBattle._id
         cloneUserList.forEach(function (user) {
           if (user.tier >= tierMin && user.tier <= tierMax) {
-            if (user.isExist == false || user.isExist == undefined) tbUserList.push(user)
+            if (user.isExist == false || user.isExist == undefined) {
+              let nonAttIndex = user.nonAttendanceBattles.findIndex(x => x === battleId)
+              if (nonAttIndex < 0) {
+                tbUserList.push(user)
+              }
+            }
           }
         })
 

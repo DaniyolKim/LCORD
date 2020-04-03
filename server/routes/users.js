@@ -107,6 +107,7 @@ router.get('/:_id', function(req, res){
     /*let decoded = jwt.verify(tokenInfo, secretObj.secret)
     if (decoded) {*/
         User.findOne({_id: req.params._id}).select('-pwd')
+            .populate('nonAttendanceBattles')
             .then(user => {
                 if(!user) {
                     return res.status(404).json({error: 'user not found'})

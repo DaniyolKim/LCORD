@@ -18,6 +18,7 @@ let userSchema = new Schema({
     abilityScore: { type: Number, default: 0.0 },
     eloScore: { type: Number, default: 0 },
     role: { type: Number, default: 0 }, /*100:admin, 50:manager, 0:user*/
+    nonAttendanceBattles: [{ required: false, type: mongoose.Schema.Types.ObjectId, ref: 'battle' }]
 });
 
 userSchema.methods.encryptPwd = function (pwd) {

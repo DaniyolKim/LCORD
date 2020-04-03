@@ -7,12 +7,13 @@
         <table style="width: 100%">
           <thead>
           <tr>
-            <th>이름</th><th>베넷 아이디</th><th>별명</th><th>티어</th><th>스타 능력치</th><th>ELO Score</th>
+            <th>이름</th><th>종족</th><th>베넷 아이디</th><th>별명</th><th>티어</th><th>스타 능력치</th><th>ELO Score</th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="player in playerList" @click="getDetails(player)">
-            <td>{{player.userName}}({{player.tribe | cvtTribe}})</td>
+            <td>{{player.userName}}</td>
+            <td>{{player.tribe | cvtTribe}}</td>
             <td>{{player.bNetId}}</td>
             <td>{{player.nickName}}</td>
             <td>{{player.tier | cvtTier}}</td>

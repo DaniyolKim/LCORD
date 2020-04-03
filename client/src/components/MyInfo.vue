@@ -1,6 +1,6 @@
 <template>
   <div class="container-my-info">
-    <h3>플레이어 정보 <button @click="updateMyInfo">업데이트</button></h3>
+    <h3>플레이어 정보</h3>
     <div class="div-account-detail about">
       <h2>필수 정보</h2>
       <div class="container-info"><label>ID</label><input type="text" v-model="accountParams.userId" required placeholder="로그인 ID"></div>
@@ -21,9 +21,22 @@
     </div>
     <br>
     <div class="div-account-detail about">
+      <h2>배틀 불참 여부</h2>
+      <div>멸망전 같은 팀 리그는 참여 여부를 기준으로 팀 빌딩을 합니다.</div>
+      <div>부득이한 사정으로 불참하시게 되는 리그를 선택/추가해 주세요.</div>
+      <div class="container-info"><label>배틀 목록</label>
+        <div class="container-multiselect">
+          <vue-multiselect v-model="accountParams.nonAttendanceBattles" placeholder="배틀 선택" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="battleList" :multiple="true" :taggable="true"></vue-multiselect>
+        </div>
+      </div>
+    </div>
+    <br>
+    <button @click="updateMyInfo" style="width: 42vw; background-color: #4285f4">플레이어 정보 업데이트</button>
+    <br>
+    <div class="div-account-detail about">
       <h2>Password 변경</h2>
       <div class="container-info"><label>Password 입력</label><input type="text" v-model="pwd" required></div>
-      <button @click="updatePassword">업데이트</button>
+      <button @click="updatePassword" style="background-color: #4285f4">변경 요청</button>
     </div>
     <br>
     <div class="div-account-detail about">
@@ -59,6 +72,7 @@ export default {
         chart: { toolbar: {  show: false }},
         theme: { palette: 'palette8' } // upto palette10
       },
+      battleList: [],
     }
   },
   methods: {
@@ -99,6 +113,13 @@ export default {
           })
       }
     },
+    getBattleList () {
+      this.selectedBattle = null
+      this.$lcordAPI.battle.getListByProgress(true)
+        .then((resp) => {
+          this.battleList = resp
+        })
+    },
   },
   mounted() {
     if (this.$commAPI.isAuth() == false) {
@@ -107,6 +128,7 @@ export default {
     this.getUserInfo()
     this.getUserAbilities()
     this.getWinRateOfUser()
+    this.getBattleList()
   },
   computed: {
     ...mapGetters({
