@@ -138,7 +138,8 @@
 
       userSearchLabel ({userName, bNetId, tribe}) {
         //return `${userName}(${bNetId.split(' ')[0]})`
-        return `${userName}(${bNetId})`
+        let cvtTribe = `${tribe}`.slice(0,1).toUpperCase()
+        return `${userName} `+ cvtTribe + ` (${bNetId})`
       },
 
       addWinners () {
