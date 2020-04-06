@@ -165,7 +165,7 @@
       async calELO () {
         await this.$lcordAPI.user.initELO()
 
-        for (let i = 0; i < 433; i++) {
+        for (let i = 0; i < 1091; i++) {
           await this.$lcordAPI.record.calELO(i)
         }
       }

@@ -10,6 +10,7 @@ import MyInfo from '../components/MyInfo'
 import BattleInfo from '../components/battle/BattleInfo'
 import CreateRecord from '../components/manage/CreateRecord'
 import ManageBattle from '../components/manage/ManageBattle'
+import Admin from "../components/manage/Admin"
 import UserList from '../components/user/userList'
 import UserCompare from '../components/user/userCompare'
 
@@ -57,6 +58,14 @@ export default new Router({
       path: '/manage/manageBattle',
       name: 'ManageBattle',
       component: ManageBattle,
+      beforeEnter: function (to, from, next) {
+        checkAuth(to, from, next)
+      }
+    },
+    {
+      path: '/manage/admin',
+      name: 'Admin',
+      component: Admin,
       beforeEnter: function (to, from, next) {
         checkAuth(to, from, next)
       }
