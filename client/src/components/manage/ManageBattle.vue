@@ -91,6 +91,13 @@
         this.$lcordAPI.battle.getAll()
           .then((resp) => {
             this.battleList = resp
+            if (this.selectedBattle != null) {
+              let battleId = this.selectedBattle._id
+              let index = this.battleList.findIndex(x => x._id === battleId)
+              if (index > -1) {
+                this.selectedBattle = this.battleList[index]
+              }
+            }
             this.$modal.hide('loading-modal')
           })
       },
