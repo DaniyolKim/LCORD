@@ -36,32 +36,69 @@
 
       <!--오른쪽-->
       <div class="tb-elem">
-        <h3>TOTAL({{userList.length}}명)</h3>
-        <h3>ZERG({{userListZerg.length}}명)</h3>
-        <div class="user-container">
-          <div v-for="user in userListZerg" style="margin: 1px">
-            <UserCard :user="user" :is-click-enable="true"></UserCard>
+        <h3>TOTAL({{userList.length}}명)
+          <div>
+            <label><input type="radio" v-model="viewType" value="tribe" style="width: 15px;">종족 순 정렬</label>
+            <label><input type="radio" v-model="viewType" value="tier" style="width: 15px;">티어 순 정렬</label>
+          </div>
+        </h3>
+
+        <div v-if="viewType == 'tribe'">
+          <h3>ZERG({{userListZerg.length}}명)</h3>
+          <div class="user-container">
+            <div v-for="user in userListZerg" style="margin: 1px">
+              <UserCard :user="user" :is-click-enable="true"></UserCard>
+            </div>
+          </div>
+
+          <h3>PROTOSS({{userListProtoss.length}}명)</h3>
+          <div class="user-container">
+            <div v-for="user in userListProtoss" style="margin: 1px">
+              <UserCard :user="user" :is-click-enable="true"></UserCard>
+            </div>
+          </div>
+
+          <h3>TERRAN({{userListTerran.length}}명)</h3>
+          <div class="user-container">
+            <div v-for="user in userListTerran" style="margin: 1px">
+              <UserCard :user="user" :is-click-enable="true"></UserCard>
+            </div>
+          </div>
+
+          <h3>RANDOM({{userListRandom.length}}명)</h3>
+          <div class="user-container">
+            <div v-for="user in userListRandom" style="margin: 1px">
+              <UserCard :user="user" :is-click-enable="true"></UserCard>
+            </div>
           </div>
         </div>
-
-        <h3>PROTOSS({{userListProtoss.length}}명)</h3>
-        <div class="user-container">
-          <div v-for="user in userListProtoss" style="margin: 1px">
-            <UserCard :user="user" :is-click-enable="true"></UserCard>
+        <div v-if="viewType == 'tier'">
+          <h3>GOD({{userListGod.length}}명)</h3>
+          <div class="user-container">
+            <div v-for="user in userListGod" style="margin: 1px">
+              <UserCard :user="user" :is-click-enable="true"></UserCard>
+            </div>
           </div>
-        </div>
 
-        <h3>TERRAN({{userListTerran.length}}명)</h3>
-        <div class="user-container">
-          <div v-for="user in userListTerran" style="margin: 1px">
-            <UserCard :user="user" :is-click-enable="true"></UserCard>
+          <h3>HUMAN({{userListHuman.length}}명)</h3>
+          <div class="user-container">
+            <div v-for="user in userListHuman" style="margin: 1px">
+              <UserCard :user="user" :is-click-enable="true"></UserCard>
+            </div>
           </div>
-        </div>
 
-        <h3>RANDOM({{userListRandom.length}}명)</h3>
-        <div class="user-container">
-          <div v-for="user in userListRandom" style="margin: 1px">
-            <UserCard :user="user" :is-click-enable="true"></UserCard>
+          <h3>ANIMAL({{userListAnimal.length}}명)</h3>
+          <div class="user-container">
+            <div v-for="user in userListAnimal" style="margin: 1px">
+              <UserCard :user="user" :is-click-enable="true"></UserCard>
+            </div>
+          </div>
+
+          <h3>AMOEBA({{userListAmoeba.length}}명)</h3>
+          <div class="user-container">
+            <div v-for="user in userListAmoeba" style="margin: 1px">
+              <UserCard :user="user" :is-click-enable="true"></UserCard>
+            </div>
           </div>
         </div>
       </div>
@@ -85,6 +122,7 @@
       return {
         tierList: [ { name: 'NONE', type: 0}, { name: 'AMOEBA', type: 1}, { name: 'ANIMAL', type: 2}, { name: 'HUMAN', type: 3}, { name: 'GOD', type: 4} ],
         //teamList: [],
+        viewType: 'tribe',
         selectedTeam : '',
         isSnakePick: true,
         shiftCounter: {row: 0, col:0},
@@ -143,9 +181,21 @@
         }
       },
 
+      sepUserByTier (user, tier, targetList) {
+        if (user.tier == tier) {
+          targetList.push(user)
+        }
+      },
+
       sortUserListByTier (userList) {
         userList.sort((a, b) => {
           return a.tier > b.tier ? -1 : a.tier < b.tier ? 1 : 0
+        })
+      },
+
+      sortUserListByTribe (userList) {
+        userList.sort((a, b) => {
+          return a.tribe > b.tribe ? -1 : a.tribe < b.tribe ? 1 : 0
         })
       },
 
@@ -254,6 +304,47 @@
           this.sepUserByTribe(this.userList[i], 'random', userList)
         }
         this.sortUserListByTier(userList)
+        return userList
+      },
+
+      userListGod: function () {
+        let userList = []
+        for (let i = 0; i < this.userList.length; i++) {
+          this.sepUserByTier(this.userList[i], 4, userList)
+        }
+        this.sortUserListByTribe(userList)
+        return userList
+      },
+      userListHuman: function () {
+        let userList = []
+        for (let i = 0; i < this.userList.length; i++) {
+          this.sepUserByTier(this.userList[i], 3, userList)
+        }
+        this.sortUserListByTribe(userList)
+        return userList
+      },
+      userListAnimal: function () {
+        let userList = []
+        for (let i = 0; i < this.userList.length; i++) {
+          this.sepUserByTier(this.userList[i], 2, userList)
+        }
+        this.sortUserListByTribe(userList)
+        return userList
+      },
+      userListAmoeba: function () {
+        let userList = []
+        for (let i = 0; i < this.userList.length; i++) {
+          this.sepUserByTier(this.userList[i], 1, userList)
+        }
+        this.sortUserListByTribe(userList)
+        return userList
+      },
+      userListNone: function () {
+        let userList = []
+        for (let i = 0; i < this.userList.length; i++) {
+          this.sepUserByTier(this.userList[i], 0, userList)
+        }
+        this.sortUserListByTribe(userList)
         return userList
       },
     },

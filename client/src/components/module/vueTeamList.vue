@@ -10,10 +10,10 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="tier in tierList">
+      <tr v-for="tier in selTierList">
         <td>{{tier.name}}</td>
         <td class="td-members" v-for="team in teamList">
-          <div class="div-members" v-for="user in team.members" style="margin: 1px">
+          <div class="div-members" v-for="user in orderTierMember(team.members)" style="margin: 1px">
             <UserCard v-if="user.tier == tier.value" :user="user" :is-click-enable="false"></UserCard>
           </div>
         </td>
@@ -27,12 +27,16 @@
   import UserCard from "../module/userCard"
   export default {
     name: "vueTeamList",
-    props: [ 'playerList', 'teamList'],
+    props: [ 'playerList', 'teamList', 'tierMin', 'tierMax'],
     components: {UserCard},
     data () {
       return {
         tierList: [
-          { name: '갓', value: 4 }, { name: '휴먼', value: 3 }, { name: '애니멀', value: 2 }, { name: '아메바', value: 1 }, { name: '미정', value: 0 },
+          { name: '미정', value: 0 },
+          { name: '아메바', value: 1 },
+          { name: '애니멀', value: 2 },
+          { name: '휴먼', value: 3 },
+          { name: '갓', value: 4 },
         ]
       }
     },
@@ -48,6 +52,17 @@
           }
         }
       },
+
+      orderTierMember(members) {
+        let retMembers = members.slice()
+        retMembers.sort((a, b) => {
+          return a.userName < b.userName ? -1 : a.userName > b.userName ? 1 : 0
+        })
+        retMembers.sort((a, b) => {
+          return a.tribe > b.tribe ? -1 : a.tribe < b.tribe ? 1 : 0
+        })
+        return retMembers
+      }
     },
     beforeMount() {
       this.orderTeamMemberByTier()
@@ -55,6 +70,12 @@
     mounted() {
       this.$EventBus.$emit('cmpOrderTeamMember')
     },
+    computed: {
+      selTierList: function () {
+        let retList = this.tierList.slice(this.tierMin, this.tierMax + 1)
+        return retList.reverse()
+      }
+    }
   }
 </script>
 

@@ -106,7 +106,9 @@
         <div v-else-if="selectedBattle.type == 1">
           <a download="LG-SC-TeamList.png" :href="outPut">download</a>
           <div ref="printTarget">
-            <VueTeamList :player-list="playerList" :team-list="selectedBattle.teamList"></VueTeamList>
+            <VueTeamList :player-list="playerList" :team-list="selectedBattle.teamList"
+                         :tier-min="selectedBattle.tierMin" :tier-max="selectedBattle.tierMax"
+            ></VueTeamList>
           </div>
         </div>
 

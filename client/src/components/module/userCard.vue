@@ -2,7 +2,7 @@
   <div class="layout" :class="user.tribe" :title="'ELO: ' + user.eloScore + '\n' + '소개: ' + user.optionalInfo.comment"
        @click="sendUserInfo">
     <div :class="'tier-div-' + user.tier">{{user.tier | cvtTier}}</div>
-    <div style="font-size: 17px">{{user.userName}}</div>
+    <div style="font-size: 17px; font-weight: bold;">{{user.userName}}</div>
     <div>{{user.bNetId}}</div>
   </div>
 </template>
@@ -27,14 +27,14 @@
 </script>
 
 <style scoped>
-  div { color: white; font-size: 13px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+  div { font-size: 13px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
   .layout { width: 95px; padding-bottom: 5px; border: gray solid 1px; border-radius: 7px; }
   .tier-div-1 { width: 100%; background-color: white; color: black; border-bottom: black solid 1px; }
-  .tier-div-2 { width: 100%; background-color: green; border-bottom: white solid 1px; }
-  .tier-div-3 { width: 100%; background-color: blue; border-bottom: white solid 1px; }
-  .tier-div-4 { width: 100%; background-color: black; border-bottom: white solid 1px; }
-  .terran { background-color: cornflowerblue; }
-  .zerg { background-color: #ff4a84; }
-  .protoss { background-color: goldenrod; }
-  .random { background-color: #404043; }
+  .tier-div-2 { width: 100%; background-color: green; border-bottom: white solid 1px; color:white; }
+  .tier-div-3 { width: 100%; background-color: blue; border-bottom: white solid 1px; color:white; }
+  .tier-div-4 { width: 100%; background-color: black; border-bottom: white solid 1px; color:white; }
+  .zerg { background-color: #ff7473; color:white; }
+  .protoss { background-color: #ffc952; }
+  .terran { background-color: #47b8e0; color:white; }
+  .random { background-color: #404043; color:white; }
 </style>

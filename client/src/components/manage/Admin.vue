@@ -9,7 +9,7 @@
         <table style="width: 100%">
           <thead>
           <tr>
-            <th>이름</th><th>LCORD ID</th><th>종족</th><th>ELO</th><th>bNetID</th><th>별명</th>
+            <th>이름</th><th>LCORD ID</th><th>종족</th><th>ELO</th><th>bNetID</th><th>별명</th><th>티어</th>
           </tr>
           </thead>
           <tbody>
@@ -20,6 +20,7 @@
             <td>{{player.eloScore}}</td>
             <td>{{player.bNetId}}</td>
             <td>{{player.nickName}}</td>
+            <td>{{player.tier | cvtTier}}</td>
           </tr>
           </tbody>
         </table>
@@ -120,6 +121,12 @@
     beforeMount() {
       this.getAllPlayers()
     },
+    filters: {
+      cvtTier: function (val) {
+        let tierList = [{name: 'NONE', type: 0}, {name: 'AMOEBA', type: 1}, {name: 'ANIMAL', type: 2}, {name: 'HUMAN', type: 3}, {name: 'GOD', type: 4}]
+        return tierList[val].name
+      },
+    }
   }
 </script>
 
