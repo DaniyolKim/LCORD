@@ -13,7 +13,8 @@
       </div>
       <div class="login-error-text">{{error}}</div>
       <!--<button class="login-btn" @click="createAccount">회원가입</button>-->
-      <div style="color: white;">계정 관련 문의는 네이버 카페 챗(전자 김대언)으로 부탁 드립니다.</div>
+      <div style="color: white;">계정 관련 문의는 네이버 카페 챗(전자 김대언)에게..</div>
+      <div style="color: white;">로고 클릭하면 카페로 이동 합니다.</div>
       <br>
       <button class="login-btn" @click="reqLogin">로그인</button>
       <div class="login-error-text"></div>
