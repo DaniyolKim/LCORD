@@ -5,11 +5,11 @@
       <input type="text" v-model="filterString">
     </div>
     <div style="display: flex; flex-direction: row; justify-content: space-around">
-      <div style="height: 85vh; width: 45vw; overflow-y: auto">
+      <div style="height: 85vh; width: 60vw; overflow-y: auto">
         <table style="width: 100%">
           <thead>
           <tr>
-            <th>이름</th><th>LCORD ID</th><th>종족</th><th>ELO</th><th>bNetID</th><th>별명</th><th>티어</th>
+            <th style="width: 60px;">이름</th><th>LCORD ID</th><th>종족</th><th>ELO</th><th>bNetID</th><th>별명</th><th>티어</th><th>소개</th>
           </tr>
           </thead>
           <tbody>
@@ -21,6 +21,7 @@
             <td>{{player.bNetId}}</td>
             <td>{{player.nickName}}</td>
             <td>{{player.tier | cvtTier}}</td>
+            <td>{{getComment(player)}}</td>
           </tr>
           </tbody>
         </table>
@@ -101,6 +102,16 @@
             this.$toast.success('초기화 성공', {position: 'top'})
           })
       },
+
+      getComment (player) {
+        let retComment = ''
+        if (player != undefined) {
+          if (player.optionalInfo != undefined) {
+            retComment = player.optionalInfo.comment
+          }
+        }
+        return retComment
+      }
     },
 
     computed: {

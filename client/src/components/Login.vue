@@ -12,7 +12,9 @@
         <input class="login-id-pw" type="password" v-model="loginParams.pwd" placeholder="비밀번호" @keyup.enter="reqLogin">
       </div>
       <div class="login-error-text">{{error}}</div>
-      <button class="login-btn" @click="createAccount">회원가입</button>
+      <!--<button class="login-btn" @click="createAccount">회원가입</button>-->
+      <div style="color: white;">계정 관련 문의는 네이버 카페 챗(전자 김대언)으로 부탁 드립니다.</div>
+      <br>
       <button class="login-btn" @click="reqLogin">로그인</button>
       <div class="login-error-text"></div>
     </div>
