@@ -232,14 +232,4 @@
   label { width: 150px; text-align: right; margin-right: 15px; }
   input { font-size: 16px; padding: 10px; border: solid 1px #e8e8e8; border-radius: 5px; width: 288px;}
   select { font-size: 16px; padding: 10px; border: solid 1px #e8e8e8; border-radius: 5px; width: 310px;}
-  /*.user-container {
-    width: 200px;
-    margin: auto;
-  }
-
-  .user-label {
-    margin: 5px;
-  }
-
-  .btn-record-page { max-width: 150px; padding: 6px }*/
 </style>

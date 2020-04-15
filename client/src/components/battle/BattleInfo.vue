@@ -1,7 +1,8 @@
 <template>
   <div class="container-battle-info">
+    <!--왼쪽-->
     <div class="battle-info-article">
-      <div style="display: flex; flex-direction: column;align-items: center;justify-content: center">
+      <div class="battle-selector-container">
         <div style="width: 99%;">
           <h2 v-if="isProgressing == 'true'">진행 중인 배틀</h2>
           <h2 v-else>종료 된 배틀</h2>
@@ -10,9 +11,8 @@
           <vue-multiselect v-model="selectedBattle" placeholder="배틀 선택" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거" :options="battleList" :multiple="false" :taggable="true"></vue-multiselect>
         </div>
       </div>
-
       <hr>
-      <div v-if="selectedBattle != null">
+      <div class="battle-rank-container" v-if="selectedBattle != null">
         <div>
           <div><label>설명 :</label>{{selectedBattle.description}}</div>
           <div><label>대상 티어 :</label>{{$defs.tierList[selectedBattle.tierMin].name}} ~ {{$defs.tierList[selectedBattle.tierMax].name}}</div>
@@ -21,7 +21,7 @@
 
         <hr>
         <!--개인 전-->
-        <div v-if="selectedBattle.type == 0" class="container-table" style="height: 600px">
+        <div v-if="selectedBattle.type == 0" class="container-table">
           <table>
             <thead>
             <tr>
@@ -117,15 +117,18 @@
           이벤트 전
         </div>
       </div>
+      <div v-else>배틀(리그)을 선택해 주세요.</div>
     </div>
-    <div class="battle-info-article">
+
+    <!--오른쪽-->
+    <div class="battle-info-article record-container">
       <h2 @click="refreshRecord">전적 리스트 (Click To Refresh)</h2>
       <hr>
       <div v-if="selectedBattle == null">
         배틀 리스트에서 항목을 선택해 주세요.
       </div>
-      <div v-else style="height: 92%">
-        <vue-record-list :record-list="recordList" :show-battle-name="false" style="height: 100%;" @reqRefresh="refreshRecord"></vue-record-list>
+      <div v-else class="record-list-container">
+        <vue-record-list :record-list="recordList" :show-battle-name="false" @reqRefresh="refreshRecord"></vue-record-list>
       </div>
     </div>
     <modals-container/>
@@ -134,13 +137,12 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import DemoSizeModal from './modalDetail'
   import VueRecordList from '../module/vueRecordList'
   import VueTeamList from '../module/vueTeamList'
   export default {
     name: "BattleInfo",
     props: ['isProgressing'],
-    components: {VueRecordList, VueTeamList, DemoSizeModal, },
+    components: {VueRecordList, VueTeamList, },
     data () {
       return {
         mDateFormat: 'YYYY-MM-DD',

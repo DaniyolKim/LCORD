@@ -32,8 +32,8 @@
     flex-direction: column;
     align-items: flex-end;
     justify-content: center;
-    padding: 10px;
     color: white;
+    padding-right: 1.5vw;
     background: #303033;
   }
   a {

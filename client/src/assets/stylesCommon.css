@@ -27,7 +27,11 @@ h2 { background: #404043; color: white; padding: 5px; margin-top: 0px; margin-bo
 /*BattleInfo.vue*/
 .container-battle-info { display: flex; flex-direction: row; justify-content: flex-start; align-items: center; }
 .battle-info-article { width: 50%; height: 98%; padding: 5px;}
+.battle-selector-container { display: flex; flex-direction: column;align-items: center;justify-content: center; }
+.battle-rank-container { height: calc(91vh - 90px); overflow-y: auto; }
 .container-table { display: flex; flex-direction: column; justify-items: center; overflow-x: scroll; overflow-y: auto; }
+.record-container { visibility: visible; }
+.record-list-container { height: calc(91vh - 50px); overflow-y: auto; }
 
 /*CreateBattle.vue*/
 .container-create-battle { display: flex; flex-direction: row; justify-content: flex-start; align-items: center; }

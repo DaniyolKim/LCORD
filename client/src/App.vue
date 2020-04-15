@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div class="contents-area">
-      <header-area style="height: 5vh"/>
-      <router-view style="height: 90vh; overflow-y: auto"></router-view>
+      <header-area style="height: 5vh;"/>
+      <router-view style="height: 95vh; overflow-y: auto"></router-view>
     </div>
     <sidebar-menu :menu="menu" :showChild="false" :width="menuWidth" :widthCollapsed="menuWidthCollabse" :collapsed="true"/>
     <modal-loading/>

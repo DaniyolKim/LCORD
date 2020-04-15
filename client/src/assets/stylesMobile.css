@@ -19,7 +19,9 @@
 
   /*BattleInfo.vue*/
   .container-battle-info { flex-direction: column; }
-  .battle-info-article { width: 100%; }
+  .battle-info-article { width: 100%; height: auto; }
+  .battle-rank-container { height: auto; }
+  .record-container { display: none; }
 
   /*CreateBattle.vue*/
   .container-create-battle { flex-direction: column; }
