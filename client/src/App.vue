@@ -4,7 +4,7 @@
       <header-area style="height: 5vh;"/>
       <router-view style="height: 95vh; overflow-y: auto"></router-view>
     </div>
-    <sidebar-menu :menu="menu" :showChild="false" :width="menuWidth" :widthCollapsed="menuWidthCollabse" :collapsed="true"/>
+    <sidebar-menu :menu="menu" :showChild="false" :width="menuWidth" :widthCollapsed="menuWidthCollabse" :collapsed="true" />
     <modal-loading/>
   </div>
 </template>

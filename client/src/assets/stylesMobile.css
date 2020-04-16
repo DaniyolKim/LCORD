@@ -15,7 +15,12 @@
 
   /*CreateRecord*/
   .container-create-record { flex-direction: column; }
-  .create-record-article { width: 100%; }
+  .create-record-article { width: 100%; height: auto; }
+  .create-record-list-container { height: auto; }
+  .info-label { width: 50px; margin-right: 5px; }
+  .info-input { width: 200px; }
+  .info-select { width: 200px; font-size: 8px; }
+  .info-input-url { width: 180px; font-size: 8px; }
 
   /*BattleInfo.vue*/
   .container-battle-info { flex-direction: column; }
@@ -29,7 +34,8 @@
 
   /*userList.vue*/
   .container-user-list { flex-direction: column; justify-content: space-between; align-items: flex-start}
-  .section-user-list { height: 60%; width: 100%; }
+  .user-list-article { width: 100%; height: auto; }
+  .user-list-container { height: auto; }
   .container-chart { flex-direction: column; height: 500px; padding: 15px; }
   .chart-style { height: 50%; width: 100%; }
 

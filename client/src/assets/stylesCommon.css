@@ -22,11 +22,16 @@ h2 { background: #404043; color: white; padding: 5px; margin-top: 0px; margin-bo
 
 /*CreateRecord*/
 .container-create-record { display: flex; flex-direction: row; justify-content: flex-start; align-items: center; }
-.create-record-article { width: 50%; height: 100%; }
+.create-record-article { width: 50%; height: 98%; padding: 5px; }
+.create-record-list-container { height: calc(91vh - 65px); overflow-y: auto; }
+.info-label { width: 150px; text-align: right; margin-right: 15px; }
+.info-input { width: 310px; }
+.info-select { font-size: 16px; padding: 10px; border: solid 1px #e8e8e8; border-radius: 5px; width: 310px;}
+.info-input-url { font-size: 16px; padding: 10px; border: solid 1px #e8e8e8; border-radius: 5px; width: 288px;}
 
 /*BattleInfo.vue*/
 .container-battle-info { display: flex; flex-direction: row; justify-content: flex-start; align-items: center; }
-.battle-info-article { width: 50%; height: 98%; padding: 5px;}
+.battle-info-article { width: 50%; height: 98%; padding: 5px; }
 .battle-selector-container { display: flex; flex-direction: column;align-items: center;justify-content: center; }
 .battle-rank-container { height: calc(91vh - 90px); overflow-y: auto; }
 .container-table { display: flex; flex-direction: column; justify-items: center; overflow-x: scroll; overflow-y: auto; }
@@ -39,7 +44,8 @@ h2 { background: #404043; color: white; padding: 5px; margin-top: 0px; margin-bo
 
 /*userList.vue*/
 .container-user-list { display: flex; flex-direction: row; justify-content: space-around; }
-.section-user-list { height: 100%; width: 48%; }
+.user-list-article { width: 50%; height: 98%; padding: 5px; }
+.user-list-container { height: calc(91vh - 25px); overflow-y: auto; }
 .container-chart { display: flex; flex-direction: row; justify-content: space-around; align-items: center; height: 300px; padding: 15px; }
 .chart-style { height: 100%; width: 50%; }
 

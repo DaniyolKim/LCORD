@@ -1,9 +1,9 @@
 <template>
   <div class="container-user-list">
-    <div class="section-user-list">
+    <div class="user-list-article">
       <!--<h2 @click="calELO">ELO 재계산</h2>-->
       <h2>플레이어 리스트 ({{playerList.length}}명)</h2>
-      <div style="height: 95%;overflow-y: auto;">
+      <div class="user-list-container">
         <table style="width: 100%">
           <thead>
           <tr>
@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div class="section-user-list">
+    <div class="user-list-article">
       <h2>{{selectedPlayer.userName}}님의 상세 정보</h2>
       <div style="height: 95%;overflow-y: auto;">
         <div v-if="selectedPlayer != ''">
@@ -47,7 +47,7 @@
           </div>
 
           <h3>능력 평가 리스트 <button style="width: 60px; margin-left: 10px;padding: 3px;" @click="showModalAbility">+ 추가</button></h3>
-          <div class="container-table" style="max-height: 200px">
+          <div class="container-table">
             <table>
               <thead>
               <tr>
@@ -67,7 +67,7 @@
           </div>
 
           <h3>전적</h3>
-          <vue-record-list :record-list="sortedRecords" :show-battle-name="true" style="height: 200px;" @reqRefresh="updateData"></vue-record-list>
+          <vue-record-list :record-list="sortedRecords" :show-battle-name="true" @reqRefresh="updateData"></vue-record-list>
         </div>
         <div v-else>
           상세 정보를 보시려면 플레이어를 선택하세요.

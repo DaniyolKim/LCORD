@@ -4,6 +4,7 @@
       <label>검색 : </label>
       <input type="text" v-model="filterString">
     </div>
+    <button @click="getAllPlayers">USER Refresh</button>
     <div style="display: flex; flex-direction: row; justify-content: space-around">
       <div style="height: 85vh; width: 60vw; overflow-y: auto">
         <table style="width: 100%">
@@ -49,6 +50,7 @@
         <button @click="resetPWD">RESET PWD</button>
       </div>
     </div>
+    <modals-container/>
   </div>
 </template>
 
@@ -75,8 +77,10 @@
 
     methods: {
       getAllPlayers() {
+        this.$modal.show('loading-modal')
         this.$lcordAPI.user.getSortedAllUsers(this.sortArg)
           .then(resp => {
+            this.$modal.hide('loading-modal')
             this.playerList = resp
           })
       },
