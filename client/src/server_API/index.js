@@ -22,9 +22,13 @@ const defs = {
 
 const comFunction = {
   isAuth () {
-    if (store.getters.getUserToken == '') {
-    //if (localStorage.getItem('userToken') == null) {
-      return false
+    if (store.getters.getUserInfo == '') {
+      if (localStorage.getItem('userInfo') == null) {
+        return false
+      } else {
+        store.dispatch('updateUserInfo', JSON.parse(localStorage.getItem('userInfo')))
+        return true
+      }
     } else {
       return true
     }

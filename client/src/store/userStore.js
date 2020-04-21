@@ -1,68 +1,40 @@
 const state = {
-  userDBIndex: '',
-  userId: '',
-  userToken: '',
-  userRole: '',
+  userInfo: ''
 }
 
 const getters = {
   getUserDBIndex: state => {
-    return state.userDBIndex
-    //return localStorage.getItem('userDBIndex')
+    return state.userInfo._id
   },
   getUserId: state => {
-    return state.userId
-    //return localStorage.getItem('userId')
+    return state.userInfo.userId
   },
   getUserToken: state => {
-    return state.userToken;
-    //return localStorage.getItem('userToken')
+    return state.userInfo.token
   },
   getUserRole: state => {
-    return state.userRole;
+    return state.userInfo.role
+  },
+  getUserInfo: state => {
+    return state.userInfo
   }
 }
 
 const mutations = {
-  updateUserDBIndex(state, value) {
-    state.userDBIndex = value
-    //localStorage.setItem('userDBIndex', value)
-  },
-  updateUserId(state, value) {
-    state.userId = value
-    //localStorage.setItem('userId', value)
-  },
-  updateUserToken(state, value) {
-    state.userToken = value
-    //localStorage.setItem('userToken', value)
-  },
-  updateUserRole(state, value) {
-    state.userRole = value
-  },
   clearUserInfo(state) {
-    state.userId = ''
-    state.userToken = ''
-    state.userDBIndex = ''
-    state.userRole = ''
-    //localStorage.clear()
-  }
+    state.userInfo = ''
+  },
+  updateUserInfo(state, value) {
+    state.userInfo = value
+  },
 }
 
 const actions = {
-  updateUserDBIndex ({commit}, value) {
-    commit('updateUserDBIndex', value)
-  },
-  updateUserId ({commit}, value) {
-    commit('updateUserId', value)
-  },
-  updateUserToken({commit}, value) {
-    commit('updateUserToken', value)
-  },
-  updateUserRole({commit}, value) {
-    commit('updateUserRole', value)
-  },
   clearUserInfo({commit}) {
     commit('clearUserInfo')
+  },
+  updateUserInfo ({commit}, value) {
+    commit('updateUserInfo', value)
   }
 }
 

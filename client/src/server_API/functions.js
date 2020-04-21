@@ -21,11 +21,19 @@ const apis = {
       return await axios.post(urls.getToken, loginInfo)
         .then(resp =>{
           let data = resp.data
-          store.dispatch('updateUserDBIndex', data._id)
-          store.dispatch('updateUserId', data.userId)
-          store.dispatch('updateUserToken', data.token)
-          store.dispatch('updateUserRole', data.role)
-          axios.defaults.headers.common['Authorization'] = store.getters.getUserToken
+
+          axios.defaults.headers.common['Authorization'] = data.token
+
+          let userInfo = {
+            _id: data._id,
+            userId: data.userId,
+            token: data.token,
+            role: data.role,
+          }
+          let strUserInfo = JSON.stringify(userInfo)
+
+          store.dispatch('updateUserInfo', userInfo)
+          localStorage.setItem('userInfo', strUserInfo)
 
           return resp.data
         })

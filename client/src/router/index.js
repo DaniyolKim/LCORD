@@ -19,11 +19,15 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
+
   routes: [
     {
       path: '/',
       name: 'Main',
-      component: Main
+      component: Main,
+      beforeEnter: function (to, from, next) {
+        checkAuth(to, from, next)
+      }
     },
     {
       path: '/login',
@@ -33,18 +37,24 @@ export default new Router({
     {
       path: '/regUser',
       name: 'CreateAccount',
-      component: CreateAccount
+      component: CreateAccount,
     },
     {
       path: '/myInfo',
       name: 'MyInfo',
-      component: MyInfo
+      component: MyInfo,
+      beforeEnter: function (to, from, next) {
+        checkAuth(to, from, next)
+      }
     },
     {
       path: '/Battle/:isProgressing',
       name: 'BattleInfo',
       component: BattleInfo,
       props: true,
+      beforeEnter: function (to, from, next) {
+        checkAuth(to, from, next)
+      }
     },
     {
       path: '/manage/createRecord',
