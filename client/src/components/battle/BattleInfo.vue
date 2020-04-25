@@ -295,6 +295,10 @@
         this.getPngTeamList()
       })
     },
+    beforeDestroy() {
+      this.$EventBus.$off('refRecordList')
+      this.$EventBus.$off('cmpOrderTeamMember')
+    },
     computed: {
       ...mapGetters({
         userDBIndex: 'getUserDBIndex',

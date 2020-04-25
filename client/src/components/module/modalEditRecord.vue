@@ -160,7 +160,7 @@
       this.getMapList()
       this.getAllUserList()
       this.getBattleList()
-      this.getAllRecords()
+      //this.getAllRecords()
     },
     computed: {
       ...mapGetters({

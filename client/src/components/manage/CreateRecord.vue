@@ -254,11 +254,14 @@
       this.getBattleList()
       this.getAllRecords()
 
-     this.initRecord()
+      this.initRecord()
 
       this.$EventBus.$on('refRecordList', () => {
         this.getAllRecords()
       })
+    },
+    beforeDestroy() {
+        this.$EventBus.$off('refRecordList')
     },
     computed: {
       ...mapGetters({

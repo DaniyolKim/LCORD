@@ -176,6 +176,9 @@
         this.updateData(true)
       })
     },
+    beforeDestroy() {
+        this.$EventBus.$off('refRecordList')
+    },
     computed: {
       ...mapGetters({
         userDBIndex: 'getUserDBIndex',
