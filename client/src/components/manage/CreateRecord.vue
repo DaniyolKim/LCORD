@@ -261,7 +261,7 @@
       })
     },
     beforeDestroy() {
-        this.$EventBus.$off('refRecordList')
+        /*this.$EventBus.$off('refRecordList')*/
     },
     computed: {
       ...mapGetters({
