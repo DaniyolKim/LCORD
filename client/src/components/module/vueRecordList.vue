@@ -61,6 +61,7 @@
                 width: '700px',
                 height: '470px',
                 clickToClose: false,
+                root: this.$root
               }
             )
           } else {

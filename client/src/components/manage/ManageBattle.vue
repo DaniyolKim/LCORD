@@ -137,6 +137,7 @@
             width: '700px',
             height: '470px',
             clickToClose: false,
+            root: this.$root
           }
         )
       },
@@ -178,6 +179,7 @@
             width: '94%',
             height: '95%',
             clickToClose: false,
+            root: this.$root
           }
         )
       },
