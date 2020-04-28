@@ -67,7 +67,7 @@
           </div>
 
           <h3>전적</h3>
-          <vue-record-list :record-list="sortedRecords" :show-battle-name="true" @reqRefresh="updateData"></vue-record-list>
+          <vue-record-list :record-list="sortedRecords" @reqRefresh="updateData"></vue-record-list>
         </div>
         <div v-else>
           상세 정보를 보시려면 플레이어를 선택하세요.

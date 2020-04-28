@@ -91,7 +91,7 @@
       <h2>최근 입력 한 50개 전적 (Refresh로 중복 확인!)</h2>
       <button style="margin: 2px; width: 100%; background-color: #4285f4" @click="getAllRecords"><i class="fas fa-sync-alt"/> Refresh</button>
       <div class="create-record-list-container">
-        <vue-record-list :record-list="recordList" :show-battle-name="true"></vue-record-list>
+        <vue-record-list :record-list="recordList"></vue-record-list>
       </div>
     </div>
     <modals-container/>

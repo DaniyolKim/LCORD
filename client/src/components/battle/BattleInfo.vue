@@ -80,7 +80,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(ranker, index) in sortedRanking" @click="getAllRecordsOfUser(ranker.user._id)">
+            <tr v-for="(ranker, index) in sortedRanking" @click="getAllRecordsOfUser(ranker)">
               <td>{{index + 1}}</td>
               <td class="double-left">{{ranker.user.userName}}({{ranker.user.tribe | cvtTribe}})</td>
               <td class="double-left">{{ranker.total.winCount}}</td>
@@ -121,7 +121,7 @@
     </div>
 
     <!--오른쪽-->
-    <div class="battle-info-article record-container">
+    <div v-if="isMobile === false" class="battle-info-article record-container">
       <h2 @click="refreshRecord">전적 리스트 (Click To Refresh)</h2>
       <hr>
       <div v-if="selectedBattle == null">
@@ -139,10 +139,11 @@
   import { mapGetters } from 'vuex'
   import VueRecordList from '../module/vueRecordList'
   import VueTeamList from '../module/vueTeamList'
+  import ModalRecordSummary from './modalRecordSummary'
   export default {
     name: "BattleInfo",
     props: ['isProgressing'],
-    components: {VueRecordList, VueTeamList, },
+    components: {VueRecordList, VueTeamList, ModalRecordSummary, },
     data () {
       return {
         mDateFormat: 'YYYY-MM-DD',
@@ -205,21 +206,38 @@
           })
       },
 
-      getAllRecordsOfUser (userId) {
+      getAllRecordsOfUser (ranker) {
         this.$modal.show('loading-modal')
-        this.$lcordAPI.record.getAllRecordsOfUser(userId)
+        this.$lcordAPI.record.getAllRecordsOfUser(ranker.user._id)
           .then(resp => {
-            let tempResp = []
+            let respRecords = []
             let batlleId = this.selectedBattle._id
             resp.forEach(function (rec) {
               if (batlleId == rec.battleId._id) {
-                tempResp.push(rec)
+                respRecords.push(rec)
               }
             })
-            this.recordList = tempResp
 
             this.$modal.hide('loading-modal')
+
+            if (this.isMobile == false) {
+              this.recordList = respRecords
+            } else {
+              this.showRecordSummary(respRecords, ranker)
+            }
           })
+      },
+
+      showRecordSummary (recordList, ranker) {
+        this.$modal.show(ModalRecordSummary,
+          { user: ranker.user, recordList: recordList, summary: ranker },
+          {
+            width: '75%',
+            height: '85%',
+            clickToClose: false,
+            root: this.$refs.myModal
+          }
+        )
       },
 
       refreshRecord () {
@@ -303,6 +321,11 @@
       ...mapGetters({
         userDBIndex: 'getUserDBIndex',
       }),
+      isMobile: function () {
+        let touchDevice = (navigator.maxTouchPoints || 'ontouchstart' in document.documentElement)
+        if (touchDevice != false) return true
+        else return false
+      },
       sortedRanking: function () {
         let retList = this.rankerList
 

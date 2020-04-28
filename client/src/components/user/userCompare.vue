@@ -59,7 +59,7 @@
               <label>{{winCount}}</label><label>승</label>
               <label>{{loseCount}}</label><label>패</label>
             </div>
-            <vue-record-list :record-list="vsRecordList" :show-battle-name="true" style="width: 100%;"></vue-record-list>
+            <vue-record-list :record-list="vsRecordList" style="width: 100%;"></vue-record-list>
           </div>
         </div>
       </div>

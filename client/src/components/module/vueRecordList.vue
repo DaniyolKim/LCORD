@@ -3,28 +3,29 @@
     <table>
       <thead>
       <tr>
-        <th>작성자</th><th>경기 날짜</th>
+        <th v-if="needEdit == true">작성자</th>
+        <th>경기 날짜</th>
         <th v-if="showBattleName">배틀 이름</th><th>배틀 타입</th><th>맵</th>
         <th><label>승자</label></th><th><label>패자</label></th>
-        <th>방송 URL</th>
-        <th>편집</th>
+        <th v-if="needEdit == true">방송 URL</th>
+        <th v-if="needEdit == true">편집</th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="record in sortedRecords">
-        <td>{{record.writer.userName}}</td>
+        <td v-if="needEdit == true">{{record.writer.userName}}</td>
         <td>{{record.date | moment(mDateFormat)}}</td>
         <td v-if="showBattleName">{{record.battleId |getBattleName}}</td>
-        <td>{{record.map.name}}</td>
         <td>{{$defs.gameTypeList[record.battleType].name}}</td>
+        <td>{{record.map.name}}</td>
         <td><label v-for="user in record.winners" class="user-label" :class="user.tribe">{{user.userName}}({{user.tribe | cvtTribe}})</label></td>
         <td><label v-for="user in record.losers" class="user-label" :class="user.tribe">{{user.userName}}({{user.tribe | cvtTribe}})</label></td>
-        <td><a v-if="record.videoLink != ''" :href="record.videoLink" target="_blank">click to move</a></td>
-        <td><button @click="editRecord(record)">편집</button></td>
+        <td v-if="needEdit == true"><a v-if="record.videoLink != ''" :href="record.videoLink" target="_blank">click to move</a></td>
+        <td v-if="needEdit == true"><button @click="editRecord(record)">편집</button></td>
       </tr>
       </tbody>
     </table>
-    <modals-container></modals-container>
+    <modals-container v-if="needEdit == true"></modals-container>
   </div>
 </template>
 
@@ -33,7 +34,17 @@
   import modalEditRecord from "./modalEditRecord";
   export default {
     name: "vueRecordList",
-    props: ['recordList', 'showBattleName'],
+    props: {
+      recordList: Array,
+      showBattleName:{
+        type: Boolean,
+        default: false
+      },
+      needEdit: {
+        type: Boolean,
+        default: true
+      }
+    },
     components: { modalEditRecord},
     data () {
       return {
