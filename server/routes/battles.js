@@ -12,7 +12,9 @@ router.post('/', function(req, res) {
         tierMax: body.tierMax,
         type: body.type,
         isRound: body.isRound,
-        managers: body.managers
+        managers: body.managers,
+        winScore: body.winScore,
+        loseScore: body.loseScore,
     })
 
     /*if (battle.type == 1 && battle.isRound == true) { //팀 리그, 라운드 방식 선택 시

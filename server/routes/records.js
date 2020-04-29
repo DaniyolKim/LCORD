@@ -79,11 +79,19 @@ router.get('/byBattle/:battleId', function(req, res) {
 /* Get rankerList by battleId*/
 router.get('/rankOfBattle/:battleId', function(req, res) {
     Record.find({battleId: req.params.battleId})
-      .populate('battleId' , '_id name managers')
+      .populate('battleId' , '_id name managers winScore loseScore')
       .populate('winners', '_id userName userId tribe bNetId eloScore')
       .populate('losers', '_id userName userId tribe bNetId eloScore')
       .then(records => {
           let rankerList = []
+
+          let winPoint = 2
+          let losePoint = 1
+
+          if (records.length > 0) {
+              winPoint = records[0].battleId.winScore
+              losePoint = records[0].battleId.loseScore
+          }
 
           records.forEach(record => {
               let winner = record.winners[0]
@@ -102,7 +110,7 @@ router.get('/rankOfBattle/:battleId', function(req, res) {
           })
 
           rankerList.forEach(ranker => {
-              ranker.total.winScore = calWinScore(ranker.total.winCount, ranker.total.loseCount)
+              ranker.total.winScore = calWinScore(ranker.total.winCount, ranker.total.loseCount, winPoint, losePoint)
               ranker.total.winRate = calWinRate(ranker.total.winCount, ranker.total.loseCount)
               ranker.vsTerran.winRate = calWinRate(ranker.vsTerran.winCount, ranker.vsTerran.loseCount)
               ranker.vsProtoss.winRate = calWinRate(ranker.vsProtoss.winCount, ranker.vsProtoss.loseCount)
@@ -263,8 +271,8 @@ function countLose(ranker, winTribe) {
     }
 }
 
-function calWinScore (winCount, loseCount) {
-    let retVal = (winCount * 2) - loseCount
+function calWinScore (winCount, loseCount, winPoint, losePoint) {
+    let retVal = (winCount * winPoint) - (loseCount * losePoint)
     return isNaN(retVal) ? 0 : retVal
 }
 

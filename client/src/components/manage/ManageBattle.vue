@@ -54,6 +54,23 @@
           </select>
         </div>
 
+        <div class="battle-elem">
+          <label>승/패 점수</label>
+          <select class="select-score" v-model="selectedBattle.winScore">
+            <option v-for="score in scoreList" :value="score">+{{score}}</option>
+          </select>
+          <select class="select-score" v-model="selectedBattle.loseScore">
+            <option v-for="score in scoreList" :value="score">-{{score}}</option>
+          </select>
+        </div>
+
+        <div class="battle-elem">
+          <label>완료 여부</label>
+          <select v-model="selectedBattle.onProgressing" :disabled="inputEnable == false">
+            <option v-for="progress in progressList" :value="progress.value">{{progress.name}}</option>
+          </select>
+        </div>
+
         <div class="battle-elem battle-manager">
           <label>관리자</label>
           <div style="width: 42.5%">
@@ -80,6 +97,8 @@
     data () {
       return {
         selectedBattle: null,
+        scoreList: [1, 2, 3, 4, 5],
+        progressList: [{value: false, name: '종료'}, {value: true, name: '진행 중'},],
         battleList: [],
         userList: [],
         tierList: [ { name: 'NONE', type: 0}, { name: 'AMOEBA', type: 1}, { name: 'ANIMAL', type: 2}, { name: 'HUMAN', type: 3}, { name: 'GOD', type: 4} ],
@@ -239,4 +258,5 @@
   label { width: 150px; text-align: right; margin-right: 15px; }
   input { width: 40%; font-size: 14px; }
   select { font-size: 14px; padding: 10px; border: solid 1px #e8e8e8; border-radius: 5px; width: 42.5%;}
+  .select-score { font-size: 14px; padding: 10px; border: solid 1px #e8e8e8; border-radius: 5px; width: 21.25%;}
 </style>

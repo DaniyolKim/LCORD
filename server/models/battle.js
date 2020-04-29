@@ -21,6 +21,8 @@ let battleSchema = new Schema({
     roundCount: {type: Number, default: 1 },
     managers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
     onProgressing: {type: Boolean, default: true },
+    winScore: {type: Number, default: 2 },
+    loseScore: {type: Number, default: 1 },
 })
 
 module.exports = mongoose.model('battle', battleSchema);
