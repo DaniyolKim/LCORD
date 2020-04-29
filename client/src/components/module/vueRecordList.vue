@@ -65,7 +65,7 @@
       recordList: Array,
       showBattleName:{
         type: Boolean,
-        default: false
+        default: true
       },
       needEdit: {
         type: Boolean,

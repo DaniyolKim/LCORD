@@ -29,6 +29,14 @@
               <th rowspan="2" class="double-left double-bottom" :class="{ active: rankerSortKey === 'name'}" @click="sortRankerList('name')">이름
                 <span class="arrow" :class="rankerOrder['name'] > 0 ? 'asc' : 'dsc'"></span>
               </th>
+              <th rowspan="2" class="double-bottom">
+                <div>종족</div>
+                <div>
+                  <select v-model="tribeFilterKey">
+                    <option v-for="tribe in tribeList" :value="tribe.value">{{tribe.name}}</option>
+                  </select>
+                </div>
+              </th>
               <th colspan="5" class="double-left">전체</th>
               <th colspan="3" class="double-left bg-terran">vs 테란</th>
               <th colspan="3" class="double-left bg-protoss">vs 프로토스</th>
@@ -82,7 +90,8 @@
             <tbody>
             <tr v-for="(ranker, index) in sortedRanking" @click="getAllRecordsOfUser(ranker)">
               <td>{{index + 1}}</td>
-              <td class="double-left">{{ranker.user.userName}}({{ranker.user.tribe | cvtTribe}})</td>
+              <td class="double-left">{{ranker.user.userName}}</td>
+              <td class="double-left">{{ranker.user.tribe | cvtTribe}}</td>
               <td class="double-left">{{ranker.total.winCount}}</td>
               <td>{{ranker.total.loseCount}}</td>
               <td class="td-winRate-total">{{ranker.total.winRate}}</td>
@@ -156,10 +165,11 @@
         rankerList: [],
         rankerSortKeys: ['name', 'totWin', 'totLose', 'totRate', 'totScore', 'eloScore', 'vsTWin', 'vsTLose', 'vsTRate', 'vsPWin', 'vsPLose', 'vsPRate', 'vsZWin', 'vsZLose', 'vsZRate'],
         rankerSortKey: 'totScore',
-        rankerOrder: { name: 1, totWin: 1, totLose: 1, totRate: 1, totScore: 1, eloScore: 1,
-          vsTWin: 1, vsTLose: 1, vsTRate: 1, vsPWin: 1, vsPLose: 1, vsPRate: 1,
-          vsZWin: 1, vsZLose: 1, vsZRate: 1 },
-
+        rankerOrder: { name: -1, totWin: -1, totLose: -1, totRate: -1, totScore: 1, eloScore: -1,
+          vsTWin: -1, vsTLose: -1, vsTRate: -1, vsPWin: -1, vsPLose: -1, vsPRate: -1,
+          vsZWin: -1, vsZLose: -1, vsZRate: -1 },
+        tribeFilterKey: '',
+        tribeList: [{value:'', name:'All'}, {value:'zerg', name:'Z'}, {value:'terran', name:'T'}, {value:'protoss', name:'P'}, {value:'random', name:'R'}],
         recordList: [],
 
         outPut: null
@@ -328,6 +338,18 @@
       },
       sortedRanking: function () {
         let retList = this.rankerList
+
+        let filter = {}
+        if (this.tribeFilterKey != '') filter.tribe = this.tribeFilterKey
+
+        retList = retList.filter(function(item) {
+          for (let key in filter) {
+            if (item.user[key] != filter[key]) {
+              return false
+            }
+          }
+          return true
+        })
 
         let sortKey = this.rankerSortKey
         let order = this.rankerOrder[sortKey] || 1
