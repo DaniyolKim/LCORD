@@ -3,11 +3,38 @@
     <table>
       <thead>
       <tr>
-        <th v-if="needEdit == true">작성자</th>
-        <th>경기 날짜</th>
-        <th v-if="showBattleName">배틀 이름</th><th>배틀 타입</th><th>맵</th>
-        <th><label>승자</label></th><th><label>패자</label></th>
-        <th v-if="needEdit == true">방송 URL</th>
+        <th v-if="needEdit == true" :class="{ active: sortKey === 'writer'}" @click="sortRecordList('writer')">
+          <div>작성자<span class="arrow" :class="sortOrder['writer'] > 0 ? 'asc' : 'dsc'"/>
+          </div>
+        </th>
+        <th :class="{ active: sortKey === 'date'}" @click="sortRecordList('date')">
+          <div>경기 날짜<span class="arrow" :class="sortOrder['date'] > 0 ? 'asc' : 'dsc'"/>
+          </div>
+        </th>
+        <th v-if="showBattleName" :class="{ active: sortKey === 'battleId'}" @click="sortRecordList('battleId')">
+          <div>배틀 이름<span class="arrow" :class="sortOrder['battleId'] > 0 ? 'asc' : 'dsc'"/>
+          </div>
+        </th>
+        <th :class="{ active: sortKey === 'battleType'}" @click="sortRecordList('battleType')">
+          <div>배틀 타입<span class="arrow" :class="sortOrder['battleType'] > 0 ? 'asc' : 'dsc'"/>
+          </div>
+        </th>
+        <th :class="{ active: sortKey === 'map'}" @click="sortRecordList('map')">
+          <div>맵<span class="arrow" :class="sortOrder['map'] > 0 ? 'asc' : 'dsc'"/>
+          </div>
+        </th>
+        <th :class="{ active: sortKey === 'winners'}" @click="sortRecordList('winners')">
+          <div>승자<span class="arrow" :class="sortOrder['winners'] > 0 ? 'asc' : 'dsc'"/>
+          </div>
+        </th>
+        <th :class="{ active: sortKey === 'losers'}" @click="sortRecordList('losers')">
+          <div>패자<span class="arrow" :class="sortOrder['losers'] > 0 ? 'asc' : 'dsc'"/>
+          </div>
+        </th>
+        <th v-if="needEdit == true" :class="{ active: sortKey === 'videoLink'}" @click="sortRecordList('videoLink')">
+          <div>방송 URL<span class="arrow" :class="sortOrder['videoLink'] > 0 ? 'asc' : 'dsc'"/>
+          </div>
+        </th>
         <th v-if="needEdit == true">편집</th>
       </tr>
       </thead>
@@ -49,6 +76,9 @@
     data () {
       return {
         mDateFormat: 'YYYY-MM-DD',
+        sortKeyList: ['writer', 'date', 'battleId', 'battleType', 'map', 'winners', 'losers', 'videoLink'],
+        sortKey: 'date',
+        sortOrder: { writer: -1, date: 1, battleId: -1, battleType: -1, map: -1, winners: -1, losers: -1, videoLink: -1 },
       }
     },
     computed: {
@@ -57,6 +87,11 @@
       }),
       sortedRecords: function () {
         let retList = this.recordList
+
+        let sortKey = this.sortKey
+        let order = this.sortOrder[sortKey] || 1
+        this.recordListCompare(sortKey, order, retList)
+
         return retList
       },
     },
@@ -84,7 +119,39 @@
         let myUserId = this.userDBIndex
         let index = managers.findIndex(x => x == myUserId)
         return (index == -1) ? false : true
-      }
+      },
+
+      sortRecordList(key) {
+        this.sortOrder[key] = this.sortOrder[key] * -1
+        this.sortKey = key
+      },
+
+      recordListCompare (sortKey, order, retList) {
+        if (sortKey != '' && sortKey.type == undefined) {
+          retList.sort((a, b) => {
+            if (sortKey == 'writer') {
+              a = a[sortKey].userName
+              b = b[sortKey].userName
+            } else if (sortKey == 'battleId' || sortKey == 'map') {
+              a = a[sortKey].name
+              b = b[sortKey].name
+            } else if (sortKey == 'winners' || sortKey == 'losers') {
+              a = a[sortKey][0].userName
+              b = b[sortKey][0].userName
+            } else {
+              a = a[sortKey].toString()
+              b = b[sortKey].toString()
+            }
+
+            //return (a.length - b.length) * order || (a.localeCompare(b)) * order
+            if (sortKey == 'writer' || sortKey == 'battleId' || sortKey == 'map' || sortKey == 'winners' || sortKey == 'losers') {
+              return (a.length - b.length) * order || (a.localeCompare(b)) * order
+            } else {
+              return (a > b ? -1 : a < b ? 1 : 0) * order
+            }
+          })
+        }
+      },
     },
     filters: {
       cvtTribe: function (val) {
@@ -111,4 +178,27 @@
 
 <style scoped>
   button { padding: 5px 10px; }
+  th.active { color: crimson; text-shadow: 0 0 1px #fff; }
+  th.active .arrow { opacity: 1; }
+
+  .arrow {
+    display: inline-block;
+    vertical-align: middle;
+    width: 0;
+    height: 0;
+    margin-left: 5px;
+    opacity: 0.66;
+  }
+
+  .arrow.dsc {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid crimson;
+  }
+
+  .arrow.asc {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid crimson;
+  }
 </style>
