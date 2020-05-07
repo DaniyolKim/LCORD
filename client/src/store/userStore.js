@@ -22,6 +22,7 @@ const getters = {
 
 const mutations = {
   clearUserInfo(state) {
+    localStorage.clear()
     state.userInfo = ''
   },
   updateUserInfo(state, value) {

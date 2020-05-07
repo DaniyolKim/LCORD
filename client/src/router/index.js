@@ -22,14 +22,6 @@ export default new Router({
 
   routes: [
     {
-      path: '/',
-      name: 'Main',
-      component: Main,
-      beforeEnter: function (to, from, next) {
-        checkAuth(to, from, next)
-      }
-    },
-    {
       path: '/login',
       name: 'Login',
       component: Login
@@ -40,58 +32,47 @@ export default new Router({
       component: CreateAccount,
     },
     {
-      path: '/myInfo',
-      name: 'MyInfo',
-      component: MyInfo,
-      beforeEnter: function (to, from, next) {
-        checkAuth(to, from, next)
-      }
-    },
-    {
-      path: '/Battle/:isProgressing',
-      name: 'BattleInfo',
-      component: BattleInfo,
-      props: true,
-      beforeEnter: function (to, from, next) {
-        checkAuth(to, from, next)
-      }
-    },
-    {
-      path: '/manage/createRecord',
-      name: 'CreateRecord',
-      component: CreateRecord,
-      beforeEnter: function (to, from, next) {
-        checkAuth(to, from, next)
-      }
-    },
-    {
-      path: '/manage/manageBattle',
-      name: 'ManageBattle',
-      component: ManageBattle,
-      beforeEnter: function (to, from, next) {
-        checkAuth(to, from, next)
-      }
-    },
-    {
-      path: '/manage/admin',
-      name: 'Admin',
-      component: Admin,
-      beforeEnter: function (to, from, next) {
-        checkAuth(to, from, next)
-      }
-    },
-    {
-      path: '/user/userList',
-      name: 'UserList',
-      component: UserList,
-      beforeEnter: function (to, from, next) {
-        checkAuth(to, from, next)
-      }
-    },
-    {
-      path: '/user/userCompare',
-      name: 'UserCompare',
-      component: UserCompare,
+      path: '/',
+      name: 'Main',
+      component: Main,
+      children:[
+        {
+          path: '/Battle/:isProgressing',
+          name: 'BattleInfo',
+          component: BattleInfo,
+          props: true,
+        },
+        {
+          path: '/manage/createRecord',
+          name: 'CreateRecord',
+          component: CreateRecord,
+        },
+        {
+          path: '/manage/manageBattle',
+          name: 'ManageBattle',
+          component: ManageBattle,
+        },
+        {
+          path: '/manage/admin',
+          name: 'Admin',
+          component: Admin,
+        },
+        {
+          path: '/user/userList',
+          name: 'UserList',
+          component: UserList,
+        },
+        {
+          path: '/user/userCompare',
+          name: 'UserCompare',
+          component: UserCompare,
+        },
+        {
+          path: '/myInfo',
+          name: 'MyInfo',
+          component: MyInfo,
+        },
+      ],
       beforeEnter: function (to, from, next) {
         checkAuth(to, from, next)
       }

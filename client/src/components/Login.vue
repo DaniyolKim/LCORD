@@ -58,9 +58,11 @@ export default {
       clearUserInfo: 'clearUserInfo'
     })
   },
+  beforeMount () {
+    this.clearUserInfo()
+  },
   mounted() {
     this.nextPageName = this.$route.params.toName
-    this.clearUserInfo()
   },
 }
 </script>

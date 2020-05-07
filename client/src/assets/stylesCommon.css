@@ -1,6 +1,10 @@
 .body { padding: 1vh; height: 91vh; overflow-y: auto; }
+.vnb { background: #303033; height: 5vh; padding: 0;}
+.vnb__menu-options__option__link { color: white; }
+.vnb__menu-options__option__link:hover { color: #4285f4; }
+
 /*Login.vue*/
-.contents-area { padding-left: 50px; }
+/*.contents-area { padding-left: 50px; }*/
 .container-login { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 70vh; }
 .login-form { background-color: #424246; border-radius: 5px; }
 .login-logo { border-radius: 5px; }

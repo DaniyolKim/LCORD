@@ -14,9 +14,9 @@ Vue.prototype.$commAPI = lcordCommon.comFunction
 Vue.prototype.$defs = lcordCommon.defs
 Vue.prototype.$lcordAPI = lcordAPI.apis
 
-import VueSidebarMenu from 'vue-sidebar-menu'
-import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
-Vue.use(VueSidebarMenu)
+import "vue-navigation-bar/dist/vue-navigation-bar.css";
+import VueNavigationBar from "vue-navigation-bar";
+Vue.component("vue-navigation-bar", VueNavigationBar);
 
 import VModal from 'vue-js-modal'
 Vue.use(VModal, { dynamic: true, dialog: true })
@@ -27,9 +27,6 @@ import VueApexCharts from 'vue-apexcharts'
 Vue.use(VueApexCharts)
 Vue.component('apexchart', VueApexCharts)
 
-import VueSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/antd.css'
-Vue.component('VueSlider', VueSlider)
 
 import ModalLoading from './components/module/loading'
 Vue.component('modal-loading', ModalLoading)

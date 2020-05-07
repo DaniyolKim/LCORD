@@ -31,21 +31,15 @@
       </div>
     </div>
     <br>
-    <button @click="updateMyInfo" style="width: 42vw; background-color: #4285f4">플레이어 정보 업데이트</button>
+    <button class="myInfo-btn-update" @click="updateMyInfo">플레이어 정보 업데이트</button>
     <br>
     <div class="div-account-detail about">
       <h2>Password 변경</h2>
       <div class="container-info"><label>Password 입력</label><input type="text" v-model="pwd" required></div>
-      <button @click="updatePassword" style="background-color: #4285f4">변경 요청</button>
     </div>
     <br>
-    <div class="div-account-detail about">
-      <h2>평가 정보</h2>
-      <div style="display: flex; flex-direction: row; justify-content: space-around; align-items: center; height: 300px; padding: 15px;">
-        <apexchart type=radar height="100%" :options="chartOptionsStats" :series="chartSeriesStats"></apexchart>
-        <apexchart type=radar height="100%" :options="chartOptionsVS" :series="chartSeriesVS"></apexchart>
-      </div>
-    </div>
+    <button class="myInfo-btn-update" @click="updatePassword">Password 업데이트</button>
+    <br>
 
   </div>
 </template>
@@ -65,13 +59,6 @@ export default {
       ability: '',
       vsRecords: '',
 
-      chartOptionsVS: {
-        title: { text: '종족별 승률', align: 'center', },
-        labels: ['Terran', 'Zerg', 'Protoss'],
-        yaxis: { min: 0, max: 100, tickAmount: 2 },
-        chart: { toolbar: {  show: false }},
-        theme: { palette: 'palette8' } // upto palette10
-      },
       battleList: [],
     }
   },
@@ -135,29 +122,6 @@ export default {
       userId: 'getUserId',
       userDBIndex: 'getUserDBIndex',
     }),
-    chartOptionsStats: function() {
-      let retObj = {
-        title: { text: 'Total 능력치 : ' + this.ability.totalScore, align: 'center', },
-        labels: ['빌드', '컨트롤', '판단', '자원 관리', '확장능력'],
-        yaxis: { min: 0, max: 5, tickAmount: 5 },
-        chart: { toolbar: {  show: false }},
-        theme: { palette: 'palette7' } // upto palette10
-      }
-      return retObj
-    },
-    chartSeriesStats: function () {
-      let retObj = [{ name: "",
-        data: this.ability.summary
-      }]
-
-      return retObj
-    },
-    chartSeriesVS: function () {
-      let retObj = [{ name: "종족별 승률(%)",
-        data: this.vsRecords.summary
-      }]
-      return retObj
-    },
     cvtTribe: {
       get: function () {
         let index = this.$defs.tribes.findIndex(x => x.val == this.accountParams.tribe)
