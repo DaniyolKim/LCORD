@@ -60,7 +60,7 @@
             <option v-for="score in scoreList" :value="score">+{{score}}</option>
           </select>
           <select class="select-score" v-model="selectedBattle.loseScore">
-            <option v-for="score in scoreList" :value="score">-{{score}}</option>
+            <option v-for="score in loseScoreList" :value="score">{{score | cvtScoreValue}}</option>
           </select>
         </div>
 
@@ -98,6 +98,7 @@
       return {
         selectedBattle: null,
         scoreList: [1, 2, 3, 4, 5],
+        loseScoreList: [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5],
         progressList: [{value: false, name: '종료'}, {value: true, name: '진행 중'},],
         battleList: [],
         userList: [],
@@ -244,6 +245,17 @@
           this.selectedBattle.tierMax = newVal.type
         }
       },
+    },
+    filters: {
+      cvtScoreValue: function (val) {
+        if (val == 0) {
+          return val
+        } else if (val > 0){
+          return '-' + val
+        } else {
+          return '+' + Math.abs(val)
+        }
+      }
     }
   }
 </script>
