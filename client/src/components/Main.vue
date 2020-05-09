@@ -15,7 +15,7 @@
           elementId: "main-navbar",
           isUsingVueRouter: true,
           mobileBreakpoint: 992,
-          brandImagePath: "/battle/true",
+          brandImagePath: "/",
           brandImage: require("../../src/assets/images/logo.png"),
           brandImageAltText: "LG Craft Record",
           collapseButtonImageOpen: require("../../src/assets/images/menu-light.png"),

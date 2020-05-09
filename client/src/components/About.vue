@@ -1,6 +1,6 @@
 <template>
   <div>
-    About
+    <iframe style="width: 100%; height: 100%" src="https://cafe.naver.com/lgcraft"></iframe>
   </div>
 </template>
 
