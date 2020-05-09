@@ -4,7 +4,7 @@
       <thead>
       <tr>
         <th>구분</th>
-        <th v-for="team in teamList">
+        <th v-for="team in cmpTeamList">
           {{team.name}}({{team.members.length}}명)
         </th>
       </tr>
@@ -12,7 +12,7 @@
       <tbody>
       <tr v-for="tier in selTierList">
         <td>{{tier.name}}</td>
-        <td class="td-members" v-for="team in teamList">
+        <td class="td-members" v-for="team in cmpTeamList">
           <div class="div-members" v-for="user in orderTierMember(team.members)" style="margin: 1px">
             <UserCard v-if="user.tier == tier.value" :user="user" :is-click-enable="false"></UserCard>
           </div>
@@ -41,16 +41,18 @@
       }
     },
     methods: {
-      orderTeamMemberByTier() {
-        for (let i = 0; i < this.teamList.length; i++) {
-          let members = this.teamList[i].members
+      orderTeamMemberByTier(teamList, playerList) {
+        let retList = teamList
+        for (let i = 0; i < teamList.length; i++) {
+          let members = teamList[i].members
           for (let j = 0; j < members.length; j++) {
-            let index = this.playerList.findIndex(x => x._id === members[j])
+            let index = playerList.findIndex(x => x._id === members[j])
             if (index > -1) {
-              members[j] = this.playerList[index]
+              members[j] = playerList[index]
             }
           }
         }
+        return retList
       },
 
       orderTierMember(members) {
@@ -65,7 +67,7 @@
       }
     },
     beforeMount() {
-      this.orderTeamMemberByTier()
+      //this.orderTeamMemberByTier()
     },
     mounted() {
       this.$EventBus.$emit('cmpOrderTeamMember')
@@ -74,6 +76,9 @@
       selTierList: function () {
         let retList = this.tierList.slice(this.tierMin, this.tierMax + 1)
         return retList.reverse()
+      },
+      cmpTeamList: function () {
+        return this.orderTeamMemberByTier(this.teamList, this.playerList)
       }
     }
   }

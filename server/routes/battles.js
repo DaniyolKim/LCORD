@@ -79,6 +79,20 @@ router.get('/name/:name', function(req, res) {
         })
 })
 
+// GET SINGLE Battle by ID
+router.get('/:_id', function(req, res) {
+    Battle.findOne({_id: req.params._id}).populate('managers', 'userName')
+        .then(battle => {
+            if(!battle) {
+                return res.status(404).json({error: 'battle not found'})
+            }
+            res.json(battle)
+        })
+        .catch(error => {
+            return res.status(500).json({error: err})
+        })
+})
+
 // UPDATE THE Battle
 router.put('/:_id', function(req, res) {
     Battle.update({ _id: req.params._id }, { $set: req.body }, function(err, output){

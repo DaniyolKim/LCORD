@@ -13,6 +13,8 @@ import ManageBattle from '../components/manage/ManageBattle'
 import Admin from "../components/manage/Admin"
 import UserList from '../components/user/userList'
 import UserCompare from '../components/user/userCompare'
+import About from '../components/About'
+import BattleDetail from '../components/battle/BattleDetail'
 
 Vue.use(require('vue-moment'))
 Vue.use(Router)
@@ -35,9 +37,23 @@ export default new Router({
       path: '/',
       name: 'Main',
       component: Main,
+      beforeEnter: function (to, from, next) {
+        checkAuth(to, from, next)
+      },
       children:[
         {
-          path: '/Battle/:isProgressing',
+          path: '/',
+          name: 'about',
+          component: About,
+        },
+        {
+          path: '/battleId/:battleId',
+          name: 'Battle',
+          component: BattleDetail,
+          props: true,
+        },
+        {
+          path: '/battle/:isProgressing',
           name: 'BattleInfo',
           component: BattleInfo,
           props: true,
@@ -72,10 +88,7 @@ export default new Router({
           name: 'MyInfo',
           component: MyInfo,
         },
-      ],
-      beforeEnter: function (to, from, next) {
-        checkAuth(to, from, next)
-      }
+      ]
     },
   ]
 })

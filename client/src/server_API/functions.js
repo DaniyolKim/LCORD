@@ -110,7 +110,7 @@ const apis = {
     },
 
     async getSortedAllUsers (sortArg) {
-      return await axios.get(urls.getUser + '/sortBy/' + sortArg.key + '/' + sortArg.order)
+      return await axios.get(urls.getUser + 'sortBy/' + sortArg.key + '/' + sortArg.order)
         .then(resp =>{
           let allUsers = resp.data
           return allUsers
@@ -179,6 +179,9 @@ const apis = {
     async getListByProgress (isGoing) {
       return await axios.get(comm.urls.battle + 'onProgressing/' + isGoing)
         .then(resp =>{
+          resp.data.sort((a, b) => {
+              return a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+            })
           return resp.data
         })
         .catch(error => {
@@ -189,6 +192,17 @@ const apis = {
 
     async getListByType (type) {
       return await axios.get(comm.urls.battle + 'type/' + type)
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          console.log(error.response)
+          return error
+        })
+    },
+
+    async getBattleById (battleId) {
+      return await axios.get(comm.urls.battle + battleId)
         .then(resp =>{
           return resp.data
         })
