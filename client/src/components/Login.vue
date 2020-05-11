@@ -33,7 +33,6 @@ export default {
         pwd: '',
       },
       error: ' ',
-      nextPageName: ''
     }
   },
   methods: {
@@ -43,8 +42,7 @@ export default {
           if (resp.isAxiosError) {
             this.error = '계정 또는 비밀 번호를 확인해주세요.'
           } else {
-            if (this.nextPageName == '' || this.nextPageName == undefined) this.nextPageName = 'Main'
-            this.$router.replace({name: this.nextPageName})
+            this.$router.replace({name: 'about'})
           }
         })
         .catch(error => {
@@ -60,9 +58,6 @@ export default {
   },
   beforeMount () {
     this.clearUserInfo()
-  },
-  mounted() {
-    this.nextPageName = this.$route.params.toName
   },
 }
 </script>
