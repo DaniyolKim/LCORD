@@ -42,6 +42,10 @@ import VueHtml2Canvas from 'vue-html2canvas'
 Vue.config.productionTip = false
 Vue.use(VueHtml2Canvas)
 
+import VueGoodTablePlugin from 'vue-good-table';
+import 'vue-good-table/dist/vue-good-table.css'
+Vue.use(VueGoodTablePlugin);
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
