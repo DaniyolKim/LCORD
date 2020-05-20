@@ -1,13 +1,12 @@
 /* Mobile Styles */
 @media only screen and (max-width: 960px) {
   #app { font-size: 8px; }
+  .container-account { padding: .75rem; }
 
   .login-form { width: 90% }
   .login-logo { width: calc(100%); }
   .login-error-text { color: red; min-height: 10px; font-size: 8px; }
 
-  .container-account { flex-direction: column-reverse; padding: 10px;}
-  input[type=text], input[type=password], input[type=number] { font-size: 8px; }
   .btn-dup-check { padding: 8px;}
   button, span, .multiselect__single, textarea, div { font-size: 8px;}
 
@@ -20,7 +19,7 @@
   .info-label { width: 50px; margin-right: 5px; }
   .info-input { width: 200px; }
   .info-select { width: 200px; font-size: 8px; }
-  .info-input-url { width: 180px; font-size: 8px; }
+  .info-input-url { width: 120px; font-size: 8px; }
 
   /*BattleInfo.vue*/
   .container-battle-info { flex-direction: column; }

@@ -1,20 +1,28 @@
 <template>
   <div class="container-create-battle">
     <div class="create-battle-article">
-      <h2>배틀 관리</h2>
-      <ul>
+      <h4>배틀 관리</h4>
+      <div style="height: 85vh; overflow-y: auto;">
+        <b-list-group v-for="battle in battleList" :key="battle._id">
+          <b-list-group-item button @click="selectBattle(battle)">
+            <div class="battle-name">{{battle.name}}</div>
+            <div class="battle-desc">{{battle.description}}</div>
+          </b-list-group-item>
+        </b-list-group>
+      </div>
+      <!--<ul>
         <li v-for="battle in battleList" @click="selectBattle(battle)">
           <div>
             <div class="battle-name">{{battle.name}}</div>
             <div class="battle-desc">{{battle.description}}</div>
           </div>
         </li>
-      </ul>
-      <button style="width: 100%;" @click="showModalCreate">배틀 추가</button>
+      </ul>-->
+      <b-button  variant="success" style="width: 100%;" @click="showModalCreate">배틀 추가</b-button>
     </div>
 
     <div class="create-battle-article">
-      <h2>상세 정보</h2>
+      <h4>상세 정보</h4>
       <div v-if="selectedBattle == null">배틀 리스트에서 항목을 선택해 주세요.</div>
       <div v-else style="margin-top: 10px;">
         <div class="battle-elem">
@@ -80,7 +88,7 @@
           </div>
         </div>
         <br>
-        <button style="width: 62%;" @click="updateBattleInfo" :disabled="inputEnable == false">업데이트</button>
+        <b-button variant="success" style="width: 62%;" @click="updateBattleInfo" :disabled="inputEnable == false">업데이트</b-button>
       </div>
     </div>
     <modals-container @close="getBattleList"></modals-container>
@@ -263,8 +271,8 @@
 <style scoped>
   ul { list-style-type: none; padding: 0px; width: 100%; height: 87%; border: solid #dcdcdc 1px; border-radius: 15px; overflow-y: auto; }
   li { text-align: left; margin: 20px; padding-bottom: 15px; border-bottom: solid #dcdcdc 1px; }
-  .battle-name { font-size: 18px; font-weight: bold; }
-  .battle-desc { font-size: 12px; }
+  .battle-name { font-size: 18px; font-weight: bold; text-align: left; }
+  .battle-desc { font-size: 12px; text-align: left; }
   .battle-elem { display: flex; flex-direction: row; align-items: center; justify-content: center; height: 45px; }
   .battle-manager { align-items: flex-start; height: auto; }
   label { width: 150px; text-align: right; margin-right: 15px; }

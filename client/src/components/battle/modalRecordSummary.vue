@@ -14,7 +14,7 @@
 
       <hr>
 
-      <vue-record-list style="width: 100%;" :record-list="recordList" :show-battle-name="false" :need-edit="false"/>
+      <vue-record-list style="width: 100%;" :record-list="recordList" :show-battle-name="false"/>
     </div>
     <button @click="closeModal">CLOSE</button>
   </div>

@@ -1,6 +1,6 @@
 <template>
   <div style="text-align: center">
-    <h2>{{player.userName}}님의 능력 평가</h2>
+    <h4>{{player.userName}}님의 능력 평가</h4>
     <div>*참고 : 0 < 아메바 < 2 < 애니멀 < 3 < 휴먼 < 4 < 갓 < 5</div>
     <div class="contents-container">
       <div class="input-area">
@@ -25,9 +25,9 @@
       </div>
 
       <div class="footer">
-        <button @click="cancelEvaluation">취소</button>
-        <button v-if="oldData != undefined" @click="delEvaluation">삭제</button>
-        <button @click="addEvaluation">확인</button>
+        <b-button @click="cancelEvaluation">취소</b-button>
+        <b-button v-if="oldData != undefined" @click="delEvaluation">삭제</b-button>
+        <b-button @click="addEvaluation">확인</b-button>
       </div>
     </div>
   <v-dialog/>

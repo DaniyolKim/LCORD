@@ -2,10 +2,6 @@
 @media only screen and (min-width: 961px) {
   .root { margin: 0px 15vw; }
   .login-logo { width: 400px; }
-
-  .container-account { flex-direction: row; margin: 1vh 0px;}
-  .about { width: 42vw; }
-  .info { width: 40vw; }
   .container-my-info { flex-direction: column; align-items: center; justify-content: flex-start }
   .myInfo-btn-update { width: 42vw; background-color: #4285f4; }
 }

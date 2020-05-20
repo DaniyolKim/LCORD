@@ -2,7 +2,8 @@
   <div class="container-create-record">
     <div class="create-record-article">
       <div>
-        <h2>전적 입력 (진행 중인 리그만 입력 가능)</h2>
+        <h4>전적 입력</h4>
+        <h5>진행 중인 배틀에만 입력 가능합니다.</h5>
         <div class="contents-common">
           <div>
             <label>배틀 선택</label>
@@ -14,20 +15,21 @@
           <div>
             <label>경기 날짜</label>
             <div style="display: flex; justify-content: center">
-              <datepicker v-model="inputRecordCommon.date" :language="languages[1]" :format="dateFormat"></datepicker>
+              <b-form-datepicker id="input-date" v-model="inputRecordCommon.date"></b-form-datepicker>
+              <!--<datepicker v-model="inputRecordCommon.date" :language="languages[1]" :format="dateFormat"></datepicker>-->
             </div>
           </div>
 
           <div>
             <label>방송 URL</label>
             <div>
-              <input class="info-input-url" type="url" v-model="inputRecordCommon.videoLink" placeholder="방송 링크 url 입력">
+              <b-form-input class="info-input-url" type="url" v-model="inputRecordCommon.videoLink" placeholder="방송 링크 url 입력"/>
             </div>
           </div>
         </div>
 
         <hr>
-        <button @click="cloneRecord"><i class="far fa-clone"></i> 작성 중인 내용 복제</button>
+        <b-button size="sm" @click="cloneRecord"><i class="far fa-clone"></i> 작성 중인 내용 복제</b-button>
 
         <div style="margin-top: 5px;">
           <table style="width: 100%">
@@ -39,9 +41,10 @@
             <tbody>
             <tr v-for="(recordData, index) in inputRecordDataList">
               <td>
-                <select v-model="recordData.battleType">
+                <b-form-select v-model="recordData.battleType" :options="$defs.gameTypeList"></b-form-select>
+                <!--<select v-model="recordData.battleType">
                   <option v-for="type in $defs.gameTypeList" :value="type.type">{{type.name}}</option>
-                </select>
+                </select>-->
               </td>
               <td>
                 <div>
@@ -55,7 +58,7 @@
                 </div>
               </td>
               <td>
-                <button @click="changeResult(recordData)"><i class="fas fa-exchange-alt"></i>변경</button>
+                <b-button size="sm" @click="changeResult(recordData)"><i class="fas fa-exchange-alt"></i>변경</b-button>
               </td>
               <td>
                 <div>
@@ -64,7 +67,7 @@
                 </div>
               </td>
               <td>
-                <button @click="delRecord(index)">DEL</button>
+                <b-button size="sm" variant="danger" @click="delRecord(index)">DEL</b-button>
               </td>
             </tr>
             </tbody>
@@ -72,24 +75,28 @@
         </div>
         <br>
 
-        <button style="width: 100%;background-color: #4285f4; margin-top: 15px;" @click="uploadRecord">
+        <b-button variant="success" class="btn-full-width" @click="uploadRecord">
           <i class="fas fa-file-upload"/> 전적 업로드
-        </button>
+        </b-button>
       </div>
 
       <hr>
       <div>
-        <h2>맵 추가</h2>
-        <h4>경기 하신 맵이 없다면 추가해주세요.</h4>
+        <h4>맵 추가</h4>
+        <b-input-group prepend="경기 하신 맵이 없다면 추가해주세요." style="margin-top: 1rem">
+          <b-form-input type="text" v-model="mapName" placeholder="맵이름만 입력"/>
+        </b-input-group>
+        <!--<label>경기 하신 맵이 없다면 추가해주세요.</label>
+        <b-form-input type="text" v-model="mapName" placeholder="맵이름만 입력"/>-->
         <div>
-          <input type="text" v-model="mapName" placeholder="맵이름만 입력"><button class="header-button" @click="addMap">add map</button>
+          <b-button class="btn-full-width" @click="addMap">add map</b-button>
         </div>
       </div>
     </div>
 
     <div class="create-record-article">
-      <h2>최근 입력 한 50개 전적 (Refresh로 중복 확인!)</h2>
-      <button style="margin: 2px; width: 100%; background-color: #4285f4" @click="getAllRecords"><i class="fas fa-sync-alt"/> Refresh</button>
+      <h4>최근 입력 한 50개 전적 (Refresh로 중복 확인!)</h4>
+      <b-button style="width: 100%;" @click="getAllRecords"><i class="fas fa-sync-alt"/> Refresh</b-button>
       <div class="create-record-list-container">
         <vue-record-list :record-list="recordList"></vue-record-list>
       </div>
@@ -236,7 +243,7 @@
         if (this.inputRecordDataList.length > 1) {
           this.inputRecordDataList.splice(index, 1)
         } else {
-          this.$toast.info('입력 건이 최소 1개는 있어야 합니다.', {position: 'top'})
+          this.$toast.info('최소 1개의 입력 항목이 있어야 합니다.', {position: 'top'})
         }
       },
 
@@ -281,7 +288,8 @@
 </script>
 
 <style scoped>
-  button { padding: 5px 10px; }
+  .btn-full-width { width: 100%; margin: .75rem 0; }
+  /*button { padding: 5px 10px; }*/
   .header-button { margin-left: 15px; }
   /*.contents-container { height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center; }*/
   .contents-common { display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%; margin: 10px 0px;}

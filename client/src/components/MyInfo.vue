@@ -2,26 +2,26 @@
   <div class="container-my-info">
     <h3>플레이어 정보</h3>
     <div class="div-account-detail about">
-      <h2>필수 정보</h2>
-      <div class="container-info"><label>ID</label><input type="text" v-model="accountParams.userId" required placeholder="로그인 ID"></div>
-      <div class="container-info"><label>이름</label><input type="text" v-model="accountParams.userName" required placeholder="이름"></div>
-      <div class="container-info"><label>배틀넷 아이디</label><input type="text" v-model="accountParams.bNetId" required placeholder="배틀넷 아이디"></div>
-      <div class="container-info"><label>아프리카 TV 아이디</label><input type="text" v-model="accountParams.afreecaId" required placeholder="아프리카 TV 아이디"></div>
-      <div class="container-info"><label>별명</label><input type="text" v-model="accountParams.nickName" required placeholder="별명"></div>
+      <h4>필수 정보</h4>
+      <div class="container-info"><label>ID</label><b-form-input type="text" v-model="accountParams.userId" required placeholder="로그인 ID"/></div>
+      <div class="container-info"><label>이름</label><b-form-input type="text" v-model="accountParams.userName" required placeholder="이름"/></div>
+      <div class="container-info"><label>배틀넷 아이디</label><b-form-input type="text" v-model="accountParams.bNetId" required placeholder="배틀넷 아이디"/></div>
+      <div class="container-info"><label>아프리카 TV 아이디</label><b-form-input type="text" v-model="accountParams.afreecaId" required placeholder="아프리카 TV 아이디"/></div>
+      <div class="container-info"><label>별명</label><b-form-input type="text" v-model="accountParams.nickName" required placeholder="별명"/></div>
       <div class="container-info"><label>종족</label><div class="container-multiselect"><vue-multiselect v-model="cvtTribe" placeholder="종족 선택" :options="$defs.tribes" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거"></vue-multiselect></div></div>
       <div class="container-info"><label>티어</label><div class="container-multiselect"><vue-multiselect v-model="cvtTier" placeholder="티어 선택" :options="$defs.tierList" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거"></vue-multiselect></div></div>
       <div class="container-info"><label>가입일</label><label style="text-align: center">{{accountParams.created_date | moment(mDateFormat)}}</label></div>
     </div>
     <br>
     <div class="div-account-detail about">
-      <h2>선택 정보</h2>
-      <div class="container-info"><label>평균 APM</label><input type="number" v-model="optionalInfo.apm" required placeholder="평균 APM(숫자)"></div>
+      <h4>선택 정보</h4>
+      <div class="container-info"><label>평균 APM</label><b-form-input type="number" v-model="optionalInfo.apm" required placeholder="평균 APM(숫자)"/></div>
       <div class="container-info"><label>래더 등급</label><div class="container-multiselect"><vue-multiselect v-model="cvtGrade" placeholder="래더 등급(시즌 평균) 선택" :options="$defs.grades" label="name" track-by="name" selectLabel="선택" selectedLabel="선택 됨" deselectLabel="제거"></vue-multiselect></div></div>
       <div class="container-info"><label>소개</label><textarea style="width: 210px" v-model="optionalInfo.comment" placeholder="아이엠~ 그라운드~♬ 자기소개 하기!"></textarea></div>
     </div>
     <br>
     <div class="div-account-detail about">
-      <h2>배틀 불참 여부</h2>
+      <h4>배틀 불참 여부</h4>
       <div>멸망전 같은 팀 리그는 참여 여부를 기준으로 팀 빌딩을 합니다.</div>
       <div>부득이한 사정으로 불참하시게 되는 리그를 선택/추가해 주세요.</div>
       <div class="container-info"><label>배틀 목록</label>
@@ -30,15 +30,13 @@
         </div>
       </div>
     </div>
-    <br>
-    <button class="myInfo-btn-update" @click="updateMyInfo">플레이어 정보 업데이트</button>
+    <b-button variant="success" class="myInfo-btn-update" @click="updateMyInfo">플레이어 정보 업데이트</b-button>
     <br>
     <div class="div-account-detail about">
-      <h2>Password 변경</h2>
+      <h4>Password 변경</h4>
       <div class="container-info"><label>Password 입력</label><input type="text" v-model="pwd" required></div>
     </div>
-    <br>
-    <button class="myInfo-btn-update" @click="updatePassword">Password 업데이트</button>
+    <b-button variant="success" class="myInfo-btn-update" @click="updatePassword">Password 업데이트</b-button>
     <br>
 
   </div>
@@ -165,6 +163,6 @@ export default {
 <style scoped>
   .container-info { display: flex; flex-direction: row; align-items: center; justify-content: center; height: 45px; }
   .container-multiselect { width: 217px; }
-  button { padding: 5px 10px; }
+
   label { width: 150px; text-align: right; margin-right: 15px; }
 </style>

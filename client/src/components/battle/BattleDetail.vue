@@ -4,7 +4,7 @@
     <div class="battle-info-article">
       <div class="battle-selector-container">
         <div style="width: 99%;">
-          <h2>{{selectedBattle.name}}</h2>
+          <h4>{{selectedBattle.name}}</h4>
         </div>
       </div>
       <hr>
@@ -127,7 +127,7 @@
 
     <!--오른쪽-->
     <div v-if="isMobile === false" class="battle-info-article record-container">
-      <h2 @click="refreshRecord">전적 리스트 (Click To Refresh)</h2>
+      <h4 @click="refreshRecord">전적 리스트 (Click To Refresh)</h4>
       <hr>
       <div class="record-list-container">
         <vue-record-list :record-list="recordList" :show-battle-name="false" @reqRefresh="refreshRecord"></vue-record-list>

@@ -53,12 +53,13 @@ const apis = {
     },
 
     async create (accountInfo) {
-      let reqBody = JSON.parse(JSON.stringify(accountInfo))
+      /*let reqBody = JSON.parse(JSON.stringify(accountInfo))
       reqBody.tribe = reqBody.tribe.val
       reqBody.tier = reqBody.tier.type
       reqBody.eloScore = 1000 + (reqBody.tier * 300)
-      reqBody.optionalInfo.grade = (reqBody.optionalInfo.grade == '') ? '' : reqBody.optionalInfo.grade.val
-      return await axios.post(urls.getUser, reqBody)
+      reqBody.optionalInfo.grade = (reqBody.optionalInfo.grade == '') ? '' : reqBody.optionalInfo.grade.val*/
+      accountInfo.eloScore = 1000 + (accountInfo.tier * 300)
+      return await axios.post(urls.getUser, accountInfo)
         .then(resp =>{
           return resp
         })
@@ -271,13 +272,14 @@ const apis = {
     },
 
     async update (recordData) {
-      recordData.battleId = recordData.battleId._id
-      recordData.winners = getUserIds(recordData.winners)
-      recordData.losers = getUserIds(recordData.losers)
-      recordData.map = recordData.map._id
-      recordData.writer = recordData.writer._id
+      let updateRecord = JSON.parse(JSON.stringify(recordData))
+      updateRecord.battleId = updateRecord.battleIndex
+      updateRecord.winners = getUserIds(updateRecord.winners)
+      updateRecord.losers = getUserIds(updateRecord.losers)
+      updateRecord.map = updateRecord.mapId
+      updateRecord.writer = updateRecord.writer._id
 
-      return await axios.put(comm.urls.record + recordData._id, recordData)
+      return await axios.put(comm.urls.record + updateRecord._id, updateRecord)
         .then(resp =>{
           return resp.data
         })

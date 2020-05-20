@@ -1,16 +1,16 @@
 <template>
   <div class="container-user-compare">
     <div class="user-compare-section">
-      <h2>플레이어 비교</h2>
+      <h4>플레이어 비교</h4>
       <div style="width: 100%">
         <div style="display: flex; flex-direction: row; justify-content: center; align-items: center">
-          <h4 style="width: 20%;text-align: right; margin-right: 15px;">기준 플레이어</h4>
+          <h5 style="width: 20%;text-align: right; margin-right: 15px;">기준 플레이어</h5>
           <vue-multiselect style="width: 75%;" v-model="detPlayers" placeholder="이름 검색" label="userName" track-by="userId" selectLabel="추가" selectedLabel="선택 됨" deselectLabel="제거"
                            :options="userList" :multiple="false" :taggable="true" :custom-label="userSearchLabel" :show-labels="false" @select="selectPlayer"></vue-multiselect>
         </div>
 
         <div style="display: flex; flex-direction: row; justify-content: center; align-items: center">
-          <h4 style="width: 20%;text-align: right; margin-right: 15px;">비교 플레이어</h4>
+          <h5 style="width: 20%;text-align: right; margin-right: 15px;">비교 플레이어</h5>
           <vue-multiselect style="width: 75%;" v-model="compPlayers" placeholder="이름 검색" label="userName" track-by="userId" selectLabel="추가" selectedLabel="선택 됨" deselectLabel="제거"
                            :options="userList" :multiple="true" :taggable="true" :custom-label="userSearchLabel" :show-labels="false" @select="selectPlayer"></vue-multiselect>
         </div>
@@ -66,7 +66,7 @@
     </div>
 
     <div class="user-compare-section">
-      <h2>상세 정보</h2>
+      <h4>상세 정보</h4>
       <div v-if="compPlayers.length == 0">플레이어를 선택해 주세요.</div>
       <div v-else>
         <h3>능력 / 종족별 승률 그래프</h3>

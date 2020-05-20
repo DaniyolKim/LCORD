@@ -2,12 +2,14 @@
   <div class="container-user-list">
     <div class="user-list-article">
       <!--<h2 @click="calELO">ELO 재계산</h2>-->
-      <h2>플레이어 리스트 ({{playerList.length}}명)</h2>
+      <h4>플레이어 리스트 ({{playerList.length}}명)</h4>
       <div class="user-list-container">
         <table style="width: 100%">
           <thead>
           <tr>
-            <th>이름</th><th>종족</th><th>베넷 아이디</th><th>별명</th><th>티어</th><th>스타 능력치</th><th>ELO Score</th>
+            <th>이름</th><th>종족</th><th>베넷 아이디</th><th>별명</th><th>티어</th>
+            <!--<th>스타 능력치</th>-->
+            <th>ELO Score</th>
           </tr>
           </thead>
           <tbody>
@@ -17,7 +19,7 @@
             <td>{{player.bNetId}}</td>
             <td>{{player.nickName}}</td>
             <td>{{player.tier | cvtTier}}</td>
-            <td>{{player.abilityScore}}</td>
+            <!--<td>{{player.abilityScore}}</td>-->
             <td>{{player.eloScore}}</td>
           </tr>
           </tbody>
@@ -26,10 +28,10 @@
     </div>
 
     <div class="user-list-article">
-      <h2>{{selectedPlayer.userName}}님의 상세 정보</h2>
+      <h4>{{selectedPlayer.userName}}님의 상세 정보</h4>
       <div style="height: 95%;overflow-y: auto;">
         <div v-if="selectedPlayer != ''">
-          <h3>선택 정보</h3>
+          <h5>선택 정보</h5>
           <div>
             <div>
               <label>● 평균 APM : {{selectedPlayer.optionalInfo.apm}}</label>
@@ -40,13 +42,13 @@
             </div>
           </div>
 
-          <h3>능력 / 종족별 승률 그래프</h3>
+          <h5>종족별 승률 그래프</h5>
           <div class="container-chart">
-            <apexchart type=radar class="chart-style" :options="chartOptionsStats" :series="chartSeriesStats"></apexchart>
+            <!--<apexchart type=radar class="chart-style" :options="chartOptionsStats" :series="chartSeriesStats"></apexchart>-->
             <apexchart type=radar class="chart-style" :options="chartOptionsVS" :series="chartSeriesVS"></apexchart>
           </div>
 
-          <h3>능력 평가 리스트 <button style="width: 60px; margin-left: 10px;padding: 3px;" @click="showModalAbility">+ 추가</button></h3>
+          <!--<h5>능력 평가 리스트 <b-button style="width: 60px; margin-left: 10px;padding: 3px;" @click="showModalAbility">+ 추가</b-button></h5>
           <div class="container-table">
             <table>
               <thead>
@@ -60,13 +62,12 @@
               <tr v-for="score in ability.abilityList" v-if="score.writer != null">
                 <td>{{score.writer.userName}}</td>
                 <td>{{score.build}}</td><td>{{score.control}}</td><td>{{score.judgement}}</td><td>{{score.manageResource}}</td><td>{{score.manageMulti}}</td><td>{{score.totalScore}}</td>
-                <td><button style="padding: 3px;" @click="editAbility(score.writer._id)">편집</button></td>
+                <td><b-button style="padding: 3px;" @click="editAbility(score.writer._id)">편집</b-button></td>
               </tr>
               </tbody>
             </table>
-          </div>
+          </div>-->
 
-          <h3>전적</h3>
           <vue-record-list :record-list="sortedRecords" @reqRefresh="updateData"></vue-record-list>
         </div>
         <div v-else>
@@ -111,7 +112,7 @@
       },
       getDetails (player) {
         this.selectedPlayer = player
-        this.getUserAbilities()
+        //this.getUserAbilities()
         this.getWinRateOfUser()
       },
       async getUserAbilities () {

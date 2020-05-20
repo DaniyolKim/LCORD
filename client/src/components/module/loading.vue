@@ -1,13 +1,13 @@
 <template>
   <modal name="loading-modal"
          classes="cute-dog-profile-photo"
-         transition="scale"
          :clickToClose="clickToClose"
          :height="height"
          :width="width"
          >
     <div slot="top-right" class="ct-top-right" @click="closeLoading">close</div>
-    <img class="loading-img" src="../../assets/spinner.gif" />
+    <b-spinner variant="primary" label="Spinning"></b-spinner>
+    <!--<img class="loading-img" src="../../assets/spinner.gif" />-->
   </modal>
 </template>
 <script>
