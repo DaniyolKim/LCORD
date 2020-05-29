@@ -7,17 +7,8 @@ let EloRating = require('elo-rating')
 
 // CREATE Record
 router.post('/', function(req, res) {
-    let body = req.body
-    let record = new Record({
-        date: body.date,
-        battleId: body.battleId,
-        map: body.map,
-        battleType: body.battleType,
-        winners: body.winners,
-        losers: body.losers,
-        videoLink: body.videoLink,
-        writer: body.writer,
-    })
+    //let body = req.body
+    let record = new Record(req.body)
 
     record.save(function (err) {
         if(err) {
@@ -26,22 +17,61 @@ router.post('/', function(req, res) {
             return;
         }
 
-        Record.populate(record, [{path:'winners', select: 'eloScore'}, {path:'losers', select: 'eloScore'}],
-            async function (err, _record) {
+        let eloTypeBattleList = [0, 10, 11, 12, 13, 15]
+        let btype = record.battleType
+        let index = eloTypeBattleList.findIndex(x => x === btype)
+        if (index > -1) {
+            Record.populate(record, [{path:'winners', select: 'eloScore'}, {path:'losers', select: 'eloScore'}],
+                async function (err, _record) {
 
-            let winner = _record.winners[0]
-            let loser = _record.losers[0]
+                    let winner = _record.winners[0]
+                    let loser = _record.losers[0]
 
-            console.log(winner._doc.eloScore +', '+ loser._doc.eloScore)
-            let resultELO = await EloRating.calculate(winner._doc.eloScore, loser._doc.eloScore)
+                    console.log(winner._doc.eloScore +', '+ loser._doc.eloScore)
+                    let resultELO = await EloRating.calculate(winner._doc.eloScore, loser._doc.eloScore)
 
-            console.log('win ' + resultELO.playerRating + ', lose ' + resultELO.opponentRating)
-            await winner.updateOne({eloScore: resultELO.playerRating})
-            await loser.updateOne({eloScore: resultELO.opponentRating})
-        })
+                    console.log('win ' + resultELO.playerRating + ', lose ' + resultELO.opponentRating)
+                    await winner.updateOne({eloScore: resultELO.playerRating})
+                    await loser.updateOne({eloScore: resultELO.opponentRating})
+                })
+        }
 
-        res.json({result: 1});
+        res.json({result: record._id});
     })
+})
+
+// CREATE many
+router.post('/many', function(req, res) {
+    Record.insertMany(req.body)
+        .then((result) => {
+            let recordIdList = []
+            result.forEach(record => {
+                recordIdList.push(record._id)
+                let eloTypeBattleList = [0, 10, 11, 12, 13, 15]
+                let battleType = record.battleType
+                let index = eloTypeBattleList.findIndex(x => x === battleType)
+                if (index > -1) {
+                    Record.populate(record, [{path:'winners', select: 'eloScore'}, {path:'losers', select: 'eloScore'}],
+                        async function (err, _record) {
+
+                            let winner = _record.winners[0]
+                            let loser = _record.losers[0]
+
+                            console.log(winner._doc.eloScore +', '+ loser._doc.eloScore)
+                            let resultELO = await EloRating.calculate(winner._doc.eloScore, loser._doc.eloScore)
+
+                            console.log('win ' + resultELO.playerRating + ', lose ' + resultELO.opponentRating)
+                            await winner.updateOne({eloScore: resultELO.playerRating})
+                            await loser.updateOne({eloScore: resultELO.opponentRating})
+                        })
+                }
+            })
+            res.status(200).json({ data: recordIdList })
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).send({ error: 'database failure' });
+        })
 })
 
 // GET ALL Records

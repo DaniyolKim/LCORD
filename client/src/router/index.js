@@ -15,6 +15,7 @@ import UserList from '../components/user/userList'
 import UserCompare from '../components/user/userCompare'
 import About from '../components/About'
 import BattleDetail from '../components/battle/BattleDetail'
+import test from '../components/module/vueTeamRecordList'
 
 Vue.use(require('vue-moment'))
 Vue.use(Router)
@@ -32,6 +33,11 @@ export default new Router({
       path: '/regUser',
       name: 'CreateAccount',
       component: CreateAccount,
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: test,
     },
     {
       path: '/',

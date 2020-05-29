@@ -39,6 +39,9 @@ app.use('/maps', mapsRouter);
 let recordRouter = require('./routes/records');
 app.use('/record', recordRouter);
 
+let recordTeamRouter = require('./routes/recordTeams');
+app.use('/recordTeam', recordTeamRouter);
+
 let abilitiesRouter = require('./routes/abilities');
 app.use('/ability', abilitiesRouter);
 

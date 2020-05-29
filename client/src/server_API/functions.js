@@ -271,6 +271,27 @@ const apis = {
         })
     },
 
+    async createMany (recordDataList) {
+      let reqDataList = JSON.parse(JSON.stringify(recordDataList))
+      let dataList = []
+      reqDataList.forEach(data => {
+        let tempObj = data
+        tempObj.battleId = data.battleId._id
+        tempObj.winners = getUserIds(data.winners)
+        tempObj.losers = getUserIds(data.losers)
+        dataList.push(tempObj)
+      })
+
+      return await axios.post(comm.urls.record + 'many', dataList)
+        .then(resp =>{
+          return resp.data.data
+        })
+        .catch(error => {
+          console.log(error.response)
+          return error
+        })
+    },
+
     async update (recordData) {
       let updateRecord = JSON.parse(JSON.stringify(recordData))
       updateRecord.battleId = updateRecord.battleIndex
@@ -368,6 +389,41 @@ const apis = {
           return resp.data
         })
         .catch(error => {
+          return error
+        })
+    },
+  },
+
+  recordTeam: {
+    async create (reqData) {
+      return await axios.post(comm.urls.recordTeam, reqData)
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          console.log(error.response)
+          return error
+        })
+    },
+
+    async getByBattleId (battleId) {
+      return await axios.get(comm.urls.recordTeam + 'byBattle/' + battleId)
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          console.log(error.response)
+          return error
+        })
+    },
+
+    async delete (recordTeamId) {
+      return await axios.delete(comm.urls.recordTeam + recordTeamId)
+        .then(resp =>{
+          return resp.data
+        })
+        .catch(error => {
+          console.log(error.response)
           return error
         })
     },

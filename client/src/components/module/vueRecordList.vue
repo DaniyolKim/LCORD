@@ -22,7 +22,7 @@
              :header-bg-variant="'dark'"
              :header-text-variant="'light'">
       <div style="height: 45vh; display: flex; flex-direction: column; justify-content: center;">
-        <b-form-group label-cols="4" label-cols-lg="2" label="경기 날짜" label-for="input-date" label-align="right">
+        <b-form-group label-cols="4" label-cols-lg="2" label="작성일" label-for="input-date" label-align="right">
           <b-form-datepicker id="input-date" v-model="selectedRecord.date"></b-form-datepicker>
         </b-form-group>
         <b-form-group label-cols="4" label-cols-lg="2" label="배틀 선택" label-for="input-battle" label-align="right">
@@ -109,7 +109,7 @@
             tdClass: 'vgt-center-align',
             type: 'date',
             dateInputFormat: 'yyyy-MM-dd hh:mm',
-            dateOutputFormat: 'yyyy-MM-dd',
+            dateOutputFormat: 'yyyy-MM-dd HH:mm',
             //width: '150px',
             filterOptions: {
               enabled: true, // enable filter for this column

@@ -4,7 +4,7 @@ let Schema = mongoose.Schema
 let recordSchema = new Schema({
     date: { required: true, type: Date },
     battleId: { required: true, type: mongoose.Schema.Types.ObjectId, ref: 'battle' },
-    roundNum: Number, //풀 라운드 방식일 경우
+    roundNum: { required: false, type: Number, default: 1 }, //풀 라운드 방식일 경우
     map: { required: true, type: mongoose.Schema.Types.ObjectId, ref: 'map' },
     battleType: Number,
     winners: [{ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'user' }],
