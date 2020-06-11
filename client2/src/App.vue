@@ -42,7 +42,6 @@
 
     <v-content>
       <router-view/>
-      <!--<HelloWorld/>-->
     </v-content>
   </v-app>
 </template>

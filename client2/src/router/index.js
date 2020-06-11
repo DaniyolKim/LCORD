@@ -2,14 +2,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home'
 import About from '../views/About'
+import DashBoard from '../views/DashBoard'
 
 Vue.use(VueRouter)
 
   const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: Home
+    name: 'DashBoard',
+    component: DashBoard
   },
   {
     path: '/about',
