@@ -27,17 +27,18 @@
           width="100"
         />
       </div>
+      <div>{{this.$route.name}}</div>
 
       <v-spacer></v-spacer>
 
-      <v-btn
+      <!--<v-btn
         href="https://github.com/vuetifyjs/vuetify/releases/latest"
         target="_blank"
         text
       >
         <span class="mr-2">Latest Release</span>
         <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      </v-btn>-->
     </v-app-bar>
 
     <v-content>
@@ -47,26 +48,45 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
-
 export default {
+
   name: 'App',
 
   components: {
-    HelloWorld,
+
   },
 
   data: () => ({
     drawer: null,
     item: 0,
     items: [
-      { text: '대쉬 보드', icon: 'mdi-view-dashboard', link: '/about' },
+      { text: 'DashBoard', icon: 'mdi-view-dashboard', link: '/dashboard' },
       { text: '개인 리그', icon: 'mdi-folder', link: '/about1' },
       { text: '팀 리그', icon: 'mdi-account-multiple', link: '/about2' },
       { text: '전적 입력', icon: 'mdi-upload', link: '/about3' },
-      { text: '랭킹', icon: 'mdi-history', link: '/about4' },
+      { text: 'Ranking', icon: 'mdi-history', link: '/ranking/0/0' },
       { text: '관리', icon: 'mdi-check-circle', link: '/about5' },
     ],
   }),
-};
+
+  methods: {
+    getAllPlayers() {
+      this.$lcordAPI.user.getSortedAllUsers({ key: 'eloScore', order: 'desc' })
+    },
+  },
+
+  beforeMount() {
+    this.getAllPlayers()
+  },
+}
 </script>
+
+<style>
+  body {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
+</style>

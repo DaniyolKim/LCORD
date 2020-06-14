@@ -1,13 +1,21 @@
 <template>
-    <div>
+    <v-card
+            raised
+            :loading="loading"
+    >
+        <v-card-title>종족별 가입자 비율</v-card-title>
+        <v-card-subtitle>테란({{series[0]}}명) 저그({{series[1]}}명) 프로토스({{series[2]}}명) 랜덤({{series[3]}}명)</v-card-subtitle>
+
         <apexchart type="donut" :options="chartOptions" :series="series"></apexchart>
-    </div>
+        <br>
+
+    </v-card>
 </template>
 
 <script>
     export default {
         name: "chartDonutTribeCount",
-        props: [ 'playerList' ],
+        props: [ 'playerList', 'loading' ],
         data () {
             return {
                 chartOptions: {
@@ -25,7 +33,7 @@
                                 enabled: true,
                                 speed: 350
                             }
-                        }
+                        },
                     },
                     legend: {
                         show: true,
@@ -40,7 +48,7 @@
                         breakpoint: 480,
                         options: {
                             chart: {
-                                width: 200
+                                /*width: 200*/
                             },
                             legend: {
                                 position: 'bottom'
@@ -83,7 +91,7 @@
         computed: {
             series () {
                 let retData = []
-                if (this.playerList.length > -1) {
+                if (this.playerList.length > 0) {
                     let zergList = this.playerList.filter(x => x.tribe === 'zerg')
                     let terranList = this.playerList.filter(x => x.tribe === 'terran')
                     let protossList = this.playerList.filter(x => x.tribe === 'protoss')

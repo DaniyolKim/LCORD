@@ -1,13 +1,17 @@
 <template>
-    <div>
+    <v-card
+            raised
+            :loading="loading"
+    >
+        <v-card-title>종족별 티어 분포</v-card-title>
         <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
-    </div>
+    </v-card>
 </template>
 
 <script>
     export default {
         name: "chartBarTierCount",
-        props: [ 'playerList' ],
+        props: [ 'playerList', 'loading' ],
         data () {
             return {
                 chartOptions: {
@@ -32,7 +36,7 @@
                         colors: ['transparent']
                     },
                     xaxis: {
-                        categories: ['-', '아메바', '애니멀', '휴먼', '갓'],
+                        categories: ['AMO', 'ANI', 'HUM', 'GOD'],
                     },
 
                     fill: {
@@ -56,7 +60,7 @@
             series () {
                 let retData = []
 
-                if (this.playerList.length > -1) {
+                if (this.playerList.length > 0) {
                     for (let i = 0; i < this.$defs.tribes.length; i++) {
                         let tribeName = this.$defs.tribes[i].value
                         let tribeList = this.playerList.filter(x => x.tribe === tribeName)

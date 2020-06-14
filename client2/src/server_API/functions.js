@@ -103,6 +103,7 @@ const apis = {
             allUsers[i].loseCount = 0
             allUsers[i].winRate = 0
           }
+          store.dispatch('updatePlayerList', allUsers)
           return allUsers
         })
         .catch(error => {
@@ -114,6 +115,7 @@ const apis = {
       return await axios.get(urls.getUser + 'sortBy/' + sortArg.key + '/' + sortArg.order)
         .then(resp =>{
           let allUsers = resp.data
+          store.dispatch('updatePlayerList', allUsers)
           return allUsers
         })
         .catch(error => {

@@ -1,39 +1,22 @@
 <template>
-    <v-container>
-        <v-row class="text-center">
-            <chart-donut-tribe-count :player-list="allPlayerList"></chart-donut-tribe-count>
-        </v-row>
-        <v-row class="text-center">
-            <chart-bar-tier-count :player-list="allPlayerList"></chart-bar-tier-count>
-        </v-row>
+    <v-container grid-list-md>
+        <v-layout row>
+            <v-flex xs12 sm12 md12 lg4 xl4>
+                <chart-tribe-info></chart-tribe-info>
+            </v-flex>
+            <v-flex xs12 sm12 md12 lg8 xl8>
+                <player-rank></player-rank>
+            </v-flex>
+        </v-layout>
     </v-container>
 </template>
 
 <script>
-    import ChartDonutTribeCount from '../components/chartDonutTribeCount'
-    import ChartBarTierCount from '../components/chartBarTierCount'
+    import ChartTribeInfo from '../components/chartTribeInfo'
+    import PlayerRank from '../components/playerRank'
     export default {
         name: "DashBoard",
-        components: { ChartDonutTribeCount, ChartBarTierCount, },
-        data () {
-            return {
-                allPlayerList: [],
-            }
-        },
-
-        methods: {
-            getAllPlayers() {
-                this.$lcordAPI.user.getAllUsers()
-                    .then(resp => {
-                        this.allPlayerList = resp
-
-                    })
-            },
-        },
-
-        beforeMount() {
-            this.getAllPlayers()
-        },
+        components: { ChartTribeInfo, PlayerRank, },
     }
 </script>
 
