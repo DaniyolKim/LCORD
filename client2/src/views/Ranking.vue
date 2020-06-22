@@ -1,25 +1,25 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <v-container fluid>
-        <v-row align="start" justify="center">
-            <v-flex xs12 sm12 md12 lg6 xl6>
+        <v-layout justify-center>
+            <v-flex xs12 lg6>
                 <v-card>
                     <v-card-text>
                         <v-layout justify-end row dense>
-                            <v-col cols="2" class="pa-0">
+                            <v-flex xs3 lg2 class="pa-0">
                                 <v-select class="mx-2 pa-0" v-model="selTribe" :items="tribes" single-line></v-select>
-                            </v-col>
-                            <v-col cols="2" class="pa-0">
+                            </v-flex>
+                            <v-flex xs3 lg2 class="pa-0">
                                 <v-select class="mx-2 pa-0" v-model="dataSelTier" :items="tierList" single-line></v-select>
-                            </v-col>
-                            <v-col cols="3" class="pa-0">
+                            </v-flex>
+                            <v-flex xs3 class="pa-0">
                                 <v-text-field
                                         class="mx-2 pa-0"
                                         v-model="search"
                                         append-icon="mdi-magnify"
-                                        label="Search"
+                                        label="검색"
                                         single-line
                                 ></v-text-field>
-                            </v-col>
+                            </v-flex>
                         </v-layout>
                         <v-data-table
                                 :headers="headers"
@@ -62,7 +62,7 @@
                     </v-card-text>
                 </v-card>
             </v-flex>
-        </v-row>
+        </v-layout>
     </v-container>
 </template>
 
@@ -70,7 +70,7 @@
 
 <script>
     import { mapGetters } from 'vuex'
-    import ChartColumnRecord from '../components/chartColumnRecord'
+    import ChartColumnRecord from '../components/dashAll/chartColumnRecord'
     export default {
         name: "Ranking",
 
@@ -85,16 +85,16 @@
             return {
                 dataSelTier: parseInt(this.selTier),
                 headers: [
-                    { text: '종족', value: 'tribe', filterable: false, },
+                    { text: '종족', value: 'tribe', filterable: false, sortable: false },
                     { text: '이름', value: 'userName' },
                     { text: 'B.Net ID', value: 'bNetId' },
-                    { text: '티어', value: 'tier', filterable: false, },
+                    { text: '티어', value: 'tier', filterable: false,  sortable: false },
                     { text: 'ELO', value: 'eloScore', filterable: false, },
                     { text: '', value: 'data-table-expand' },
                 ],
                 search: '',
-                tribes: this.$defs.tribes,
-                tierList: this.$defs.tierList,
+                tribes: [{ text: '모든 종족', value: 'all' }, ...this.$defs.tribes],
+                tierList: [{ text: '모든 티어', value: 0 }, ...this.$defs.tierList],
             }
         },
 
@@ -126,13 +126,11 @@
                     let _selTribe = this.selTribe
                     let _selTierNum = this.dataSelTier
 
-                    if (_selTribe === 'all') {
-                        return retList
-                    } else {
+                    if (_selTribe != 'all') {
                         retList = retList.filter(x => x.tribe === _selTribe)
                     }
 
-                    if (isNaN(_selTierNum)) {
+                    if (_selTierNum == 0) {
                         return retList
                     } else {
                         return retList.filter(x => x.tier === _selTierNum)

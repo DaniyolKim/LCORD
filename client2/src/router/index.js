@@ -7,27 +7,45 @@ const commAPI = lcordCommon.comFunction
 import Login from '../views/Login'
 import DashBoard from '../views/DashBoard'
 import Ranking from '../views/Ranking'
+import LeagueFree from '../views/LeagueFree'
+import LeagueGroup from '../views/LeagueGroup'
+import LeagueTeam from '../views/LeagueTeam'
 
 Vue.use(require('vue-moment'))
 Vue.use(VueRouter)
 
   const routes = [
-  {
-    path: '/',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/dashboard',
-    name: 'DashBoard',
-    component: DashBoard,
-  },
-  {
-    path: '/ranking/:selTribe/:selTier',
-    name: 'Ranking',
-    component: Ranking,
-    props: true,
-  }
+    {
+      path: '/',
+      name: 'Login',
+      component: Login
+    },
+    {
+      path: '/dashboard',
+      name: 'DashBoard',
+      component: DashBoard,
+    },
+    {
+      path: '/league/free',
+      name: 'LeagueFree',
+      component: LeagueFree,
+    },
+    {
+      path: '/League/group/:id',
+      name: 'LeagueGroup',
+      component: LeagueGroup,
+    },
+    {
+      path: '/League/team/:id',
+      name: 'LeagueTeam',
+      component: LeagueTeam,
+    },
+    {
+      path: '/ranking/:selTribe/:selTier',
+      name: 'Ranking',
+      component: Ranking,
+      props: true,
+    }
 ]
 
 const router = new VueRouter({

@@ -1,8 +1,5 @@
 <template>
-    <v-card
-            raised
-            :loading="loading"
-    >
+    <v-card :loading="loading">
         <v-card-title>종족별 가입자 비율</v-card-title>
         <v-card-subtitle>테란({{series[0]}}명) 저그({{series[1]}}명) 프로토스({{series[2]}}명) 랜덤({{series[3]}}명)</v-card-subtitle>
 

@@ -30,15 +30,6 @@
       <div>{{this.$route.name}}</div>
 
       <v-spacer></v-spacer>
-
-      <!--<v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>-->
     </v-app-bar>
 
     <v-content>
@@ -61,11 +52,12 @@ export default {
     item: 0,
     items: [
       { text: 'DashBoard', icon: 'mdi-view-dashboard', link: '/dashboard' },
-      { text: '개인 리그', icon: 'mdi-folder', link: '/about1' },
-      { text: '팀 리그', icon: 'mdi-account-multiple', link: '/about2' },
+      { text: '자유 리그', icon: 'mdi-test-tube', link: '/league/free' }, //자유 입력
+      { text: '개인 리그', icon: 'mdi-podium-gold', link: '/league/group/1' }, //티어별 조 리그
+      { text: '팀 리그', icon: 'mdi-nuke', link: '/league/team/1' }, //멸망전, 학예회
       { text: '전적 입력', icon: 'mdi-upload', link: '/about3' },
-      { text: 'Ranking', icon: 'mdi-history', link: '/ranking/0/0' },
-      { text: '관리', icon: 'mdi-check-circle', link: '/about5' },
+      { text: 'Ranking', icon: 'mdi-sort-numeric-ascending ', link: '/ranking/all/0' },
+      { text: '관리', icon: 'mdi-cog', link: '/about5' },
     ],
   }),
 

@@ -1,56 +1,31 @@
 <template>
-    <v-expansion-panels popout>
+    <v-expansion-panels>
         <v-expansion-panel
                 v-for="(ranker, i) in rankers"
                 :key="i"
                 hide-actions
         >
-            <v-expansion-panel-header class="pa-1 pa-lg-4 pa-xl-4">
-                <v-row
-                        align="center"
-                        class="spacer"
-                        no-gutters
-                >
-                    <v-col cols="1">
+            <v-expansion-panel-header class="pa-1 pa-lg-4">
+                <v-layout align-content-center justify-center row>
+                    <v-flex xs1 align-self-center>
                         <v-icon :color="cvtMedalColor(i)">fas fa-medal</v-icon>
-                    </v-col>
-                    <v-col cols="1">
+                    </v-flex>
+                    <v-flex xs1 align-self-center>
                         <v-avatar :color="cvtTribeColor(ranker.tribe)" size="20px">
                             <span class="white--text">{{ranker.tribe | cvtTribe}}</span>
                         </v-avatar>
-                    </v-col>
+                    </v-flex>
 
-                    <v-col
-                            class="text-no-wrap"
-                            xs="6"
-                            sm="6"
-                            md="6"
-                            lg="7"
-                            xl="7"
-                    >
+                    <v-flex class="text-no-wrap" xs6 lg7 align-self-center>
                         <strong v-html="ranker.userName"></strong>
-                        <div class="grey--text">({{ranker.bNetId}})</div>
-                    </v-col>
-                    <v-col
-                            class="text-no-wrap"
-                            xs="4"
-                            sm="4"
-                            md="4"
-                            lg="3"
-                            xl="3"
-                            align="end"
-                    >
-                        <v-chip
-                                color="red lighten-4"
-                                class="ml-0 mr-2 black;text"
-                                label
-                                small
-                        >
+                        <div class="grey--text text-sm-start">({{ranker.bNetId}})</div>
+                    </v-flex>
+                    <v-flex class="text-no-wrap" xs4 lg3 align-self-center>
+                        <v-chip color="red lighten-4" class="ml-0 mr-2 black;text" label small>
                             ELO : {{ ranker.eloScore }}
                         </v-chip>
-                    </v-col>
-
-                </v-row>
+                    </v-flex>
+                </v-layout>
             </v-expansion-panel-header>
 
             <v-expansion-panel-content>

@@ -1,8 +1,5 @@
 <template>
-    <v-card
-            raised
-            :loading="loading"
-    >
+    <v-card :loading="loading">
         <v-card-title>종족별 티어 분포</v-card-title>
         <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
     </v-card>
